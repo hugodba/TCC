@@ -17,6 +17,13 @@ class Dataset:
         self._compute_distance_matrix()
 
     def _load_data(self):
+        """
+        Sets attributes reading data from dataset txt file
+        - self.name
+        - self.max_vehicles
+        - self.capacity
+        - self.customers_df
+        """
         with open(self.path, 'r') as file:
             lines = file.readlines()
 
@@ -70,8 +77,5 @@ class Dataset:
         plt.grid(True, linestyle='--', alpha=0.5)
         plt.show()
 
-    def get_customer_data(self, cust_id: int) -> dict:
-        """Return data for a specific customer as a dictionary."""
-        return self.customers_df.iloc[cust_id].to_dict()
     
     
