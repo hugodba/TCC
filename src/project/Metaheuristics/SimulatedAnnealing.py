@@ -42,10 +42,10 @@ class SimulatedAnnealing(Metaheuristic):
     def __init__(
         self,
         dataset: Dataset,
-        initial_temp: float = 1000.0,
-        cooling_rate: float = 0.995,
-        min_temp: float = 1.0,
-        iterations_per_temp: int = 100,
+        initial_temp: float = 200.0,
+        cooling_rate: float = 0.98,
+        min_temp: float = 10.0,
+        iterations_per_temp: int = 10,
         seed: int | None = None,
     ) -> None:
         """Initialize SA hyperparameters and RNG seed.

@@ -36,9 +36,9 @@ class TabuSearch(Metaheuristic):
     def __init__(
         self,
         dataset: Dataset,
-        max_iterations: int = 200,
+        max_iterations: int = 100,
         tabu_tenure: int = 20,
-        neighbor_samples: int = 30,
+        neighbor_samples: int = 10,
         seed: int | None = None,
     ) -> None:
         """

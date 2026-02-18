@@ -36,10 +36,10 @@ class GeneticAlgorithm(Metaheuristic):
     def __init__(
         self,
         dataset: Dataset,
-        population_size: int = 30,
-        generations: int = 200,
-        crossover_rate: float = 0.9,
-        mutation_rate: float = 0.2,
+        population_size: int = 10,
+        generations: int = 100,
+        crossover_rate: float = 0.8,
+        mutation_rate: float = 0.1,
         seed: int | None = None,
     ) -> None:
         """
