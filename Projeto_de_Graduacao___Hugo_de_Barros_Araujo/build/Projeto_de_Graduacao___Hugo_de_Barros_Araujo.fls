@@ -119,9 +119,8 @@ INPUT C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex\latex\babel-portuges\braz
 INPUT C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex\latex\babel-portuges\brazilian.ldf
 INPUT .\styles\pagina.sty
 INPUT styles\pagina.sty
-INPUT .\styles\indentfirst.sty
 INPUT C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex\latex\tools\indentfirst.sty
-INPUT styles\indentfirst.sty
+INPUT C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex\latex\tools\indentfirst.sty
 INPUT C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex\latex\graphics\graphics.sty
 INPUT C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex\latex\graphics\graphics.sty
 INPUT C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex\latex\graphics\trig.sty
@@ -247,9 +246,10 @@ INPUT C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex\generic\pst-tree\pst-tree
 INPUT C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex\generic\pst-tree\pst-tree.tex
 INPUT C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex\latex\base\alltt.sty
 INPUT C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex\latex\base\alltt.sty
-INPUT .\styles\rotating.sty
 INPUT C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex\latex\graphics\rotating.sty
-INPUT styles\rotating.sty
+INPUT C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex\latex\graphics\rotating.sty
+INPUT C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex\latex\base\ifthen.sty
+INPUT C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex\latex\base\ifthen.sty
 INPUT C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex\latex\tools\enumerate.sty
 INPUT C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex\latex\tools\enumerate.sty
 INPUT C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex\latex\amsmath\amsmath.sty

@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo"] 1774720822.06151 "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.aux" "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.bbl" "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo" 1774720825.08492 0
+["bibtex build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo"] 1774721088.28918 "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.aux" "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.bbl" "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo" 1774721199.63542 0
   "./bibliography/biblio.bib" 1774710289 4218 f4355b46c2073f5b6de1f172eaae3f81 ""
   "./bibliography/coppe.bst" 1774710289 24458 858d1cea7157546113f910063fcfbbab ""
-  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.aux" 1774720824 23761 460bef525d4d1a73805f22a843c1c99b "pdflatex"
+  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.aux" 1774721198 23761 460bef525d4d1a73805f22a843c1c99b "pdflatex"
   (generated)
   "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.bbl"
   "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.blg"
   (rewritten before read)
-["pdflatex"] 1774720822.35354 "c:/Users/hugob/Documents/TCC/Projeto_de_Graduacao___Hugo_de_Barros_Araujo/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.tex" "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.pdf" "Projeto_de_Graduacao___Hugo_de_Barros_Araujo" 1774720825.08565 0
+["pdflatex"] 1774721196.7047 "c:/Users/hugob/Documents/TCC/Projeto_de_Graduacao___Hugo_de_Barros_Araujo/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.tex" "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.pdf" "Projeto_de_Graduacao___Hugo_de_Barros_Araujo" 1774721199.63622 0
   "C:/Users/hugob/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1774718667 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/hugob/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbi1200.pk" 1774718681 42728 491a87af46606517789f239706419e91 ""
   "C:/Users/hugob/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbx0800.pk" 1774718675 19872 ef0534d60c4b01f6486cca3211f75d75 ""
@@ -151,6 +151,7 @@
   "C:/Users/hugob/AppData/Local/Programs/MiKTeX/tex/latex/base/bk12.clo" 1761900684 8285 eb2e07a9e456f2e445aaaabcc61b0d24 ""
   "C:/Users/hugob/AppData/Local/Programs/MiKTeX/tex/latex/base/book.cls" 1761900684 23268 0045640547c14751e547e94fe4a0e0a8 ""
   "C:/Users/hugob/AppData/Local/Programs/MiKTeX/tex/latex/base/fontenc.sty" 1761900684 5275 6f9d359641b36842524cdb97716ab75f ""
+  "C:/Users/hugob/AppData/Local/Programs/MiKTeX/tex/latex/base/ifthen.sty" 1761900684 5525 1593ca62a2554dd7423fc8a4e5a82125 ""
   "C:/Users/hugob/AppData/Local/Programs/MiKTeX/tex/latex/base/inputenc.sty" 1761900684 5048 0270515b828149155424600fd2d58ac5 ""
   "C:/Users/hugob/AppData/Local/Programs/MiKTeX/tex/latex/epstopdf-pkg/epstopdf-base.sty" 1623003186 13886 d1306dcf79a944f6988e688c1785f9ce ""
   "C:/Users/hugob/AppData/Local/Programs/MiKTeX/tex/latex/etoolbox/etoolbox.sty" 1759409308 46885 8953c67ffba03252c6090aa19568b8ba ""
@@ -198,12 +199,12 @@
   "Projeto_de_Graduacao___Hugo_de_Barros_Araujo.tex" 1774720482 3526 57443ace3b9a4782c170c21d71bf7357 ""
   "appendices/ApendiceA.tex" 1774710289 3472 02c1278817c7c0d3e99f7691a084ed5b ""
   "appendices/ApendiceB.tex" 1774710289 1580 baa65a1ad57cd26ced73b279fd7b458f ""
-  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.aux" 1774720824 23761 460bef525d4d1a73805f22a843c1c99b "pdflatex"
-  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.bbl" 1774720822 3027 06c5828923c362b84aac092c02ada52f "bibtex build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo"
-  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.lof" 1774720824 1882 ad3fc492cf0ec384c0727af762c2ac59 "pdflatex"
-  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.lot" 1774720824 449 c0bb6217ecdff8fc3bee3359e86881a0 "pdflatex"
-  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.out" 1774720824 6972 6aa3d9c96b447657d87ee5d82118d9bd "pdflatex"
-  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.toc" 1774720824 10119 add0a1d90697a8502b17b00b7c2cc52a "pdflatex"
+  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.aux" 1774721198 23761 460bef525d4d1a73805f22a843c1c99b "pdflatex"
+  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.bbl" 1774721088 3027 06c5828923c362b84aac092c02ada52f "bibtex build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo"
+  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.lof" 1774721198 1882 ad3fc492cf0ec384c0727af762c2ac59 "pdflatex"
+  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.lot" 1774721198 449 c0bb6217ecdff8fc3bee3359e86881a0 "pdflatex"
+  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.out" 1774721198 6972 6aa3d9c96b447657d87ee5d82118d9bd "pdflatex"
+  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.toc" 1774721198 10119 add0a1d90697a8502b17b00b7c2cc52a "pdflatex"
   "c:/Users/hugob/Documents/TCC/Projeto_de_Graduacao___Hugo_de_Barros_Araujo/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.tex" 1774720482 3526 57443ace3b9a4782c170c21d71bf7357 ""
   "chapters/cap1.tex" 1774710289 8692 51f3c8d8ee9e0fc686d8c02bb7a682cb ""
   "chapters/cap2.tex" 1774719308 21937 6a797275e18aafc26a132a4fc91a8920 ""
@@ -227,11 +228,9 @@
   "figuras/waiting_time.png" 1774710290 42921 1209a0da5220a2cb6ca713aa8325a631 ""
   "frontmatter/Capa.tex" 1774710289 2477 6480a52047412ec154145bb9a3895076 ""
   "frontmatter/Preambulo.tex" 1774710289 9195 071ee04f88684b7833d4a7741f8d15a7 ""
-  "styles/TesePack.tex" 1774719602 757 f306600d321b280b736196ae010de359 ""
-  "styles/indentfirst.sty" 1774710289 791 669543ca2dcbd5c0e900e06ead6a7a98 ""
+  "styles/TesePack.tex" 1774721196 743 52b8f4614618d55528147bb49ceecf23 ""
   "styles/pagina.sty" 1774710290 462 9452fea7eafcf87b590f8eb029f5f0ae ""
   "styles/portland.sty" 1774710290 4506 7f921b219e91e285c7349b95161b2418 ""
-  "styles/rotating.sty" 1774710290 4432 bb6ecf60c864b096ab48e6f7c3aebf6f ""
   (generated)
   "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.aux"
   "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.lof"
