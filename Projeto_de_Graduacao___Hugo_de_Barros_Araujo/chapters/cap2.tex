@@ -1,0 +1,222 @@
+\section{Definição do problema}
+
+\subsection{O Problema de Roteamento de Veículos}
+
+\paragraph{}Retomando, sucintamente, o que já foi explicado, o Problema de Roteamento de Veículos (VRP) é um desafio de otimização combinatória e programação linear inteira que busca determinar o conjunto ideal de rotas para uma frota de veículos entregarem mercadorias a um conjunto específico de clientes. De forma genérica, o objetivo fundamental do VRP é minimizar o custo total da operação (geralmente expresso em distância total ou tempo) garantindo que:
+
+\begin{itemize}
+    \item Cada cliente deve ser visitado exatamente uma vez;
+    \item Todos os veículos devem começar e terminar suas rotas em um depósito central;
+    \item As restrições operacionais (como capacidade de carga ou janelas de tempo) devem ser estritamente respeitadas.
+\end{itemize}
+
+\paragraph{}O VRP é classificado na ciência da computação como um problema \textit{NP-hard} (problemas de tempo polinomial não-determinístico difícil). Isso significa que, à medida que o número de clientes aumenta, o tempo necessário para encontrar a solução ótima cresce de forma exponencial, tornando impossível o uso de métodos exatos (como a força bruta) para instâncias de larga escala.
+
+\paragraph{}É precisamente essa dificuldade computacional que justifica o uso das meta-heurísticas SA, TS e GA) que serão exploradas neste trabalho. Diferente dos métodos exatos, as meta-heurísticas buscam soluções suficientemente boas em um tempo computacional aceitável, permitindo a gestão logística em cenários do mundo real.
+
+
+\subsection{Metodologia de Avaliação e o Benchmark de Solomon}
+
+\paragraph{}Para assegurar a validade científica deste estudo e permitir a comparabilidade dos resultados obtidos pelas meta-heurísticas propostas, a modelagem será conduzida estritamente sob os parâmetros do Benchmark de Solomon (1987). A utilização de instâncias consagradas na literatura é imperativa, pois fornecem um ``gabarito'' técnico que permite atestar a precisão e a eficiência de cada algoritmo desenvolvido.
+
+\paragraph{}Dado que as instâncias de Solomon incorporam coordenadas geográficas, demandas de carga e janelas temporais, o problema aqui tratado é classificado como Problema de Roteamento de Veículos com Janelas de Tempo (VRPTW). Embora simplificada em relação às complexidades imprevisíveis do mundo real (como variações de tráfego ou clima), essa modelagem oferece um ambiente controlado e puramente matemático para a análise de desempenho algorítmico. Para que a comparação seja viável e metodologicamente aceitável, o instanciação seguirá as métricas rigorosas do \textit{benchmark}:
+
+\begin{enumerate}
+    \item \textbf{Função Objetivo Hierárquica:} A avaliação do desempenho seguirá uma prioridade de dois níveis:
+    \begin{enumerate}
+        \item \textbf{Minimização do número de veículos ($K$):} O objetivo primário é atender a todos os clientes com a menor frota possível.
+        \item \textbf{Minimização da distância total percorrida ($D$):} Como objetivo secundário, busca-se o percurso mais curto para a frota definida.
+    \end{enumerate}
+
+    \item \textbf{Cálculo de Distância e Tempo:} A distância entre dois pontos $(i, j)$ é calculada pela Distância Euclidiana plana:
+    
+    $$d_{ij} = \sqrt{(x_i - x_j)^2 + (y_i - y_j)^2}$$
+
+    \item Conforme as regras de Solomon, o tempo de viagem é numericamente equivalente à distância ($t_{ij} = d_{ij}$), e todos os cálculos devem utilizar precisão dupla (\textit{double precision}), com os resultados finais de distância arredondados para duas casas decimais.
+
+    \item \textbf{Ponto de Origem e Retorno:} O cliente indexado como 0 define o depósito central, ponto obrigatório de partida e encerramento de todas as rotas.
+    
+    \item \textbf{Restrições de Viabilidade:} Uma rota é considerada válida apenas se respeitar simultaneamente a Capacidade do Veículo ($Q$), a soma das demandas dos clientes atendidos e o atendimento dentro das janelas de tempo estabelecidas (\textit{Ready Time} e \textit{Due Date}), somando-se a isso o \textit{Service Time} (Tempo de Serviço) em cada parada.
+\end{enumerate}
+
+\paragraph{}Esta abordagem padronizada transforma o problema em um estudo de caráter matemático e exploratório, estabelecendo uma base sólida que pode, futuramente, ser adaptada para modelos logísticos de maior complexidade e variáveis dinâmicas.
+
+\paragraph{}Neste trabalho serão utilizadas, fundamentalmente, as instâncias de tipo RC, série 2. Ou seja, a distribuição dos clientes contém algumas aglomerações, mas também pontos aleatórios. Além disso, a capacidade dos veículos é maior e as janelas de tempo mais largas, significando muitos clientes por rota, poucos veículos necessários. Ver \autoref{ApendiceA}.
+
+\section{Seleção do Trio de Meta-heurísticas}
+
+\paragraph{}A escolha das meta-heurísticas Recozimento Simulado, Busca Tabu e Algoritmo Genético para a resolução do VRPTW fundamenta-se na necessidade de realizar uma análise comparativa abrangente, cobrindo dois eixos de vertentes de busca em otimização combinatória:
+
+\begin{itemize}
+    \item \textbf{Vertente de Trajetória Única vs. População}: Métodos de trajetória única trabalham com apenas uma solução por vez. No caso do VRPTW, é como se houvesse um único agente caminhando pelo mapa das rotas, tentando dar passos para direções melhores. O foco é a intensificação, lapidar uma solução até o limite. Métodos de população trabalham com múltiplas soluções simultâneas. É como se houvesse diversos agentes espalhados pelo mapa. O foco é a diversificação, explorar várias áreas ao mesmo tempo para não ficar preso em uma única região.
+
+    \item \textbf{Vertente Estocástica vs. Determinística}: Esta divisão foca em como o algoritmo toma decisões. No caso estocástico, as decisões de aceitar ou não uma rota pior dependem de probabilidades. Já na vertente determinística, as decisões são baseadas em regras lógicas e no histórico.
+\end{itemize}
+
+\paragraph{}A diversidade técnica entre esses métodos permite utilizar diferentes mecanismos de escape de ótimos locais e estratégias de exploração do espaço de busca diante das restrições de roteamento. Busca-se usar suas maiores forças em conjunto: aleatoriedade, memória e compartilhamento de informações entre soluções. A seguir, cada método tem sua escolha justificada em mais detalhes.
+
+
+\subsection{Recozimento Simulado}
+
+\paragraph{}\cite{Kirkpatrick83} Método de trajetória única e estocástico. Sua inclusão é justificada pela sua capacidade de exploração global por meio de um mecanismo probabilístico. Se $\Delta f$ é a diferença de custo entre a nova solução ($s'$) e a atual ($s$):
+
+$$\Delta f = f(s') - f(s)$$
+
+\paragraph{}A probabilidade $P$ de aceitação é definida por:
+
+$$P(\text{aceitar } s') = 
+\begin{cases} 
+1, & \text{se } \Delta f < 0 \\
+e^{-\frac{\Delta f}{T}}, & \text{se } \Delta f \geq 0 
+\end{cases}$$
+
+\paragraph{}Onde $T$ é a temperatura, que decai ao longo do tempo conforme uma taxa de resfriamento $\alpha$:
+
+$$T_{k+1} = \alpha \cdot T_k$$
+
+\paragraph{}No contexto do VRPTW, o SA é essencial para demonstrar como a aceitação controlada de soluções de pior qualidade, governada por um parâmetro de temperatura, permite que o algoritmo escape de ótimos locais prematuros.
+
+\subsubsection{Busca Tabu}
+
+\paragraph{}\cite{Glover89} Método de trajetória única e determinístico. A justificativa reside no seu uso de ``listas tabu'', que impedem o algoritmo de retornar a soluções visitadas recentemente, forçando uma exploração sistemática e agressiva de novas vizinhanças. Mais objetivamente, o algoritmo opera sobre a vizinhança $N(s)$ da solução atual, mas subtrai os movimentos que estão na Lista Tabu ($L$):
+
+$$s_{next} = \text{argmin} \{f(s') \mid s' \in N(s) \setminus L\}$$
+
+\paragraph{}Entretanto, existe o Critério de Aspiração. Se uma solução $s'$ está na lista tabu, mas seu custo é melhor que a melhor solução encontrada até agora ($s_{best}$), o estado tabu é ignorado:
+
+$$\text{Se } f(s') < f(s_{best}), \text{ então } s' \in \textit{Candidatos} \text{ mesmo se } s' \in L$$
+
+\paragraph{}Isso mostra que a memória do algoritmo é inteligente e não impede o progresso caso uma solução excepcional seja encontrada por um caminho anteriormente proibido.
+
+\paragraph{}Além disso, métodos que residem suas maiores forças no uso de memória são amplamente reconhecidos na literatura como técnicas eficazes para problemas de logística (como o VRPTW).
+
+\subsubsection{Algoritmo Genético}
+
+\paragraph{}\cite{Holland75, Goldberg89} Método de população e estocástico. A escolha do GA justifica-se pela sua habilidade de diversificação. Por meio dos operadores de cruzamento e mutação, o algoritmo é capaz de recombinar sub-rotas eficientes de diferentes soluções para gerar descendentes potencialmente superiores. Isso se traduz em converter o problema de minimização de custos em um valor de sobrevivência, representado pela função de aptidão (\textit{fitness}) $F(s)$:
+
+\begin{equation}
+    F(s) = \frac{1}{C(s) + \epsilon}
+\end{equation}
+
+\paragraph{}Onde $\epsilon$ é um valor infinitesimal para evitar divisão por zero. Presente, neste caso, apenas por rigor teórico, pois a função de custo que será utilizada é sempre maior que 0. A probabilidade de um indivíduo ser selecionado para o cruzamento é dada por:
+
+\begin{equation}
+    P_i = \frac{F(s_i)}{\sum_{j=1}^{N} F(s_j)}
+\end{equation}
+
+\paragraph{}Onde $N$ é o tamanho da população. Isso garante que rotas mais curtas tenham maior probabilidade biológica de transmitir seus genes (sequências de clientes).
+
+\paragraph{}No VRPTW, isso permite observar como características geográficas de boas rotas podem ser preservadas e transmitidas, oferecendo uma dinâmica de busca completamente distinta dos métodos de trajetória única.
+
+
+\section{Sistema multi-agente}
+
+\paragraph{}Os \textit{Multi-Agent Systems} (MAS) consistem em um conjunto de elementos computacionais, denominados agentes, que interagem em um ambiente compartilhado para resolver problemas que ultrapassam as capacidades individuais de um único processador ou algoritmo \cite{Wooldridge95}. Muito famoso pelo exemplo de simulação de uma colônia de formigas, onde através da modelagem do comportamento de um único agente, é possível analisar todo o ambiente.
+
+\paragraph{}No contexto do VRPTW, a abordagem multiagente é empregada para decompor a complexidade da busca em diferentes especialidades: enquanto um agente foca na exploração global do espaço de busca (\textit{exploration}), outro dedica-se ao refinamento local intensivo (\textit{exploitation}).
+
+\paragraph{}Essa arquitetura permite a transição de algoritmos competitivos para um modelo cooperativo, onde a inteligência coletiva emerge da troca de informações entre os agentes. A principal vantagem desta abordagem para o VRPTW é a capacidade de evitar que o sistema fique preso em ótimos locais, uma vez que diferentes comportamentos heurísticos operam simultaneamente e compartilham suas melhores descobertas por meio de uma memória comum.
+
+\subsection{Framework Mesa}
+
+\paragraph{}O Mesa é uma biblioteca de código aberto desenvolvida em \textit{Python} para a modelagem baseada em agentes, permitindo que pesquisadores a criação, manipulação e análise de sistemas complexos compostos por múltiplos elementos autônomos \cite{TerHoeven25}. Diferente de modelos matemáticos puramente estáticos, o Mesa fornece uma estrutura computacional que facilita a observação de comportamentos emergentes a partir das interações locais entre agentes em um ambiente dinâmico.
+
+\paragraph{}A arquitetura do Mesa é fundamentada em uma separação clara de responsabilidades, baseada em três componentes principais que seguem padrões de projeto modernos:
+
+\begin{itemize}
+    \item \textbf{Agente (\textit{Agent}):} Representa a unidade fundamental de inteligência e ação. Cada agente possui seu próprio estado e lógica interna de decisão, sendo capaz de interagir com o ambiente ou com outros agentes.
+    
+    \item \textbf{Modelo (\textit{Model}):} Atua como a entidade de alto nível que orquestra o sistema. O modelo define as regras do ambiente, mantém os dados globais e gerencia a criação e destruição dos agentes.
+    
+    \item \textbf{Agendador (\textit{Scheduler}):} É o componente responsável pela coordenação temporal das ações. Ele determina a ordem em que os agentes executam seus passos (\textit{steps}), podendo operar de forma aleatória, sequencial ou simultânea, o que impacta diretamente a dinâmica de convergência do sistema.
+\end{itemize}
+
+No âmbito da otimização combinatória, o Mesa destaca-se por permitir que meta-heurísticas distintas sejam encapsuladas em agentes independentes, transformando um problema de busca individual em um processo de cooperação distribuída.
+
+\subsection{Estratégia de cooperação: Path Relinking}
+
+\paragraph{} O PR é uma estratégia de intensificação de busca originalmente proposta como um componente de memória para a Busca Tabu \cite{Glover00}, mas que se consolidou como uma técnica poderosa para a integração de soluções em diversos contextos de otimização combinatória.
+
+\paragraph{} O conceito fundamental do \textit{PR} reside na exploração sistemática de trajetórias que conectam duas soluções de alta qualidade, denominadas solução inicial ($S_i$) e solução guia ($S_g$). A premissa teórica do método é que, ao navegar pelo caminho que transforma a solução inicial na solução guia, o algoritmo pode descobrir soluções intermediárias que compartilham características de ambas e que, em muitos casos, superam as referências originais em termos de qualidade.
+
+\paragraph{} Esse processo é realizado por meio de uma sequência de movimentos de vizinhança que reduzem progressivamente a distância, comumente medida pela distância de Hamming ou por diferenças estruturais em rotas, entre as duas soluções.
+
+\begin{figure}[H]
+    \centering
+    \parbox[htb]{13.0cm}
+    {
+        \centering
+        \includegraphics[scale=0.5]{path_relinking.png}
+        \caption[\small{Diagrama de Path Relinking}]{\label{FigPR} \small{Representação do caminho entre $S_i$ e $S_g$.}}
+    }
+\end{figure}
+\vspace{-0.5cm}
+
+\paragraph{} No contexto do \textit{VRPTW}, o \textit{Path Relinking} atua como um mecanismo de cooperação de alto nível ao permitir a sinergia estrutural, combinando a eficiência de sequenciamento de uma solução com a estrutura de particionamento de veículos de outra para criar rotas que nenhum agente isolado seria capaz de conceber. Além disso, a técnica possibilita a exploração de vizinhanças distantes, uma vez que, ao contrário de buscas locais tradicionais que exploram apenas o entorno imediato, o PR investiga uma região específica do espaço de busca delimitada por duas soluções de elite, focando o esforço computacional em áreas comprovadamente promissoras.
+
+\paragraph{} Outro fator determinante é a sua capacidade de facilitar o escape de ótimos locais, pois a trajetória entre as soluções pode atravessar vales de soluções inviáveis ou de baixa qualidade para alcançar picos de aptidão mais elevados, agindo como um catalisador para a convergência global do sistema multiagente. Dessa forma, o PR não é apenas um método de busca, mas uma filosofia de cooperação que utiliza o conhecimento acumulado por diferentes agentes especialistas para sintetizar soluções superiores, mitigando as fraquezas individuais observadas em execuções isoladas. 
+
+\paragraph{} Como seus operadores e manipuladores de soluções são relativamente simples, o PR é menos custoso computacionalmente que uma meta-heurística, seu esforço reside majoritariamente na verificação das funções de custo. Este é seu ponto forte, mas também ponto fraco, uma vez que depende de boas soluções como entrada para melhorá-las ainda mais. É evidente, portando que deve ser usada em combinação com outros algoritmos, idealmente ao final das etapas.
+
+\section{Aprendizado por Reforço}
+
+\paragraph{} O RL é uma área do aprendizado de máquina que se preocupa com a forma como agentes inteligentes devem tomar ações em um ambiente a fim de maximizar uma recompensa acumulada. Diferente do aprendizado supervisionado, que se baseia em um conjunto de dados rotulados, fundamenta-se na experiência direta do agente, que aprende por meio de um processo de tentativa e erro ao interagir com o ambiente \cite{Sutton18}.
+
+\paragraph{} A estrutura básica de um problema de RL é frequentemente modelada como um Processo de Decisão de Markov, que envolve os seguintes componentes fundamentais:
+
+\begin{itemize}
+    \item \textbf{Agente (\textit{Agent}):} O tomador de decisão que observa o ambiente e executa ações.
+    \item \textbf{Ambiente (\textit{Environment}):} O contexto externo com o qual o agente interage.
+    \item \textbf{Estado (\textit{State}):} Uma representação da situação atual do ambiente em um determinado instante. No contexto de otimização, o estado pode refletir a qualidade da solução atual, como o número de veículos e a distância total.
+    \item \textbf{Ação (\textit{Action}):} O conjunto de decisões possíveis que o agente pode tomar.
+    \item \textbf{Recompensa (\textit{Reward}):} Um sinal numérico de \textit{feedback} enviado pelo ambiente após uma ação, que indica o sucesso ou fracasso daquela decisão em relação ao objetivo final.
+\end{itemize}
+
+\paragraph{} O objetivo do RL é encontrar uma política ($\pi$), que é um mapeamento de estados para ações que maximizem o retorno esperado a longo prazo. Um conceito crítico neste processo é o equilíbrio entre exploração (\textit{exploration}), onde o agente testa novas ações para descobrir sua utilidade, e explotação (\textit{exploitation}), onde o agente utiliza o conhecimento já adquirido para escolher as ações que renderam as maiores recompensas anteriormente.
+
+\subsection{Q-Learning}
+
+\paragraph{} O Q-Learning \cite{Watkins92} é um algoritmo de Aprendizado por Reforço do tipo \textit{off-policy} e \textit{model-free}, o que significa que ele pode aprender a política ótima de tomada de decisão sem a necessidade de um modelo prévio das transições do ambiente ou das probabilidades de recompensa. O ``Q'' na nomenclatura refere-se à Qualidade (ou valor de utilidade), representando o quão proveitosa é uma determinada ação em um estado específico.
+
+\begin{figure}[H]
+    \centering
+    \parbox[htb]{13.0cm}
+    {
+        \centering
+        \includegraphics[scale=0.6]{q-learning-viz.png}
+        \caption[\small{Visão geral do Q-Learning}]{\label{FigQL1} \small{Esquema de interação entre agente e ambiente no processo de aprendizagem.}}
+    }
+\end{figure}
+\vspace{-0.5cm}
+
+\paragraph{} O núcleo do algoritmo consiste em estimar os valores da função $Q(s, a)$, que mensura a recompensa total esperada a longo prazo que um agente pode obter ao realizar a ação $a$ partindo do estado $s$. Em problemas com espaços de estados discretos, esses valores são armazenados em uma estrutura de dados conhecida como Tabela-Q (\textit{Q-Table}), onde as linhas representam os estados do sistema e as colunas as ações possíveis.
+
+\begin{figure}[H]
+    \centering % Substitui o begin{center} para evitar espaço extra
+    \parbox[htb]{13.0cm}
+    {
+        \centering
+        \includegraphics[scale=0.6]{q-learning-algo.png}
+        \caption[\small{Algoritmo básico de Q-Learning}]{\label{FigQL2} \small{Diagrama do algoritmo de atualização do valor-$Q$.}}
+    }
+\end{figure}
+\vspace{-0.5cm} % Ajuste este valor conforme necessário para aproximar o texto
+
+\paragraph{} O aprendizado ocorre através da atualização iterativa dos valores-Q (\textit{Q-values}) conforme o agente explora o ambiente. Essa atualização fundamenta-se na Equação de Bellman, que ajusta o valor atual com base na recompensa imediata recebida e na melhor estimativa de recompensas futuras:
+
+\begin{equation}
+    \label{EqQLearning}
+    Q(s, a) \leftarrow Q(s, a) + \alpha [r + \gamma \max_{a'} Q(s', a') - Q(s, a)]
+\end{equation}
+
+\paragraph{} Nesta formulação, os parâmetros de controle desempenham papéis cruciais:
+
+\begin{itemize}
+    \item \textbf{Taxa de Aprendizado ($\alpha$):} Determina o quanto a nova informação substitui o conhecimento antigo.
+    \item \textbf{Recompensa Imediata ($r$):} É o \textit{feedback} numérico direto recebido do ambiente após a execução de uma ação. Representa o ganho instantâneo e serve como a base factual para atualizar a estimativa de qualidade daquela ação.
+    \item \textbf{Fator de Desconto ($\gamma$):} Define a importância das recompensas futuras em relação às imediatas.
+    \item \textbf{Diferença Temporal:} O termo entre colchetes representa o erro de predição, ou seja, a diferença entre o valor que o agente esperava e o que ele efetivamente percebeu após a transição para o novo estado $s'$.
+\end{itemize}
+
+
+\paragraph{} Para que o algoritmo seja eficaz, o agente deve balancear a busca por novos conhecimentos com o uso do conhecimento já adquirido. A estratégia mais comum é a $\epsilon-greedy$, onde com uma probabilidade $\epsilon$ o agente escolhe uma ação aleatória (exploração) e com probabilidade $1 - \epsilon$ ele seleciona a ação com o maior valor-Q atual para aquele estado (explotação). Ao final do processo de treinamento, a Tabela-Q converge para uma representação da estratégia ótima, permitindo que o sistema, ao se deparar com uma determinada configuração do problema, saiba as melhores ações a serem tomadas.

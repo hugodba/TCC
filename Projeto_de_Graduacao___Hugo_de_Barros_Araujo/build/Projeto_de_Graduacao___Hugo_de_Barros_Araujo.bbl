@@ -1,0 +1,76 @@
+\begin{thebibliography}{10}
+\newcommand{\enquote}[1]{``#1''}
+
+\bibitem{Garey79}
+GAREY, M.~R., JOHNSON, D.~S., \emph{Computers and intractability: a guide to
+  the theory of NP-completeness}. San Francisco, W. H. Freeman \& Co., 1979.
+
+\bibitem{Dantzig59}
+DANTZIG, G.~B., RAMSER, J.~H., \enquote{The truck dispatching problem},
+  \emph{Management Science}, v.~6, n.~1, pp.~80--91, 1959.
+
+\bibitem{Solomon87}
+SOLOMON, M.~M., \enquote{Algorithms for the vehicle routing and scheduling
+  problems with time window constraints}, \emph{Operations Research}, v.~35,
+  n.~2, pp.~254--265, 1987.
+
+\bibitem{Kirkpatrick83}
+KIRKPATRICK, S., GELATT, C.~D., VECCHI, M.~P., \enquote{Optimization by
+  simulated annealing}, \emph{Science}, v.~220, n. 4598, pp.~671--680, 1983.
+
+\bibitem{Glover89}
+GLOVER, F., \enquote{Tabu search: part I}, \emph{ORSA Journal on Computing},
+  v.~1, n.~3, pp.~190--206, 1989.
+
+\bibitem{Holland75}
+HOLLAND, J.~H., \emph{Adaptation in natural and artificial systems: an
+  introductory analysis with applications to biology, control, and artificial
+  intelligence}. Ann Arbor, University of Michigan Press, 1975.
+
+\bibitem{Goldberg89}
+GOLDBERG, D.~E., \emph{Genetic algorithms in search, optimization, and machine
+  learning}. Reading, Addison-Wesley, 1989.
+
+\bibitem{Wooldridge95}
+WOOLDRIDGE, M., JENNINGS, N.~R., \enquote{Intelligent agents: theory and
+  practice}, \emph{The Knowledge Engineering Review}, v.~10, n.~2,
+  pp.~115--152, 1995.
+
+\bibitem{TerHoeven25}
+{Ter Hoeven}, E., OTHERS, \enquote{Mesa 3: agent-based modeling with Python in
+  2025}, \emph{Journal of Open Source Software}, v.~10, n. 107, pp.~7668, 2025.
+
+\bibitem{Glover00}
+GLOVER, F., LAGUNA, M., MART{\'I}, R., \enquote{Fundamentals of scatter search
+  and path relinking}, \emph{Control and Cybernetics}, v.~29, n.~3,
+  pp.~653--684, 2000.
+
+\bibitem{Sutton18}
+SUTTON, R.~S., BARTO, A.~G., \emph{Reinforcement learning: an introduction}. 2
+  ed. Cambridge, MIT Press, 2018.
+
+\bibitem{Watkins92}
+WATKINS, C. J. C.~H., DAYAN, P., \enquote{Q-learning}, \emph{Machine Learning},
+  v.~8, n. 3-4, pp.~279--292, 1992.
+
+\bibitem{Sintef100}
+{SINTEF}, \enquote{Vehicle Routing Problem with Time Windows: 100 Customers},
+  \url{https://www.sintef.no/projectweb/top/vrptw/100-customers/}, (Acesso em
+  06 de março de 2026).
+
+\bibitem{Mester05}
+MESTER, D., BR{\"A}YSY, O., DULLAERT, W., \emph{A Multi-parametric Evolution
+  Strategies Algorithm for Vehicle Routing Problems}, Working paper, Institute
+  of Evolution, University of Haifa, Israel, 2005.
+
+\bibitem{Burke13}
+BURKE, E.~K., OTHERS, \enquote{Hyper-heuristics: a survey of the state of the
+  art}, \emph{Journal of the Operational Research Society}, v.~64, n.~12,
+  pp.~1695--1724, 2013.
+
+\bibitem{NVlabsOlist}
+{NVlabs}, \enquote{olist-vrp-benchmark: Problem instances for the Vehicle
+  Routing Problem}, \url{https://github.com/NVlabs/olist-vrp-benchmark},
+  (Acesso em 06 de março de 2026).
+
+\end{thebibliography}

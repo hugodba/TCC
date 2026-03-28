@@ -1,0 +1,181 @@
+\babel@toc {brazilian}{}\relax 
+\contentsline {paragraph}{}{iv}{section*.1}%
+\contentsline {paragraph}{}{iv}{section*.2}%
+\contentsline {paragraph}{}{iv}{section*.3}%
+\contentsline {paragraph}{}{v}{section*.4}%
+\contentsline {paragraph}{}{v}{section*.5}%
+\contentsline {paragraph}{}{v}{section*.6}%
+\contentsline {paragraph}{}{v}{section*.7}%
+\contentsline {paragraph}{}{vi}{section*.8}%
+\contentsline {paragraph}{}{vi}{section*.9}%
+\contentsline {paragraph}{}{vii}{section*.10}%
+\contentsline {paragraph}{}{vii}{section*.11}%
+\contentsline {paragraph}{}{viii}{section*.12}%
+\contentsline {paragraph}{}{viii}{section*.13}%
+\contentsline {paragraph}{}{viii}{section*.14}%
+\contentsline {paragraph}{}{viii}{section*.15}%
+\contentsline {paragraph}{}{viii}{section*.16}%
+\contentsline {paragraph}{}{viii}{section*.17}%
+\contentsline {paragraph}{}{viii}{section*.18}%
+\contentsline {paragraph}{}{viii}{section*.19}%
+\contentsline {paragraph}{}{viii}{section*.20}%
+\contentsline {paragraph}{}{viii}{section*.21}%
+\contentsline {paragraph}{}{viii}{section*.22}%
+\contentsline {paragraph}{}{viii}{section*.23}%
+\contentsline {paragraph}{}{viii}{section*.24}%
+\contentsline {paragraph}{}{viii}{section*.25}%
+\contentsline {paragraph}{}{viii}{section*.26}%
+\contentsline {chapter}{\numberline {1}Introdução}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Tema}{1}{section.1.1}%
+\contentsline {paragraph}{}{1}{section*.30}%
+\contentsline {paragraph}{}{1}{section*.31}%
+\contentsline {paragraph}{}{1}{section*.32}%
+\contentsline {section}{\numberline {1.2}Delimitação}{2}{section.1.2}%
+\contentsline {paragraph}{}{2}{section*.33}%
+\contentsline {section}{\numberline {1.3}Justificativa}{2}{section.1.3}%
+\contentsline {paragraph}{}{2}{section*.34}%
+\contentsline {paragraph}{}{2}{section*.35}%
+\contentsline {paragraph}{}{3}{section*.36}%
+\contentsline {section}{\numberline {1.4}Objetivos}{3}{section.1.4}%
+\contentsline {paragraph}{}{3}{section*.37}%
+\contentsline {section}{\numberline {1.5}Metodologia}{3}{section.1.5}%
+\contentsline {paragraph}{}{3}{section*.38}%
+\contentsline {section}{\numberline {1.6}Descrição}{4}{section.1.6}%
+\contentsline {paragraph}{}{4}{section*.39}%
+\contentsline {paragraph}{}{4}{section*.40}%
+\contentsline {paragraph}{}{4}{section*.41}%
+\contentsline {paragraph}{}{5}{section*.42}%
+\contentsline {paragraph}{}{5}{section*.43}%
+\contentsline {chapter}{\numberline {2}Fundamentação Teórica}{6}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Definição do problema}{6}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}O Problema de Roteamento de Veículos}{6}{subsection.2.1.1}%
+\contentsline {paragraph}{}{6}{section*.44}%
+\contentsline {paragraph}{}{6}{section*.45}%
+\contentsline {paragraph}{}{7}{section*.46}%
+\contentsline {subsection}{\numberline {2.1.2}Metodologia de Avaliação e o Benchmark de Solomon}{7}{subsection.2.1.2}%
+\contentsline {paragraph}{}{7}{section*.47}%
+\contentsline {paragraph}{}{7}{section*.48}%
+\contentsline {paragraph}{}{8}{section*.49}%
+\contentsline {paragraph}{}{8}{section*.50}%
+\contentsline {section}{\numberline {2.2}Seleção do Trio de Meta-heurísticas}{8}{section.2.2}%
+\contentsline {paragraph}{}{8}{section*.51}%
+\contentsline {paragraph}{}{9}{section*.52}%
+\contentsline {subsection}{\numberline {2.2.1}Recozimento Simulado}{9}{subsection.2.2.1}%
+\contentsline {paragraph}{}{9}{section*.53}%
+\contentsline {paragraph}{}{9}{section*.54}%
+\contentsline {paragraph}{}{9}{section*.55}%
+\contentsline {paragraph}{}{10}{section*.56}%
+\contentsline {subsubsection}{\numberline {2.2.1.1}Busca Tabu}{10}{subsubsection.2.2.1.1}%
+\contentsline {paragraph}{}{10}{section*.57}%
+\contentsline {paragraph}{}{10}{section*.58}%
+\contentsline {paragraph}{}{10}{section*.59}%
+\contentsline {paragraph}{}{10}{section*.60}%
+\contentsline {subsubsection}{\numberline {2.2.1.2}Algoritmo Genético}{10}{subsubsection.2.2.1.2}%
+\contentsline {paragraph}{}{10}{section*.61}%
+\contentsline {paragraph}{}{11}{section*.62}%
+\contentsline {paragraph}{}{11}{section*.63}%
+\contentsline {paragraph}{}{11}{section*.64}%
+\contentsline {section}{\numberline {2.3}Sistema multi-agente}{11}{section.2.3}%
+\contentsline {paragraph}{}{11}{section*.65}%
+\contentsline {paragraph}{}{11}{section*.66}%
+\contentsline {paragraph}{}{11}{section*.67}%
+\contentsline {subsection}{\numberline {2.3.1}Framework Mesa}{12}{subsection.2.3.1}%
+\contentsline {paragraph}{}{12}{section*.68}%
+\contentsline {paragraph}{}{12}{section*.69}%
+\contentsline {subsection}{\numberline {2.3.2}Estratégia de cooperação: Path Relinking}{13}{subsection.2.3.2}%
+\contentsline {paragraph}{}{13}{section*.70}%
+\contentsline {paragraph}{}{13}{section*.71}%
+\contentsline {paragraph}{}{13}{section*.72}%
+\contentsline {paragraph}{}{13}{section*.73}%
+\contentsline {paragraph}{}{14}{section*.74}%
+\contentsline {paragraph}{}{14}{section*.75}%
+\contentsline {section}{\numberline {2.4}Aprendizado por Reforço}{14}{section.2.4}%
+\contentsline {paragraph}{}{14}{section*.76}%
+\contentsline {paragraph}{}{14}{section*.77}%
+\contentsline {paragraph}{}{15}{section*.78}%
+\contentsline {subsection}{\numberline {2.4.1}Q-Learning}{15}{subsection.2.4.1}%
+\contentsline {paragraph}{}{15}{section*.79}%
+\contentsline {paragraph}{}{16}{section*.80}%
+\contentsline {paragraph}{}{16}{section*.81}%
+\contentsline {paragraph}{}{17}{section*.82}%
+\contentsline {paragraph}{}{17}{section*.83}%
+\contentsline {chapter}{\numberline {3}Desenvolvimento}{18}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Software e Hardware}{18}{section.3.1}%
+\contentsline {paragraph}{}{18}{section*.84}%
+\contentsline {paragraph}{}{18}{section*.85}%
+\contentsline {paragraph}{}{18}{section*.86}%
+\contentsline {section}{\numberline {3.2}Etapas iniciais}{19}{section.3.2}%
+\contentsline {paragraph}{}{19}{section*.87}%
+\contentsline {paragraph}{}{19}{section*.88}%
+\contentsline {paragraph}{}{19}{section*.89}%
+\contentsline {paragraph}{}{20}{section*.90}%
+\contentsline {paragraph}{}{20}{section*.91}%
+\contentsline {paragraph}{}{20}{section*.92}%
+\contentsline {paragraph}{}{21}{section*.93}%
+\contentsline {section}{\numberline {3.3}Testes com metaheurísticos puros}{21}{section.3.3}%
+\contentsline {paragraph}{}{21}{section*.94}%
+\contentsline {paragraph}{}{21}{section*.95}%
+\contentsline {subsection}{\numberline {3.3.1}Resultados}{22}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Análise comparativa}{24}{subsection.3.3.2}%
+\contentsline {paragraph}{}{24}{section*.96}%
+\contentsline {paragraph}{}{24}{section*.97}%
+\contentsline {paragraph}{}{24}{section*.98}%
+\contentsline {paragraph}{}{24}{section*.99}%
+\contentsline {paragraph}{}{24}{section*.100}%
+\contentsline {paragraph}{}{25}{section*.101}%
+\contentsline {paragraph}{Número de iterações e tempo de execução}{25}{section*.102}%
+\contentsline {paragraph}{}{25}{section*.103}%
+\contentsline {paragraph}{}{25}{section*.104}%
+\contentsline {paragraph}{}{25}{section*.105}%
+\contentsline {paragraph}{}{26}{section*.106}%
+\contentsline {section}{\numberline {3.4}Implementação de sistema Multi-Agente}{26}{section.3.4}%
+\contentsline {paragraph}{}{26}{section*.107}%
+\contentsline {subsection}{\numberline {3.4.1}Arquitetura e Componentes do Sistema}{26}{subsection.3.4.1}%
+\contentsline {paragraph}{}{26}{section*.108}%
+\contentsline {subsection}{\numberline {3.4.2}Cooperação e a Estratégia de Path Relinking}{27}{subsection.3.4.2}%
+\contentsline {paragraph}{}{27}{section*.109}%
+\contentsline {subsection}{\numberline {3.4.3}Resultados}{27}{subsection.3.4.3}%
+\contentsline {paragraph}{}{27}{section*.110}%
+\contentsline {paragraph}{}{28}{section*.111}%
+\contentsline {paragraph}{}{28}{section*.112}%
+\contentsline {subsection}{\numberline {3.4.4}Análise dos resultados}{29}{subsection.3.4.4}%
+\contentsline {paragraph}{}{29}{section*.113}%
+\contentsline {paragraph}{}{29}{section*.114}%
+\contentsline {paragraph}{}{30}{section*.115}%
+\contentsline {paragraph}{}{30}{section*.116}%
+\contentsline {section}{\numberline {3.5}Hiper-heurística baseada em Aprendizado por Reforço}{30}{section.3.5}%
+\contentsline {paragraph}{}{30}{section*.117}%
+\contentsline {subsection}{\numberline {3.5.1}Modelagem do Q-Learning}{30}{subsection.3.5.1}%
+\contentsline {paragraph}{}{30}{section*.118}%
+\contentsline {subsection}{\numberline {3.5.2}Dinâmica de Cooperação e Atualização}{31}{subsection.3.5.2}%
+\contentsline {paragraph}{}{31}{section*.119}%
+\contentsline {paragraph}{}{31}{section*.120}%
+\contentsline {subsection}{\numberline {3.5.3}Resultados}{31}{subsection.3.5.3}%
+\contentsline {paragraph}{}{32}{section*.121}%
+\contentsline {paragraph}{}{34}{section*.122}%
+\contentsline {subsection}{\numberline {3.5.4}Análise dos Resultados}{34}{subsection.3.5.4}%
+\contentsline {paragraph}{}{34}{section*.123}%
+\contentsline {paragraph}{}{35}{section*.124}%
+\contentsline {paragraph}{}{35}{section*.125}%
+\contentsline {paragraph}{}{35}{section*.126}%
+\contentsline {chapter}{\numberline {4}Conclusão}{37}{chapter.4}%
+\contentsline {paragraph}{}{37}{section*.127}%
+\contentsline {section}{\numberline {4.1}Resultados e análises finais}{37}{section.4.1}%
+\contentsline {paragraph}{}{37}{section*.128}%
+\contentsline {paragraph}{}{38}{section*.129}%
+\contentsline {paragraph}{}{38}{section*.130}%
+\contentsline {section}{\numberline {4.2}Oportunidades de melhoria}{38}{section.4.2}%
+\contentsline {paragraph}{}{38}{section*.131}%
+\contentsline {paragraph}{}{38}{section*.132}%
+\contentsline {paragraph}{}{39}{section*.133}%
+\contentsline {paragraph}{}{39}{section*.134}%
+\contentsline {chapter}{Bibliografia}{40}{section*.134}%
+\contentsline {chapter}{\numberline {A}Benchmark de Solomon}{42}{appendix.A}%
+\contentsline {paragraph}{}{42}{section*.136}%
+\contentsline {paragraph}{}{44}{section*.137}%
+\contentsline {chapter}{\numberline {B}Estimativa para Busca Exaustiva}{45}{appendix.B}%
+\contentsline {paragraph}{}{45}{section*.138}%
+\contentsline {paragraph}{}{45}{section*.139}%
+\contentsline {paragraph}{}{45}{section*.140}%
+\contentsline {paragraph}{}{45}{section*.141}%
+\contentsline {paragraph}{}{45}{section*.142}%

@@ -1,0 +1,18 @@
+\paragraph{} Este apêndice é dedicado a uma estimativa de tempo para a obtenção da solução ótima da instância RC201, que contém 100 clientes (incluindo o depósito). A ideia é demonstrar a explosão exponencial de possibilidades que caracteriza problemas de otimização como o \textit{VRP}, mesmo simplificando o cenário para o Problema do Caixeiro Viajante (\textit{TSP}). Ainda que com um único veículo percorrendo todos os pontos, o número de permutações continua astronômico.
+
+\paragraph{} O número de sequências possíveis para um veículo visitar todos os pontos e retornar à origem é dado por:
+\[
+    99! \approx 9,3326 \times 10^{155}
+\]
+
+\paragraph{} Para este cenário, assumimos um supercomputador teórico capaz de avaliar 1 bilhão ($10^9$) de soluções por milissegundo. Calculando a vazão anual desta máquina:
+\[
+    10^{12} \times 60 \times 60 \times 24 \times 365,25 \approx 3,15 \times 10^{19} \text{ sol./ano}
+\]
+
+\paragraph{} O tempo estimado para encontrar o ótimo absoluto seria:
+\[
+    \text{Tempo} = \frac{9,33 \times 10^{155}}{3,15 \times 10^{19}} \approx 2,96 \times 10^{136} \text{ anos}
+\]
+
+\paragraph{} Para compreender a magnitude deste resultado, a idade estimada do universo é de aproximadamente $13,8 \times 10^9$ anos. Outra comparação é que há ``apenas'' $10^{80}$ átomos no universo observável. Se tivéssemos começado o processamento no momento do \textit{Big Bang}, até o presente momento teríamos percorrido uma fração tão pequena do espaço de busca que ela seria estatisticamente equivalente a $0\%$.

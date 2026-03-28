@@ -1,0 +1,130 @@
+% Declaracao
+\begin{center}
+Declaração de Autoria e de Direitos
+\end{center}
+
+\vspace{0.5cm}
+
+Eu, \emph{Hugo de Barros Araujo}, autor da monografia \emph{SISTEMAS MULTIAGENTE E APRENDIZADO POR REFORÇO APLICADOS A META-HEURÍSTICAS PARA OTIMIZAÇÃO DO PROBLEMA DE ROTEAMENTO DE VEÍCULOS COM JANELAS DE TEMPO}, subscrevo para os devidos fins, as seguintes informações:\\
+1. O autor declara que o trabalho apresentado na disciplina de Projeto de Graduação da Escola Politécnica da UFRJ é de sua autoria, sendo original em forma e conteúdo.\\
+2. Excetuam-se do item 1. eventuais transcrições de texto, figuras, tabelas, conceitos e idéias, que identifiquem claramente a fonte original, explicitando as autorizações obtidas dos respectivos proprietários, quando necessárias.\\
+3. O autor permite que a UFRJ, por um prazo indeterminado, efetue em qualquer mídia de divulgação, a publicação do trabalho acadêmico em sua totalidade, ou em parte. Essa autorização não envolve ônus de qualquer natureza à UFRJ, ou aos seus representantes.\\
+4. O autor pode, excepcionalmente, encaminhar à Comissão de Projeto de Graduação, a não divulgação do material, por um prazo máximo de 01 (um) ano, improrrogável, a contar da data de defesa, desde que o pedido seja justificado, e solicitado antecipadamente, por escrito, à Congregação da Escola Politécnica.\\
+5. O autor declara, ainda, ter a capacidade jurídica para a prática do presente ato, assim como ter conhecimento do teor da presente Declaração, estando ciente das sanções e punições legais, no que tange a cópia parcial, ou total, de obra intelectual, o que se configura como violação do direito autoral previsto no Código Penal Brasileiro no art.184 e art.299, bem como na Lei 9.610.\\
+6. O autor é o único responsável pelo conteúdo apresentado nos trabalhos acadêmicos publicados, não cabendo à UFRJ, aos seus representantes,  ou ao(s) orientador(es), qualquer responsabilização/ indenização nesse sentido.\\
+7. Por ser verdade, firmo a presente declaração.\\
+
+      \vspace{0.5cm}
+      \begin{flushright}
+         \parbox{10cm}{
+            \hrulefill
+
+            \vspace{-.375cm}
+            \centering{Hugo de Barros Araujo}
+
+            \vspace{0.1cm}
+         }
+      \end{flushright}
+      
+\pagebreak
+
+% Copyright
+      \vspace{0.5cm}
+
+UNIVERSIDADE FEDERAL DO RIO DE JANEIRO \\
+Escola Politécnica - Departamento de Eletrônica e de Computação \\
+Centro de Tecnologia, bloco H, sala H-217, Cidade Universitária \\ 
+Rio de Janeiro - RJ      CEP 21949-900\\
+\vspace{0.5cm}
+\paragraph{}Este exemplar é de propriedade da Universidade Federal do Rio de Janeiro, que poderá incluí-lo em base de dados, armazenar em computador, microfilmar ou adotar qualquer forma de arquivamento.
+\paragraph{}É permitida a menção, reprodução parcial ou integral e a transmissão entre bibliotecas deste trabalho, sem modificação de seu texto, em qualquer meio que esteja ou venha a ser fixado, para pesquisa acadêmica, comentários e citações, desde que sem finalidade comercial e que seja feita a referência bibliográfica completa.
+\paragraph{}Os conceitos expressos neste trabalho são de responsabilidade do(s) autor(es).
+
+
+\pagebreak
+
+
+% Agradecimento
+\begin{center}
+\textbf{AGRADECIMENTO}
+\end{center}
+      \vspace{0.5cm}
+
+\paragraph{}Ao povo brasileiro, que financia esta universidade e tornou possível minha formação em uma instituição de excelência como a UFRJ. Que a educação pública, gratuita e de qualidade continue sendo um pilar de transformação, tornando-se cada vez mais inclusiva e acessível a todos.
+
+\paragraph{}À minha família, a base de tudo o que sou. Um agradecimento profundo e especial aos meus pais, José Antonio e Rosália, que não mediram esforços para que eu chegasse até aqui. O apoio incondicional, os sacrifícios silenciosos e o incentivo constante foram o combustível necessário para concluir esta jornada. Vocês são meu maior exemplo de dedicação e amor.
+
+\paragraph{}Ao meu tio e padrinho, Lorran, quem mais me ajudou a despertar o gosto pela ciência.
+
+\paragraph{}À minha namorada, Eduarda, parceira de todas as horas. Obrigado por compartilhar a vida comigo, por deixar tudo sempre leve e alegre quando estou com você.
+
+
+\pagebreak
+
+
+% Resumo
+\begin{center}
+\textbf{RESUMO}
+\end{center}
+      \vspace{0.5cm}
+
+\paragraph{}Este trabalho aborda a resolução do Problema de Roteamento de Veículos com Janelas de Tempo (\textit{Vehicle Routing Problem with Time Windows} - VRPTW), um desafio de otimização combinatória classificado como \textit{NP-hard}, cujas aplicações práticas são fundamentais para a eficiência logística e redução de custos operacionais. O objetivo central é o desenvolvimento de um sistema híbrido que integra meta-heurísticas clássicas a um Sistema Multiagente (\textit{Multi-Agent System} - MAS) orquestrado por Aprendizado por Reforço (\textit{Reinforcement Learning} - RL). Inicialmente, foram implementados de forma independente os algoritmos de \textit{Simulated Annealing}, \textit{Tabu Search}, e \textit{Genetic Algorithm}, utilizando as instâncias de Solomon como \textit{benchmark} para avaliação de desempenho.
+
+\paragraph{}A originalidade da proposta reside na encapsulação desses algoritmos como agentes especialistas dentro do \textit{framework} Mesa, onde a cooperação é estabelecida através de uma base de soluções de elite e da estratégia de \textit{Path Relinking}, que explora trajetórias entre soluções de alta qualidade para evitar ótimos locais. Para elevar a eficiência do sistema, aplicou-se o algoritmo \textit{Q-Learning} como uma hiper-heurística capaz de aprender, de forma autônoma, qual especialista deve ser acionado em diferentes estados do espaço de busca. Os resultados sugerem que a inteligência coletiva e a adaptação dinâmica de parâmetros via RL superam o desempenho individual dos algoritmos, proporcionando soluções otimizadas em tempo computacional viável.
+
+\begin{description}
+    \item[Palavras-chave:]  Otimização Combinatória, VRPTW, Sistemas Multiagentes, Meta-heurísticas, Aprendizado por Reforço, \textit{Path Relinking}.
+\end{description}
+
+\pagebreak
+
+
+% Abstract
+\begin{center}
+\textbf{ABSTRACT}
+\end{center}
+      \vspace{0.5cm}
+
+\paragraph{}This work addresses the resolution of the Vehicle Routing Problem with Time Windows (VRPTW), a NP-hard combinatorial optimization challenge with critical applications in logistics efficiency and operational cost reduction. The primary objective is to develop a hybrid system that integrates classical metaheuristics within a Multi-Agent System (MAS) orchestrated by Reinforcement Learning (RL). Initially, Simulated Annealing, Tabu Search, and Genetic Algorithms were independently implemented and evaluated using Solomon’s benchmark instances to establish performance baselines.
+
+\paragraph{}The originality of this approach lies in encapsulating these algorithms as specialized agents within the Mesa framework, where cooperation is established through a shared elite solution pool and the Path Relinking strategy, which explores trajectories between high-quality solutions to circumvent local optima. To enhance system efficiency, the Q-Learning algorithm was applied as a hyper-heuristic capable of autonomously learning which specialist to activate across different states of the search space. Preliminary results suggest that collective intelligence and dynamic parameter adaptation via RL outperform individual algorithmic performance, providing optimized solutions within viable computational time.
+
+
+\begin{description}
+    \item[Key-words:] Combinatorial Optimization, VRPTW, Multi-Agent Systems, Metaheuristics, Reinforcement Learning, Path Relinking.
+\end{description}
+
+
+\pagebreak
+
+
+% Siglas
+\begin{center}
+\textbf{SIGLAS}
+\end{center}
+      \vspace{0.5cm}
+
+\paragraph{}GA -- \textit{Genetic Algorithm} (algoritmo genético)
+\paragraph{}I/O -- \textit{In/Out} (entrada/saída)
+\paragraph{}MAS -- \textit{Multi-Agent System} (sistema multi-agente)
+\paragraph{}MAS-RL -- \textit{Multi-Agent System with Reinforcement Learning} (sistema multi-agente com aprendizado por reforço)
+\paragraph{}NP-hard -- \textit{Non-deterministic Polynomial-time hard} (problemas de tempo polinomial não-determinístico difícil)
+\paragraph{}OOP -- \textit{Object-Oriented Programming} (programação orientada a objetos)
+\paragraph{}PR -- \textit{Path Relinking} (reconexão por caminhos)
+\paragraph{}RAM -- \textit{Random Access Memory} (memória de acesso aleatório)
+\paragraph{}RL -- \textit{Reinforcement Learning} (aprendizado por reforço)
+\paragraph{}SA -- \textit{Simulated Annealing} (recozimento simulado)
+\paragraph{}TS -- \textit{Tabu Search} (busca tabu)
+\paragraph{}TSP -- \textit{Traveling Salesman Problem} (problema do caixeiro viajante)
+\paragraph{}UFRJ -- Universidade Federal do Rio de Janeiro
+\paragraph{}VRP -- \textit{Vehicle Routing Problem} (problema de roteamento de veículos)
+\paragraph{}VRPTW -- \textit{Vehicle Routing Problem with Time Windows} (problema de roteamento de veículos com janelas de tempo)
+
+\pagebreak
+
+
+
+
+
+
+

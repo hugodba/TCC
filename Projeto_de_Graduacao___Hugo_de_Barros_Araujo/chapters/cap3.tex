@@ -1,0 +1,418 @@
+\section{Software e Hardware}
+
+\paragraph{} Uma vez que o tempo de processamento é relevante para a análise deste trabalho, serão especificadas as configurações do ambiente nos quais os testes foram realizados, bem como o código fonte utilizado, permitindo a reprodutibilidade dos resultados.
+\vspace{10pt}
+\begin{lstlisting}[style=mystats, basicstyle=\scriptsize\ttfamily]
+Sistema Operacional: Windows 11 Home 64 bits (10.0, build 22631)
+Fabricante do Sistema: Dell Inc.
+Modelo do Sistema: Inspiron 14 5435
+BIOS: 1.17.0
+Processador: AMD Ryzen 7 7730U com Radeon Graphics (16 CPUs) - 2.0GHz
+Memoria: 16384MB RAM (16GB)
+\end{lstlisting}
+
+\paragraph{} O trabalho foi desenvolvido com \texttt{Python v3.11.9}, cujos principais módulos utilizados, bem como suas versões, estão listados abaixo:
+\vspace{10pt}
+\begin{lstlisting}[style=mystats, basicstyle=\scriptsize\ttfamily]
+matplotlib              3.10.6
+Mesa                    3.3.1
+numpy                   2.3.3
+pandas                  2.3.2
+\end{lstlisting}
+
+\paragraph{} O código fonte se encontra em: \href{https://github.com/hugodba/TCC}{https://github.com/hugodba/TCC}
+
+\section{Etapas iniciais}
+
+\paragraph{} As fases preliminares do desenvolvimento focaram na construção da arquitetura base do sistema. Foram implementadas as rotinas de entrada e saída de dados, responsáveis pela leitura dos \textit{datasets} e dos arquivos de solução de referência (\textit{benchmarks}), além de módulos para a visualização gráfica de rotas e monitoramento de desempenho.
+
+\paragraph{} Um componente crítico nesta etapa foi a função custo compartilhada, desenvolvida de forma modular para garantir que a avaliação das rotas fosse consistente entre os diferentes algoritmos testados. Para validar a implementação, utilizou-se como referência a \textbf{instância RC201} de Solomon (resultado e procedimentos seguidos para alcançar tal, respectivamente em \cite{Sintef100, Mester05}, que também foi a base para todos os experimentos deste trabalho. A figura abaixo apresenta a distribuição espacial dos clientes nesta instância.
+
+\begin{figure}[H]
+    \centering
+    \parbox[htb]{13.0cm}
+    {
+        \centering
+        \includegraphics[scale=0.5]{solomon_rc201.png}
+        \caption[\small{Distribuição da instância RC201}]{\label{FigRC201} \small{Distribuição espacial dos clientes e do depósito na instância RC201 de Solomon.}}
+    }
+\end{figure}
+\vspace{-0.5cm}
+
+\paragraph{} A validação da função custo ocorreu por meio da leitura da melhor solução conhecida para a RC201. Ao processar essa solução e comparar os resultados obtidos com os indicadores do \textit{benchmark}, confirmou-se a integridade do cálculo de custo. A figura abaixo ilustra o conjunto de rotas ótimas para este cenário.
+
+\begin{figure}[H]
+    \centering
+    \parbox[htb]{13.0cm}
+    {
+        \centering
+        \includegraphics[scale=0.5]{solucao_otima_rc201.png}
+        \caption[\small{Rotas ótimas da instância RC201}]{\label{FigRC201Opt} \small{Visualização do conjunto de subrotas da melhor solução conhecida para a instância RC201.}}
+    }
+\end{figure}
+\vspace{-0.5cm}
+
+\paragraph{} Por fim, foram estruturadas as classes base para os algoritmos meta-heurísticos. Essa arquitetura orientada a objetos permitiu a execução dos testes preliminares e a coleta dos primeiros dados para análise comparativa.
+
+\paragraph{} Um ponto importante a se notar é a escolha de não separar rotas em viável ou inviável ao longo dos algoritmos. Todas as rotas foram consideradas realizáveis, de forma que a inserção de retorno ao depósito nas rotas se dá pela verificação da impossibilidade de seguir para um próximo cliente, seja pela limitação de carga ou temporal.
+
+\paragraph{} Dado que os algoritmos podem continuar executando por tempo indefinido, o critério de parada foi balizado pelo tempo de execução, buscando-se por volta de ao menos 300 segundos no ambiente de \textit{hardware} utilizado. Quanto à instrumentação dos testes, adotou-se, para mensuração do tempo, a função \texttt{time.process\_time()}, que contabiliza exclusivamente o tempo de CPU dedicado ao processo, ignorando períodos de ociosidade (\textit{sleep}) e operações de entrada/saída (I/O). Essa escolha garante que a métrica de desempenho reflita mais fielmente o esforço computacional do algoritmo.
+
+\paragraph{} Para reprodutibilidade, visando mitigar a natureza estocástica das meta-heurísticas, foi implementado o uso de \textit{seeds} fixas nos geradores de números aleatórios. Tal procedimento assegura que os experimentos sejam determinísticos, permitindo a comparação direta entre diferentes rodadas e configurações. Além disso, para obtenção de maior validade estatística, cada algoritmo foi executado 10 vezes e foi levado em consideração suas médias de resultado nas análises e comparações.
+
+\section{Testes com metaheurísticos puros}
+
+\paragraph{} Inicialmente, os três algoritmos foram avaliados de forma isolada, visando aferir suas performances e características intrínsecas, tanto em termos gerais quanto nas especificidades do \textit{VRPTW}. Essa análise individual é fundamental para compreender como cada meta-heurística pode contribuir para uma solução híbrida, permitindo que as forças de um método compensem as limitações do outro.
+
+\paragraph{} A calibração dos hiperparâmetros foi realizada predominantemente de forma empírica. Contudo, zelou-se pela proporcionalidade entre as variáveis, mantendo a coerência com os valores consolidados na literatura técnica.
+
+\subsection{Resultados}
+
+\begin{figure}[H]
+    \centering
+    \parbox[htb]{13.0cm}
+    {
+        \centering
+        \includegraphics[scale=0.65]{full_map.png}
+        \caption[\small{Rotas encontradas pelas meta-heurísticas}]{\label{FigMaps} \small{Visualização dos melhores conjuntos de subrotas das soluções encontradas pelas meta-heurísticas}}
+    }
+\end{figure}
+\vspace{-0.5cm}
+
+\begin{figure}[H]
+    \centering
+    \parbox[htb]{13.0cm}
+    {
+        \centering
+        \includegraphics[scale=1.0]{full_plot.png}
+        \caption[\small{Evolução da função custo pelas meta-heurísticas}]{\label{FigHists} \small{Evolução da função custo para as melhores soluções encontradas por cada meta-heurística}}
+    }
+\end{figure}
+\vspace{-0.5cm}
+
+\noindent
+\begin{table}[H]
+	\centering
+	\scriptsize 
+	\caption[Resultados das meta-heurísticas isoladas]{Resultados dos algoritmos avaliados de forma isolada na instância RC201. Note que a coluna \textit{iterações} representa a quantidade de avaliações da função custo, ou seja, os eixos X dos gráficos da \autoref{FigHists}}
+	\vspace{10pt} % Adiciona o espaçamento entre a legenda e a tabela
+	\label{TabResultadosIsolados}
+	\begin{tabular}{|l|c|c|c|c|c|}\hline
+		\textbf{Algoritmo} & \textbf{Tempo Médio (s)} & \textbf{Iterações} & \textbf{Média $K$} & \textbf{Média $D$} & \textbf{Melhor Solução} \\ \hline \vspace{-1.0mm}
+		Simulated Annealing & $310,34 \pm 8,75$ & $606$ & $11,50 \pm 0,53$ & $2151,30 \pm 58,61$ & $K=11, D=2062,88$ \\ \hline \vspace{-1.0mm}
+		Tabu Search & $309,41 \pm 11,77$ & $701$ & $12,00 \pm 0,82$ & $2195,63 \pm 125,05$ & $K=11, D=2106,50$ \\ \hline \vspace{-1.0mm}
+		Genetic Algorithm & $356,83 \pm 6,29$ & $651$ & $14,90 \pm 0,74$ & $4020,04 \pm 245,83$ & $K=14, D=3952,73$ \\ \hline
+	\end{tabular}
+\end{table}
+
+\subsection{Análise comparativa}
+
+\paragraph{} Os resultados da \autoref{TabResultadosIsolados} indicam que as meta-heurísticas de busca local (SA e TS) superaram significativamente a abordagem populacional (GA) para este problema específico.
+
+\paragraph{} O SA apresentou a melhor performance geral, atingindo a menor distância média ($D = 2151,30$) e a melhor solução individual ($K = 11, D = 2062,88$). O TS demonstrou resultados muito próximos ao SA, com uma média de veículos de $K = 12,00$. É notável que, apesar de uma distância média ligeiramente superior, seu tempo de execução foi o menor entre os três ($309,41s$). Já o GA mostrou-se menos eficiente para a instância RC201, com médias de $K$ ($14,90$) e $D$ ($4020,04$) consideravelmente mais altas, além de configurar-se como o algoritmo com maior demanda computacional ($356,83s$).
+
+\paragraph{} Observando o comportamento de convergência na \autoref{FigHists}, notam-se perfis distintos de evolução. O SA exibe uma redução acentuada do número de veículos no início, enquanto a redução da distância apresenta um comportamento mais linear. Ao reconfigurar as sub-rotas para priorizar a redução da frota — objetivo principal do problema — o algoritmo frequentemente sacrificou o objetivo secundário, gerando pioras temporárias na distância $D$. Nas iterações finais, as oscilações diminuem drasticamente devido ao efeito do resfriamento da temperatura, momento em que o critério de aceitação torna-se mais rigoroso e o algoritmo foca exclusivamente no ajuste fino (\textit{fine-tuning}) da solução.
+
+\paragraph{} O TS mostra uma queda abrupta nas iterações iniciais tanto para $K$ quanto para $D$, estabilizando-se rapidamente sem apresentar picos de piora na distância. Isso evidencia uma alta capacidade de refino de soluções, mas também uma relativa inabilidade em explorar novas regiões do espaço de busca (\textit{exploration}). Tal característica provavelmente resultou na estagnação do algoritmo ao atingir as vizinhanças de um ótimo local.
+
+\paragraph{} Já o gráfico do GA revela uma dinâmica de busca populacional que enfrenta desafios significativos de estabilidade diante das restrições do VRPTW. A curva de distância exibe um comportamento extremamente serrilhado, sugerindo que os operadores de \textit{crossover} e mutação geram descendentes que frequentemente sacrificam a eficiência geográfica. Embora tenha reduzido a frota inicialmente, o algoritmo atingiu um platô de estagnação por volta da iteração 200. Este fenômeno sinaliza uma convergência prematura, onde a população tornou-se geneticamente similar, exaurindo a capacidade de descoberta de melhorias.
+
+\paragraph{} A análise cruzada estabelece que o GA, embora potente em diversificação, mostrou-se ineficiente comparado aos demais métodos, confirmando que algoritmos de trajetória única (SA e TS) tendem a apresentar resultados mais imediatos e consistentes para as especificidades da instância RC201.
+
+\paragraph{Número de iterações e tempo de execução}
+
+\paragraph{} Como observado na \autoref{TabResultadosIsolados}, o algoritmo \textit{Tabu Search} (TS) realizou o maior número de iterações ($701$) no menor tempo médio observado ($309,41s$). Em contrapartida, o \textit{Genetic Algorithm} (GA) executou significativamente menos iterações ($651$) em um intervalo de tempo muito superior ($356,83s$). Esta discrepância evidencia que o tempo de execução é influenciado por outros recursos computacionais além do simples ciclo de avaliação da função custo.
+
+\paragraph{} No caso do GA, o esforço adicional advém do gerenciamento de uma população de soluções. Operações como a seleção de indivíduos, o cruzamento (\textit{crossover}) e a mutação exigem manipulação intensiva de memória e estruturas de dados complexas a cada geração, o que encarece o custo computacional de cada iteração isolada. Já o TS, embora realize mais iterações, foca em uma trajetória única de busca local, onde o custo predominante reside na exploração da vizinhança e na manutenção da lista tabu, operações que podem ser mais leves em termos de processamento por iteração do que a evolução de uma população inteira.
+
+\paragraph{} O \textit{Simulated Annealing} (SA) apresenta um comportamento intermediário, com $606$ iterações em $310,34s$. Nele, o tempo é consumido principalmente pelo sorteio probabilístico e pelo resfriamento da temperatura, fatores que, somados à complexidade da instância RC201, resultam em uma cadência de iterações distinta dos demais métodos.
+
+\paragraph{} Essa falta de correlação direta entre o número de iterações e o tempo total reforça a necessidade de utilizar métricas como o \texttt{time.process\_time()} para isolar o esforço de CPU, garantindo que a análise reflita a complexidade real de cada implementação frente ao problema de rotas.
+
+\section{Implementação de sistema Multi-Agente}
+
+\paragraph{} A arquitetura do sistema proposto foi desenvolvida utilizando o \textit{framework Mesa}, que permite a modelagem de agentes autônomos em um ambiente controlado. No contexto deste trabalho, o MAS atua como uma camada de coordenação que integra as meta-heurísticas independentes, transformando-as em agentes especialistas que colaboram para a otimização do VRPTW.
+
+\subsection{Arquitetura e Componentes do Sistema}
+
+\paragraph{} O modelo é estruturado em três componentes principais, conforme implementado na classe \texttt{VRPOptimizationModel}:
+
+\begin{itemize}
+    \item \textbf{Agentes Especialistas (\textit{HeuristicAgent}):} Cada instância representa uma meta-heurística (SA, TS ou GA) que atua de forma independente. Em cada ciclo de execução (\textit{step}), o agente recupera uma solução promissora do \textit{pool} de elite para servir como uma solução inicial (evidentemente, em estado melhor que uma solução inicial puramente aleatória), executa sua lógica de busca e devolve o resultado aprimorado ao sistema.
+    \item \textbf{Memória Compartilhada (\textit{ElitePool}):} Funciona como um quadro negro (\textit{blackboard}) que armazena as melhores soluções encontradas por todos os agentes. O \textit{pool} possui um tamanho fixo, garantindo que apenas as soluções com menor custo (considerando o número de veículos $K$ e distância total $D$) sejam mantidas e compartilhadas.
+    \item \textbf{Mecanismo de Coordenação e Sincronização:} O modelo gerencia a execução dos agentes de forma embaralhada (\textit{shuffle\_do}), garantindo que a ordem de atuação não vicie a busca e que todos tenham acesso equitativo aos recursos de memória.
+\end{itemize}
+
+\subsection{Cooperação e a Estratégia de Path Relinking}
+
+\paragraph{} A verdadeira cooperação no SMA ocorre através do método \texttt{run\_path\_relinking}. Diferente de uma execução paralela simples, este sistema implementa uma busca cooperativa onde duas soluções de elite são combinadas:
+
+\begin{enumerate}
+    \item \textbf{Seleção por Diversidade:} O sistema seleciona a melhor solução atual (\textit{source}) e a compara com outros candidatos no \textit{ElitePool}, escolhendo aquele com maior distância de \textit{Hamming} (maior diversidade) como alvo (\textit{target}).
+    \item \textbf{Exploração Bidirecional:} Adotou-se a estratégia de \textit{Path Relinking} bidirecional, na qual a exploração ocorre simultaneamente em dois sentidos: da solução \textit{source} em direção à \textit{target} e vice-versa. Essa abordagem dobra as trajetórias exploradas entre os dois pontos de elite, permitindo que o algoritmo investigue vizinhanças distintas que poderiam ser negligenciadas em uma busca unidirecional.
+    \item \textbf{Permutação e Reavaliação:} Durante a trajetória, a técnica gera caminhos intermediários permutando clientes e reavaliando a função de custo a cada passo. O uso do critério bidirecional acelera o encontro de soluções que compartilham características de ambos os genitores de elite.
+    \item \textbf{Sintetização de Soluções:} Se uma solução intermediária superar as originais em termos de custo (veículos $K$ ou distância $D$), ela é adicionada ao \textit{pool}, permitindo que o sistema escape de ótimos locais ao fundir características de rotas distintas geradas por agentes diferentes.
+\end{enumerate}
+
+\subsection{Resultados}
+
+\paragraph{} Assim como para as meta-heurísticas individualmente, o MAS também foi executado 10 vezes.
+
+\noindent
+\begin{table}[H]
+	\centering
+	\scriptsize 
+	\caption[Resultados do MAS]{Resultados obtidos pelo MAS na instância RC201.}
+	\vspace{10pt}
+	\label{TabResultadosMAS}
+	\begin{tabular}{|l|c|c|c|c|}\hline
+		\textbf{Configuração} & \textbf{Tempo Médio (s)} & \textbf{Média $K$} & \textbf{Média $D$} & \textbf{Melhor Solução} \\ \hline \vspace{-1.0mm}
+		MAS (10 execuções) & $305,09 \pm 18,08$ & $12,60 \pm 1,07$ & $3365,64 \pm 125,95$ & $K=11, D=3374,26$ \\ \hline
+	\end{tabular}
+\end{table}
+
+\paragraph{} Para melhor visualização e compreensão, a melhor execução encontrada dentre as 10 testadas é analisada individualmente a seguir.
+
+\begin{figure}[H]
+    \centering
+    \parbox[htb]{13.0cm}
+    {
+        \centering
+        \includegraphics[scale=0.7]{MAS_hist.png}
+        \caption[\small{Evolução da função custo no MAS-RL}]{\label{MAS_hist} \small{Evolução da função de custo global ao longo das iterações (\textit{steps}) do MAS. Os valores representam o desempenho da melhor solução armazenada na memória compartilhada a cada ciclo}}
+    }
+\end{figure}
+\vspace{-0.5cm}
+
+\paragraph{} Abaixo, o registro de eventos da execução do MAS mostra o comportamento e evolução a cada passo. 
+
+\vspace{1cm}
+\begin{lstlisting}[style=mystats, basicstyle=\scriptsize\ttfamily]
+Mesa MAS Step 1/10
+Agent TS result -> vehicles: 22, distance: 3783.54
+Agent GA result -> vehicles: 21, distance: 4153.16
+Agent SA result -> vehicles: 16, distance: 3692.41
+==> PR start: source (k=16, d=3692.41) -> target (k=21, d=4153.16), diversity=99
+    PR candidates -> forward (k=16, d=3692.41), reverse (k=16, d=3692.41)
+    PR finished: no improvement over source
+
+Mesa MAS Step 2/10
+Agent TS result -> vehicles: 16, distance: 3633.64
+Agent SA result -> vehicles: 15, distance: 3272.03
+Agent GA result -> vehicles: 15, distance: 3272.03
+==> PR start: source (k=15, d=3272.03) -> target (k=21, d=4153.16), diversity=100
+    PR candidates -> forward (k=15, d=3252.67), reverse (k=15, d=3272.03)
+    PR improved elite pool -> (k=15, d=3252.67)
+
+Mesa MAS Step 3/10
+Agent SA result -> vehicles: 15, distance: 3245.89
+Agent GA result -> vehicles: 15, distance: 3252.67
+Agent TS result -> vehicles: 16, distance: 3635.49
+==> PR start: source (k=15, d=3245.89) -> target (k=16, d=3633.64), diversity=91
+    PR candidates -> forward (k=15, d=3184.56), reverse (k=15, d=3245.89)
+    PR improved elite pool -> (k=15, d=3184.56)
+
+...
+
+Mesa MAS Step 9/10
+Agent GA result -> vehicles: 13, distance: 3379.57
+Agent SA result -> vehicles: 11, distance: 3374.26
+Agent TS result -> vehicles: 13, distance: 3389.28
+==> PR start: source (k=11, d=3374.26) -> target (k=14, d=3298.28), diversity=97
+    PR candidates -> forward (k=11, d=3374.26), reverse (k=11, d=3374.26)
+    PR finished: no improvement over source
+
+Mesa MAS Step 10/10
+Agent TS result -> vehicles: 13, distance: 3389.28
+Agent SA result -> vehicles: 12, distance: 3521.73
+Agent GA result -> vehicles: 12, distance: 3521.73
+==> PR start: source (k=11, d=3374.26) -> target (k=12, d=3521.73), diversity=94
+    PR candidates -> forward (k=11, d=3374.26), reverse (k=11, d=3374.26)
+    PR finished: no improvement over source
+
+
+Mesa MAS runtime: 302.4375 seconds
+Mesa MAS best -> vehicles: 11, distance: 3374.26
+\end{lstlisting}
+
+
+\subsection{Análise dos resultados}
+
+\paragraph{} Ao observar o registro de eventos (\textit{logs}), nota-se que o \textit{Path Relinking} nem sempre obtém melhorias imediatas e, quando as encontra, estas consistem em pequenas reduções no objetivo secundário (distância $D$). Esse comportamento sugere que a estratégia de cooperação atual pode ser aprimorada, seja através de uma nova dinâmica de interação entre os agentes ou pela implementação de variações do PR, como o PR evolutivo ou truncado.
+
+\paragraph{} A análise conjunta da \autoref{TabResultadosMAS} e da \autoref{TabResultadosIsolados} indica que o MAS obteve resultados competitivos dentro de um tempo de execução similar ao das meta-heurísticas isoladas. O sistema foi capaz de encontrar uma solução com $K=11$ veículos, igualando-se ao desempenho de pico do SA e do TS, embora com uma distância total ($D$) superior à desses modelos. 
+
+\paragraph{} No entanto, os desvios padrão de $K$ e $D$ ligeiramente maiores no MAS sugerem que a interação entre agentes heterogêneos via \textit{ElitePool} e \textit{Path Relinking} introduz uma variabilidade que o sistema ainda não estabilizou. Aumentar o tempo de execução e o número de ciclos de cooperação poderia ser benéfico para permitir um refinamento mais profundo das soluções compartilhadas.
+
+\paragraph{} Não obstante, a \autoref{MAS_hist} demonstra que o MAS também enfrenta o desafio de \textit{trade-off} observado anteriormente: o aumento da distância $D$ ocorre sempre que há uma reconfiguração drástica das sub-rotas para a redução do número de veículos ($K$). Esse fenômeno reforça a natureza multiobjetivo do \textit{VRPTW} e a dificuldade em otimizar ambos os indicadores simultaneamente em cenários de alta restrição.
+
+\section{Hiper-heurística baseada em Aprendizado por Reforço}
+
+\paragraph{} A evolução do sistema multiagente convencional para o modelo proposto reside na implementação da classe \texttt{VRPOptimizationModelRL}. Neste modelo, o mecanismo de coordenação deixa de ser puramente aleatório e passa a utilizar o algoritmo \textit{Q-Learning} para orquestrar a ativação dos agentes especialistas, configurando uma abordagem de hiper-heurística baseada em aprendizado \cite{Burke13}.
+
+\subsection{Modelagem do Q-Learning}
+
+\paragraph{} O agente de RL opera sobre um ciclo de percepção e ação, onde a política de decisão é refinada com base na experiência acumulada no ambiente de busca. Os componentes do modelo são definidos como segue:
+
+\begin{itemize}
+    \item \textbf{Espaço de Estados ($S$):} O estado é definido pela tupla discreta $(K, D_{bin})$. Para evitar a explosão do espaço de estados e garantir a convergência da Tabela-Q, a distância total ($D$) é discretizada em faixas (\textit{bins}) de 100 unidades através do parâmetro \texttt{distance\_bin\_size}.
+    \item \textbf{Espaço de Ações ($A$):} Corresponde à seleção de uma das três meta-heurísticas disponíveis para execução no ciclo atual: \textit{Simulated Annealing} (SA), \textit{Tabu Search} (TS) ou \textit{Genetic Algorithm} (GA).
+    \item \textbf{Função de Recompensa Hierárquica ($R$):} A recompensa é estruturada para refletir a prioridade multiobjetivo do \textit{VRPTW}:
+    \begin{itemize}
+        \item \textbf{Redução de Frota:} Atribui-se uma recompensa massiva ($+200$) caso a ação resulte na diminuição do número de veículos ($K$).
+        \item \textbf{Redução de Distância:} Caso $K$ se mantenha constante, a recompensa é equivalente à magnitude da melhoria em $D$.
+        \item \textbf{Penalidade por Estagnação:} Aplica-se uma pequena penalidade ($-1$) se a ação não gerar melhorias, incentivando a exploração de outros agentes.
+    \end{itemize}
+    \item \textbf{Política de Seleção:} Utiliza-se a estratégia $\epsilon$-\textit{greedy} com $\epsilon = 0,4$, equilibrando a explotação do conhecimento atual com a exploração de novas trajetórias de busca.
+\end{itemize}
+
+
+
+\subsection{Dinâmica de Cooperação e Atualização}
+
+\paragraph{} A cada \textit{step} do modelo, o sistema realiza três iterações de escolha e execução. Após a execução do agente selecionado, o valor de utilidade $Q(s, a)$ é atualizado na Tabela-Q utilizando a \autoref{EqQLearning}:
+
+\paragraph{} Os hiperparâmetros adotados incluem uma taxa de aprendizado $\alpha = 0,2$ e um fator de desconto $\gamma = 0,8$, priorizando a importância de recompensas a curto e médio prazo no processo de otimização. Paralelamente ao RL, o método \texttt{run\_path\_relinking} continua a promover a síntese de soluções de elite, agora alimentado por um \textit{pool} cujos candidatos são gerados por agentes selecionados de forma adaptativa.
+
+
+\subsection{Resultados}
+
+\noindent
+\begin{table}[H]
+	\centering
+	\scriptsize 
+	\caption[Resultados do MAS-RL]{Resultados obtidos pelo MAS-RL na instância RC201}
+	\vspace{10pt}
+    \label{TabResultadosMASRL}
+	\begin{tabular}{|l|c|c|c|c|}\hline
+		\textbf{Configuração} & \textbf{Tempo Médio (s)} & \textbf{Média $K$} & \textbf{Média $D$} & \textbf{Melhor Solução} \\ \hline \vspace{-1.0mm}
+		MAS-RL (10 execuções) & $313,17 \pm 8,96$& $13,20 \pm 0,92$ & $3342,14 \pm 169,01$ & $K=11, D=3393,62$ \\ \hline
+	\end{tabular}
+\end{table}
+
+\paragraph{} Novamente, a evolução da função de custo e o registro de execução para detalhamento, utilizando uma execução como exemplo. Desta vez, para o MAS-RL.
+
+\begin{figure}[H]
+    \centering
+    \parbox[htb]{13.0cm}
+    {
+        \centering
+        \includegraphics[scale=0.7]{MAS-RL_hist.png}
+        \caption[\small{Evolução da função custo no MAS-RL}]{\label{MAS-RL_hist} \small{Evolução da função de custo global ao longo das iterações do MAS-RL}}
+    }
+\end{figure}
+\vspace{-0.5cm}
+
+\vspace{1cm}
+\begin{lstlisting}[style=mystats, basicstyle=\scriptsize\ttfamily]
+--- MAS RL SINGLE RUN (seed=42) ---
+
+MAS RL Step 1/10
+==> RL Run 1/3 | State (999, 999) -> Selected Action: SA
+    Agent SA step result -> vehicles: 18, distance: 3475.35
+    Update: Reward=0.00 | Q(SA) of state(999, 999) updated to 0.00
+==> RL Run 2/3 | State (18, 34) -> Selected Action: TS
+    Agent TS step result -> vehicles: 18, distance: 3475.35
+    Update: Reward=-1.00 | Q(TS) of state(18, 34) updated to -0.20
+==> RL Run 3/3 | State (18, 34) -> Selected Action: GA
+    Agent GA step result -> vehicles: 18, distance: 3475.35
+    Update: Reward=-1.00 | Q(GA) of state(18, 34) updated to -0.20
+==> PR start: source (k=18, d=3475.35) -> target (k=18, d=3475.35), diversity=0
+    PR candidates -> forward (k=18, d=3475.35), reverse (k=18, d=3475.35)
+    PR finished: no improvement over source
+
+MAS RL Step 2/10
+==> RL Run 1/3 | State (18, 34) -> Selected Action: SA
+    Agent SA step result -> vehicles: 15, distance: 3534.34
+    Update: Reward=141.01 | Q(SA) of state(18, 34) updated to 28.20
+==> RL Run 2/3 | State (15, 35) -> Selected Action: TS
+    Agent TS step result -> vehicles: 15, distance: 3534.34
+    Update: Reward=-1.00 | Q(TS) of state(15, 35) updated to -0.20
+==> RL Run 3/3 | State (15, 35) -> Selected Action: SA
+    Agent SA step result -> vehicles: 13, distance: 3577.39
+    Update: Reward=156.95 | Q(SA) of state(15, 35) updated to 31.39
+==> PR start: source (k=13, d=3577.39) -> target (k=18, d=3475.35), diversity=98
+    PR candidates -> forward (k=13, d=3577.39), reverse (k=13, d=3577.39)
+    PR finished: no improvement over source
+
+MAS RL Step 3/10
+==> RL Run 1/3 | State (13, 35) -> Selected Action: SA
+    Agent SA step result -> vehicles: 12, distance: 3415.97
+    Update: Reward=361.41 | Q(SA) of state(13, 35) updated to 72.28
+==> RL Run 2/3 | State (12, 34) -> Selected Action: SA
+    Agent SA step result -> vehicles: 17, distance: 3523.85
+    Update: Reward=-1.00 | Q(SA) of state(12, 34) updated to -0.20
+==> RL Run 3/3 | State (12, 34) -> Selected Action: TS
+    Agent TS step result -> vehicles: 17, distance: 3501.73
+    Update: Reward=-1.00 | Q(TS) of state(12, 34) updated to -0.20
+==> PR start: source (k=12, d=3415.97) -> target (k=17, d=3501.73), diversity=100
+    PR candidates -> forward (k=12, d=3415.97), reverse (k=12, d=3407.32)
+    PR improved elite pool -> (k=12, d=3407.32)
+
+...
+
+MAS RL Step 9/10
+==> RL Run 1/3 | State (12, 32) -> Selected Action: SA
+    Agent SA step result -> vehicles: 11, distance: 3393.62
+    Update: Reward=37.25 | Q(SA) of state(12, 32) updated to 7.45
+==> RL Run 2/3 | State (11, 33) -> Selected Action: SA
+    Agent SA step result -> vehicles: 12, distance: 3092.67
+    Update: Reward=-1.00 | Q(SA) of state(11, 33) updated to -0.20
+==> RL Run 3/3 | State (11, 33) -> Selected Action: TS
+    Agent TS step result -> vehicles: 12, distance: 3273.58
+    Update: Reward=-1.00 | Q(TS) of state(11, 33) updated to -0.20
+==> PR start: source (k=11, d=3393.62) -> target (k=12, d=3092.67), diversity=99
+    PR candidates -> forward (k=11, d=3393.62), reverse (k=11, d=3393.62)
+    PR finished: no improvement over source
+
+MAS RL Step 10/10
+==> RL Run 1/3 | State (11, 33) -> Selected Action: GA
+    Agent GA step result -> vehicles: 12, distance: 3230.87
+    Update: Reward=-1.00 | Q(GA) of state(11, 33) updated to -0.20
+==> RL Run 2/3 | State (11, 33) -> Selected Action: TS
+    Agent TS step result -> vehicles: 12, distance: 3092.67
+    Update: Reward=-1.00 | Q(TS) of state(11, 33) updated to -0.39
+==> RL Run 3/3 | State (11, 33) -> Selected Action: SA
+    Agent SA step result -> vehicles: 12, distance: 3273.58
+    Update: Reward=-1.00 | Q(SA) of state(11, 33) updated to -0.39
+==> PR start: source (k=11, d=3393.62) -> target (k=12, d=3092.67), diversity=99
+    PR candidates -> forward (k=11, d=3393.62), reverse (k=11, d=3393.62)
+    PR finished: no improvement over source
+
+
+Run summary | runtime: 305.9531s | K: 11, D: 3393.62 | Q states: 8, Visited states: 8
+\end{lstlisting}
+
+\paragraph{} Neste modelo, podemos também utilizar a tabela-Q como objeto de análise, conjuntamente com a distribuição de execuções de cada agente, que não é mais uniforme.
+
+\begin{figure}[H]
+    \centering
+    \parbox[htb]{13.0cm}
+    {
+        \centering
+        \includegraphics[scale=0.7]{q_table.png}
+        \caption[\small{Q-table}]{\label{q_table} \small{\textit{Q-table} referente a execução do MAS-RL}}
+    }
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \parbox[htb]{13.0cm}
+    {
+        \centering
+        \includegraphics[scale=0.7]{action_runs.png}
+        \caption[\small{Distribuição de execução dos agentes}]{\label{action_runs} \small{Distribuição do número de execuções das meta-heurísticas por estado}}
+    }
+\end{figure}
+\vspace{-0.5cm}
+
+\subsection{Análise dos Resultados}
+
+\paragraph{} Ao analisar o desempenho do sistema, observa-se que, apesar de apresentar características de estabilidade e convergência similares ao modelo cooperativo base, o MAS-RL obteve resultados levemente inferiores. Este comportamento pode ser atribuído a múltiplos fatores técnicos, com destaque para a necessidade de um tempo de treinamento mais extenso para a convergência da Tabela-Q e a calibração fina dos hiperparâmetros de aprendizado. Diferente do sistema puramente cooperativo, que dedica integralmente seu orçamento computacional à explotação, o modelo com RL despende recursos na fase de exploração através da política $\epsilon$-greedy. Este custo de exploração, embora essencial para o mapeamento do espaço de estados, pode limitar a capacidade de refinamento intensivo das soluções no mesmo intervalo de tempo, uma vez que o agente ocasionalmente seleciona ações subótimas para consolidar seu conhecimento.
+
+\paragraph{} O registro de eventos demonstra que o sistema tratou todos os agentes de forma equivalente nos estágios iniciais, o que é coerente com a natureza do problema, dado que soluções pouco refinadas permitem melhorias significativas independentemente do algoritmo empregado. Observou-se que o sistema transita rapidamente entre diferentes configurações, o que resulta em uma permanência reduzida em estados específicos, dificultando o aprendizado profundo sobre qual meta-heurística seria superior em circunstâncias exatas de transição. Entretanto, à medida que a busca se torna mais complexa e o espaço de soluções viáveis se estreita, a dinâmica de seleção de ações altera-se, conferindo maior foco à Busca Tabu (TS) e, primordialmente, ao \textit{Simulated Annealing} (SA). Este redirecionamento é esperado, visto que estas técnicas demonstram maior eficácia no refinamento local em instâncias de alta restrição temporal como as do VRPTW .
+
+\paragraph{} A eficácia do aprendizado é validada pela consistência entre as escolhas do agente de RL e os desempenhos individuais apresentados na \autoref{TabResultadosIsolados}, onde os algoritmos SA e TS obtiveram resultados superiores ao GA. Este alinhamento, visível tanto na \autoref{action_runs} quanto na \autoref{q_table}, confirma que o sistema foi capaz de identificar e priorizar as ferramentas mais robustas para as etapas críticas da otimização, demonstrando que houve uma evolução real na política de tomada de decisão. Além disso, ressalta-se que o custo computacional exigido para a manutenção e atualização da Tabela-Q é desprezível frente ao esforço de processamento das meta-heurísticas, o que valida a arquitetura sob a perspectiva de eficiência algorítmica e escalabilidade.
+
+
+\paragraph{} No que tange ao \textit{trade-off} entre o número de veículos ($K$) e a distância total ($D$), inerente à natureza multiobjetivo do VRPTW, o sistema com RL demonstrou uma capacidade de suavização superior. Através da calibração do fator de desconto ($\gamma$) e da função de recompensa ($r$), possivelmente o modelo aprendeu que reduções drásticas em $K$ que resultam em uma degradação severa de $D$ geram menores recompensas acumuladas a longo prazo. Esse aprendizado resultou na geração de rotas mais equilibradas, onde a busca pela economia de frota não sacrificou drasticamente a eficiência da distância. Este fenômeno sugere que a inteligência de controle via RL permite uma navegação mais estratégica no espaço de busca, mitigando os saltos de custo observados na abordagem puramente cooperativa e oferecendo soluções com maior viabilidade operacional.

@@ -1,0 +1,48 @@
+\paragraph{} No contexto de otimização e logística, as instâncias de \textit{Solomon} constituem um conjunto de problemas de teste (\textit{benchmarks}) propostos por Marius Solomon em 1987 para o VRPTW. Essas instâncias são fundamentais para aferir a eficiência de algoritmos, pois representam diferentes desafios geográficos e temporais. As nomenclaturas \textbf{C}, \textbf{R} e \textbf{RC} referem-se à disposição espacial dos clientes:
+
+\begin{itemize}
+    \item \textbf{Tipo C (\textit{Clustered}):} Os clientes estão organizados em agrupamentos (\textit{clusters}). O algoritmo deve ser eficiente em atender aos clientes de um grupo denso antes de se deslocar para o próximo. Geralmente, este perfil é considerado o de mais fácil resolução para a obtenção de rotas ótimas.
+    \begin{figure}[H]
+        \centering
+        \parbox[htb]{13.0cm}
+        {
+            \centering
+            \includegraphics[scale=0.5]{C101_map.png}
+            \caption[\small{Mapa da instância C101}]{\label{C101_map} \small{Distribuição geográfica dos clientes na instância \textit{Clustered} C101}}
+        }
+    \end{figure}
+    \vspace{-0.5cm}
+    
+    \item \textbf{Tipo R (\textit{Random}):} Os clientes estão distribuídos de forma aleatória e uniforme no plano de coordenadas. A ausência de padrões óbvios exige que o algoritmo avalie criteriosamente as distâncias e as janelas de tempo para cada tomada de decisão.
+    \begin{figure}[H]
+        \centering
+        \parbox[htb]{13.0cm}
+        {
+            \centering
+            \includegraphics[scale=0.5]{R101_map.png}
+            \caption[\small{Mapa da instância R101}]{\label{R101_map} \small{Distribuição geográfica dos clientes na instância \textit{Random} R101}}
+        }
+    \end{figure}
+    \vspace{-0.5cm}
+    
+    \item \textbf{Tipo RC (\textit{Random-Clustered}):} Trata-se de um modelo híbrido que combina regiões de distribuição aleatória com agrupamentos definidos. Este cenário aproxima-se da realidade urbana complexa, onde centros comerciais densos convivem com áreas de entregas residenciais esparsas.
+    \begin{figure}[H]
+        \centering
+        \parbox[htb]{13.0cm}
+        {
+            \centering
+            \includegraphics[scale=0.5]{RC101_map.png}
+            \caption[\small{Mapa da instância RC101}]{\label{RC101_map} \small{Distribuição geográfica dos clientes na instância \textit{Random-Clustered} RC101}}
+        }
+    \end{figure}
+    \vspace{-0.5cm}
+\end{itemize}
+
+
+
+\paragraph{} Adicionalmente, as séries \textbf{1} e \textbf{2} definem o rigor das restrições operacionais, como a capacidade de carga dos veículos e a amplitude das janelas de tempo:
+
+\begin{itemize}
+    \item \textbf{Série 1:} Apresenta restrições severas, com veículos de baixa capacidade de carga e janelas de tempo estreitas. Tais limitações resultam em rotas curtas e exigem uma frota maior para cobrir todos os pontos. Como exemplo, a instância \textit{RC101} possui uma janela de tempo média de apenas $32,08$.
+    \item \textbf{Série 2:} Oferece um cenário mais flexível, com veículos de grande capacidade e janelas de tempo expandidas. Um único veículo consegue atender a uma quantidade maior de clientes, transferindo o desafio principal para a minimização da distância total percorrida. A instância \textit{RC201}, utilizada nos testes deste trabalho, possui uma janela média significativamente superior, de $128,32$.
+\end{itemize}

@@ -1,0 +1,123 @@
+\documentclass[a4paper,12pt,oneside,openany]{book}	
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\renewcommand{\figureautorefname}{Figura}
+\renewcommand{\tableautorefname}{Tabela}
+\renewcommand{\equationautorefname}{Equação}
+\renewcommand{\appendixautorefname}{Apêndice}
+
+% Setup for Python Code
+\lstdefinestyle{pythonstyle}{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{orange},
+    breaklines=true,
+    frame=lines,
+    captionpos=b
+}
+
+% Setup for Terminal/Text output
+\lstdefinestyle{mystats}{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{lightgray!10}
+}
+
+\input{styles/TesePack}
+
+\begin{document}
+
+\frontmatter
+\thispagestyle{empty}
+
+\input{frontmatter/Capa}
+
+\pagebreak            
+
+\input{frontmatter/Preambulo}
+
+% Table of Contents
+% ---------------------------------------------------------------
+     \tableofcontents
+% ---------------------------------------------------------------
+% Lista de figuras
+% ---------------------------------------------------------------
+%\cleardoublepage
+%\addcontentsline{toc}{chapter}{Lista de Figuras}
+\listoffigures
+% ---------------------------------------------------------------
+% Lista de Tabelas
+% ---------------------------------------------------------------
+%\cleardoublepage
+%\addcontentsline{toc}{chapter}{Lista de Tabelas}
+\listoftables
+
+\mainmatter
+\cleardoublepage
+% ---------------------------------------------------------------
+% Chapter 1 - Introdução
+% ---------------------------------------------------------------
+\chapter{Introdução}
+\label{cap1}
+\input{chapters/cap1}
+
+% ---------------------------------------------------------------
+% Chapter 2 - Fundamentação Teórica
+% ---------------------------------------------------------------
+\chapter{Fundamentação Teórica}
+\label{cap2}
+\input{chapters/cap2}
+
+% ---------------------------------------------------------------
+% Chapter 3 - Desenvolvimento
+% ---------------------------------------------------------------
+\chapter{Desenvolvimento}
+\label{cap3}
+\input{chapters/cap3}
+
+
+% ---------------------------------------------------------------
+% Chapter 4 - Conclusões
+% ---------------------------------------------------------------
+
+\chapter{Conclusão}
+\label{cap4}
+\input{chapters/cap4}
+
+% ---------------------------------------------------------------
+% Bibliografia
+% ---------------------------------------------------------------
+\normalsize
+\cleardoublepage
+\addcontentsline{toc}{chapter}{Bibliografia}
+\bibliographystyle{bibliography/coppe}
+\bibliography{bibliography/biblio}
+
+% ---------------------------------------------------------------
+% Apêndices 
+% ---------------------------------------------------------------
+   \appendix
+   % ---------------------------------------------------------------
+   % Apêndice A
+   % ---------------------------------------------------------------
+   \chapter{Benchmark de Solomon}
+   \label{ApendiceA}
+    \input{appendices/ApendiceA}
+   % ---------------------------------------------------------------
+   % Apêndice B
+   % ---------------------------------------------------------------
+   \chapter{Estimativa para Busca Exaustiva}
+   \label{ApendiceB}
+    \input{appendices/ApendiceB}
+   % ---------------------------------------------------------------
+
+\backmatter
+
+\end{document}
