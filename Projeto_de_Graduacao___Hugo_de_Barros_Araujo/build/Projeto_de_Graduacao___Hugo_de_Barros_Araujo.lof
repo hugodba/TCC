@@ -1,22 +1,23 @@
 \babel@toc {brazilian}{}\relax 
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces \small {Diagrama de Path Relinking}}}{13}{figure.2.1}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces \small {Diagrama de Path Relinking}}}{14}{figure.2.1}%
 \contentsline {figure}{\numberline {2.2}{\ignorespaces \small {Visão geral do Q-Learning}}}{16}{figure.2.2}%
-\contentsline {figure}{\numberline {2.3}{\ignorespaces \small {Algoritmo básico de Q-Learning}}}{16}{figure.2.3}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces \small {Algoritmo básico de Q-Learning}}}{17}{figure.2.3}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces \small {Distribuição da instância RC201}}}{19}{figure.3.1}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces \small {Rotas ótimas da instância RC201}}}{20}{figure.3.2}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces \small {Rotas encontradas pelas meta-heurísticas}}}{22}{figure.3.3}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces \small {Evolução da função custo pelas meta-heurísticas}}}{23}{figure.3.4}%
-\contentsline {figure}{\numberline {3.5}{\ignorespaces \small {Evolução da função custo no MAS-RL}}}{28}{figure.3.5}%
-\contentsline {figure}{\numberline {3.6}{\ignorespaces \small {Evolução da função custo no MAS-RL}}}{32}{figure.3.6}%
-\contentsline {figure}{\numberline {3.7}{\ignorespaces \small {Q-table}}}{34}{figure.3.7}%
-\contentsline {figure}{\numberline {3.8}{\ignorespaces \small {Distribuição de execução dos agentes}}}{34}{figure.3.8}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces \small {Distribuição da instância RC201}}}{20}{figure.3.1}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces \small {Rotas ótimas da instância RC201}}}{21}{figure.3.2}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces \small {Tempo de viagem, espera e serviço}}}{39}{figure.4.1}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces \small {Rotas encontradas pelas meta-heurísticas}}}{28}{figure.4.1}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces \small {Evolução da função custo pelas meta-heurísticas}}}{29}{figure.4.2}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces \small {Evolução da função custo no MAS-RL}}}{34}{figure.4.3}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces \small {Evolução da função custo no MAS-RL}}}{38}{figure.4.4}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces \small {Q-table}}}{40}{figure.4.5}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces \small {Distribuição de execução dos agentes}}}{40}{figure.4.6}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {A.1}{\ignorespaces \small {Mapa da instância C101}}}{42}{figure.A.1}%
-\contentsline {figure}{\numberline {A.2}{\ignorespaces \small {Mapa da instância R101}}}{43}{figure.A.2}%
-\contentsline {figure}{\numberline {A.3}{\ignorespaces \small {Mapa da instância RC101}}}{43}{figure.A.3}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces \small {Tempo de viagem, espera e serviço}}}{45}{figure.5.1}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {A.1}{\ignorespaces \small {Mapa da instância C101}}}{48}{figure.A.1}%
+\contentsline {figure}{\numberline {A.2}{\ignorespaces \small {Mapa da instância R101}}}{49}{figure.A.2}%
+\contentsline {figure}{\numberline {A.3}{\ignorespaces \small {Mapa da instância RC101}}}{49}{figure.A.3}%
 \addvspace {10\p@ }

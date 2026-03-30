@@ -4,11 +4,17 @@
 \usepackage{float}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
 \usepackage[hidelinks]{hyperref}
 \renewcommand{\figureautorefname}{Figura}
 \renewcommand{\tableautorefname}{Tabela}
 \renewcommand{\equationautorefname}{Equação}
 \renewcommand{\appendixautorefname}{Apêndice}
+\renewcommand{\chapterautorefname}{Capítulo}
+\renewcommand{\sectionautorefname}{Seção}
+\renewcommand{\subsectionautorefname}{Subseção}
+\renewcommand{\subsubsectionautorefname}{Subseção}
 
 % Setup for Python Code
 \lstdefinestyle{pythonstyle}{
@@ -78,18 +84,24 @@
 % ---------------------------------------------------------------
 % Chapter 3 - Desenvolvimento
 % ---------------------------------------------------------------
-\chapter{Desenvolvimento}
+\chapter{Método Proposto}
 \label{cap3}
 \input{chapters/cap3}
 
+% ---------------------------------------------------------------
+% Chapter 4 - Experimentos Computacionais
+% ---------------------------------------------------------------
+\chapter{Experimentos Computacionais}
+\label{cap4}
+\input{chapters/cap4}
 
 % ---------------------------------------------------------------
-% Chapter 4 - Conclusões
+% Chapter 5 - Conclusões
 % ---------------------------------------------------------------
 
 \chapter{Conclusão}
-\label{cap4}
-\input{chapters/cap4}
+\label{cap5}
+\input{chapters/cap5}
 
 % ---------------------------------------------------------------
 % Bibliografia

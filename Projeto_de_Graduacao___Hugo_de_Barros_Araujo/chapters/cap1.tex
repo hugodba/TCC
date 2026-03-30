@@ -1,4 +1,7 @@
+\paragraph{}Este capítulo introduz o leitor ao contexto no qual a presente pesquisa se insere, apresentando as motivações iniciais, o escopo do problema de otimização selecionado e a relevância científica da abordagem proposta. A \autoref{sec:tema} delineia o tema central do estudo, abordando as restrições e a hierarquia do Problema de Roteamento de Veículos com Janelas de Tempo (VRPTW). Em seguida, a \autoref{sec:delimitacao} estabelece as delimitações do trabalho, focando no desenvolvimento e avaliação empírica de meta-heurísticas integradas em um sistema multi-agente colaborativo guiado por aprendizado por reforço. A justificativa para a aplicação destas ferramentas algorítmicas, dadas as dificuldades inerentes aos métodos exatos diante de problemas classificados como \textit{NP-hard}, é apresentada na \autoref{sec:justificativa}. Por fim, as Seções \ref{sec:objetivos}, \ref{sec:metodologia} e \ref{sec:descricao} expõem, respectivamente, os objetivos formulados, a metodologia adotada de melhoria contínua e a estruturação capitular do conteúdo subsequente neste documento.
+
 \section{Tema}
+\label{sec:tema}
 
 \paragraph{}O tema do trabalho é a aplicação e a análise de métodos meta-heurísticos para a resolução de problemas de otimização complexos, classificados como \textit{NP-hard} \cite{Garey79}, como o Problema de Roteamento de Veículos (ou \textit{Vehicle Routing Problem} -- VRP). O VRP, introduzido pioneiramente na literatura sob a ótica da distribuição de derivados de petróleo em 1959 \cite{Dantzig59}, consiste em determinar o conjunto ideal de rotas para uma frota de veículos, com o objetivo de visitar um conjunto de clientes, cada um com uma demanda específica. O problema a ser resolvido é encontrar a solução mais eficiente para este roteamento, considerando restrições como distância total, número de veículos, tempo e capacidade de entrega.
 
@@ -9,18 +12,21 @@
 \paragraph{}A inclusão destas restrições temporais torna o desafio ainda mais rigoroso, pois a viabilidade de uma rota não depende apenas da capacidade de carga do veículo, mas da coordenação precisa dos horários de chegada e dos tempos de serviço em cada nó. Neste cenário, o objetivo de encontrar a solução mais eficiente desdobra-se em uma hierarquia de otimização: busca-se, primordialmente, a minimização do número de veículos necessários e, subsequentemente, a redução da distância total percorrida, garantindo que nenhum compromisso temporal seja violado. Por ser um problema de natureza \textit{NP-hard}, a exploração de janelas de tempo exige que os métodos meta-heurísticos aplicados possuam alta capacidade de adaptação para navegar em um espaço de busca repleto de restrições de inviabilidade.
 
 \section{Delimitação}
+\label{sec:delimitacao}
 
-\paragraph{}O objeto de estudo são problemas de otimização \textit{NP-hard}. O projeto se concentrará na otimização do VRPTW, que estende o clássico Problema do Caixeiro Viajante (\textit{Traveling Salesman Problem} -- TSP) para múltiplos veículos, capacidade de carga e janelas de tempo. O foco será na modelagem do problema, na implementação e comparação de diferentes algoritmos meta-heurísticos (\textit{Simulated Annealing} -- SA, \textit{Tabu Search} -- TS e \textit{Genetic Algorithm} -- GA), e na integração desses métodos com um sistema multiagente (\textit{Multi-Agent System} -- MAS), conjuntamente com a aplicação de aprendizado por reforço (\textit{Reinforcement Learning} -- RL) para melhoria deste sistema. O projeto não busca a solução ótima em tempo polinomial, mas sim uma solução otimizada em tempo viável.
+\paragraph{}O objeto de estudo são problemas de otimização \textit{NP-hard}. O projeto se concentrará na otimização do VRPTW, que estende o clássico Problema do Caixeiro Viajante (\textit{Traveling Salesman Problem} -- TSP) para múltiplos veículos, capacidade de carga e janelas de tempo. O foco será na implementação e comparação de diferentes algoritmos meta-heurísticos (\textit{Simulated Annealing} -- SA, \textit{Tabu Search} -- TS e \textit{Genetic Algorithm} -- GA), e na integração desses métodos com um sistema multiagente (\textit{Multi-Agent System} -- MAS), conjuntamente com a aplicação de aprendizado por reforço (\textit{Reinforcement Learning} -- RL) para melhoria deste sistema.
 
 \section{Justificativa}
+\label{sec:justificativa}
 
-\paragraph{}Problemas como o VRPTW são notórios por serem computacionalmente complexos, o que significa que o tempo necessário para encontrar a solução exata cresce exponencialmente com o tamanho do problema. Isso torna inviável a busca por força bruta em cenários reais. Os métodos meta-heurísticos surgem como uma alternativa eficiente, pois, embora não garantam a melhor solução, são capazes de encontrar soluções otimizadas em um tempo razoável.
+\paragraph{}O VRPTW, em virtude de sua formulação que estende o VRP clássico, é rigorosamente classificado como um problema \textit{NP-hard} \cite{Garey79}. Nesse contexto de alta complexidade computacional, o esforço temporal demandado por métodos exatos para a obtenção de uma solução ótima cresce de forma exponencial em função da dimensionalidade da instância analisada, tornando tais abordagens intratáveis para a ampla escala de cenários reais. Diante dessa limitação, as meta-heurísticas despontam como uma alternativa viável, visto que, embora não assegurem a otimalidade global, oferecem mecanismos para explorar o espaço de busca eficientemente, fornecendo aproximações de alta qualidade em tempo computacional factível.
 
 \paragraph{}A originalidade deste trabalho reside na aplicação de um MAS com RL para integrar e aprimorar o desempenho dos diferentes métodos meta-heurísticos. O objetivo é explorar como a comunicação entre agentes pode levar a resultados superiores aos de cada algoritmo individualmente, evitando mínimos locais e alcançando uma solução globalmente mais eficiente. A importância do projeto está em sua aplicabilidade prática em áreas como logística, transporte e serviços de entrega, onde a otimização de rotas é fundamental para a eficiência e redução de custos.
 
-\paragraph{}Ainda como motivação, mas também como curiosidade, no Apêndice B encontra-se uma grosseira estimativa da grandeza temporal necessária para encontrar a solução ótima dos problemas discutidos ao longo deste trabalho.
+\paragraph{}Ainda no tocante à justificativa da abordagem, o Apêndice B apresenta uma análise quantitativa da grandeza temporal requerida pela força bruta para a obtenção da solução ótima nas instâncias discutidas, reiterando a necessidade de métodos heurísticos.
 
 \section{Objetivos}
+\label{sec:objetivos}
 
 \paragraph{}O objetivo geral é analisar e implementar um sistema híbrido, combinando métodos meta-heurísticos com um sistema multiagente e aprendizado por reforço, para otimizar a resolução do VRPTW. Como objetivos específicos, temos:
 
@@ -33,6 +39,7 @@
 \end{enumerate}
 
 \section{Metodologia}
+\label{sec:metodologia}
 
 \paragraph{}A metodologia será dividida nas seguintes etapas, focando na aplicação de uma abordagem iterativa e de melhoria contínua para a otimização do problema.
 
@@ -46,13 +53,14 @@
 
 
 \section{Descrição}
+\label{sec:descricao}
 
-\paragraph{}Este trabalho está organizado em quatro capítulos principais, além das referências bibliográficas e apêndices, conforme detalhado a seguir.
-
-\paragraph{}O Capítulo 1 consiste na Introdução. Nesta seção, são delimitados o problema de pesquisa, os objetivos gerais e específicos, além da justificativa para a escolha de uma abordagem híbrida envolvendo \textit{Multi-Agent Systems} e \textit{Reinforcement Learning}.
+\paragraph{}O restante deste trabalho está organizado em quatro capítulos principais, além das referências bibliográficas e apêndices, conforme detalhado a seguir.
 
 \paragraph{}No Capítulo 2, é apresentada a Fundamentação Teórica, que estabelece a base conceitual necessária para a compreensão do projeto. Nele, define-se o VRPTW e detalha-se a metodologia de avaliação baseada no \textit{Benchmark} de Solomon \cite{Solomon87}. O capítulo descreve o funcionamento técnico do trio de meta-heurísticas selecionado e introduz a arquitetura do MAS utilizando o \textit{framework} Mesa. Finaliza abordando as estratégias de cooperação via \textit{Path Relinking} (PR) e a teoria de Aprendizado por Reforço.
 
-\paragraph{}O Capítulo 3 detalha o desenvolvimento prático da pesquisa. Ele descreve as etapas iniciais de modelagem e a bateria de testes realizados com as meta-heurísticas em formato \textit{pure}, apresentando uma análise comparativa de seus resultados individuais. Em seguida, expõe-se a implementação do sistema multiagente, demonstrando como a integração cooperativa e o uso do algoritmo \textit{Q-Learning} como \textit{hyper-heuristic} foram aplicados para otimizar a seleção das estratégias de busca.
+\paragraph{}O Capítulo 3 detalha o desenvolvimento do Método Proposto da pesquisa. Ele descreve as etapas iniciais de modelagem e as arquiteturas das classes. Em seguida, expõe-se a modelagem do sistema multiagente, demonstrando a dinâmica de cooperação por meio do \textit{Path Relinking} e a implementação do \textit{Q-Learning} como hiper-heurística, orquestrando e selecionando as melhores ações para esse ambiente.
 
-\paragraph{}Os resultados e as análises finais são apresentados no Capítulo 4, que compõe as Conclusões do trabalho. Nele, será explicitado se a integração entre MAS e RL de fato superou o desempenho dos algoritmos isolados, validando a hipótese de que a inteligência coletiva e a adaptação dinâmica de parâmetros produzam soluções superiores para o VRPTW. O capítulo encerra com a indicação de oportunidades de melhoria e sugestões para trabalhos futuros.
+\paragraph{}Os testes realizados e a apresentação dos resultados ficam a encargo do Capítulo 4: Experimentos Computacionais. A seção avalia o desempenho prático, apresentando inicialmente o \textit{baseline} de cada meta-heurística isolada, em sequência os resultados agregados pela cooperação simplista do sistema multiagente e, por fim, a análise do desempenho da hiper-heurística com Aprendizado por Reforço (MAS-RL).
+
+\paragraph{}As reflexões e fechamentos a respeito da pesquisa são apresentados no Capítulo 5, que compõe as Conclusões do trabalho. Nele, será explicitado se a integração entre MAS e RL de fato superou o desempenho dos algoritmos isolados, validando a hipótese de que a inteligência coletiva e a adaptação dinâmica de parâmetros produzam soluções superiores para o VRPTW. O capítulo encerra com a indicação de oportunidades de melhoria e sugestões para trabalhos futuros.

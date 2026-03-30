@@ -1,0 +1,32 @@
+
+
+\paragraph{} Embora os resultados quantitativos obtidos pelo sistema MAS simples e pelo MAS-RL não tenham superado as métricas de desempenho das meta-heurísticas individuais, os experimentos permitiram extrair aprendizados fundamentais sobre a coordenação de meta-heurísticas. A integração do Aprendizado por Reforço validou a capacidade do sistema de mapear a utilidade de diferentes algoritmos, demonstrando que o desenvolvimento de arquiteturas híbridas complexas exige um equilíbrio sensível entre o tempo de aprendizado e a intensidade da explotação.
+
+\section{Resultados e análises finais}
+
+\paragraph{} A análise dos dados revela que o sistema foi capaz de identificar a hierarquia de eficiência entre os agentes, com a distribuição de execuções refletindo fielmente o sucesso individual observado no SA e no TS frente ao GA. A teoria nos diz que a arquitetura de sistema multi-agente é uma solução eficaz para o problema de estagnação das meta-heurísticas isoladas. Enquanto o Algoritmo Genético pode convergir prematuramente, mas deixando soluções razoavelmente eficientes e distintas na memória compartilhada, o MAS  permite que a Busca Tabu e o Recozimento Simulado refinem essas soluções de elite, enquanto a estratégia de \textit{Path Relinking} constrói pontes entre diferentes regiões do espaço de busca, maximizando a exploração global do VRPTW.
+
+\paragraph{} Conclui-se, contudo, que ao menos a curto prazo, a aplicação de um único método reconhecidamente robusto pode ser mais efetiva do que um sistema híbrido MAS. Ao aplicar métodos não muito efetivos (principalmente em fases finais), como o GA, o MAS causa, evidentemente, um desperdício de recursos que poderiam ser usados com TS ou SA.
+
+\paragraph{} Por sua vez, a superioridade do SMA simples frente ao MAS-RL também reflete a dificuldade em calibrar parâmetros e a sensibilidade do Q-Learning, o que pode indicar, mais uma vez, que uma solução mais rebuscada não é necessariamente superior se não dispuser de ciclos de execução suficientes para compensar o custo inicial do aprendizado. O \textit{trade-off} entre a sofisticação da arquitetura e o tempo computacional viável permanece como um desafio central, reforçando que a inteligência coletiva demanda um amadurecimento tático que o MAS simples, por sua natureza puramente estocástica, não necessita percorrer.
+
+\section{Oportunidades de melhoria}
+
+\paragraph{} No âmbito do aprimoramento do trabalho em si, identificou-se a necessidade de evoluir a modelagem do estado no \textit{Q-Learning}. Uma proposta promissora é a implementação de herança de estados, permitindo que parte do valor-Q de um estado anterior seja transmitido para o sucessor, acelerando a convergência do sistema. É possível, também, iniciar uma execução de otimização com uma tabela-Q já existente de um treinamento anterior, o que aceleraria a convergência e os resultados. Adicionalmente, a otimização dos parâmetros das meta-heurísticas pode ser realizada através de abordagens teóricas ou empíricas mais refinadas.
+
+\paragraph{} Quanto à expansão do trabalho e adições estruturais, sugere-se a hibridização profunda através de Algoritmos Meméticos, utilizando o conhecimento adquirido sobre o desempenho individual das meta-heurísticas para compensar fraquezas específicas de cada uma, como já realizado em parte pelo MAS. Para aumentar a validade estatística do modelo, é fundamental testar o sistema em múltiplos conjuntos de dados com diferentes distribuições geográficas e números de pontos, evitando o viés de sobreajuste à uma única instância do \textit{Benchmark} de Solomon. Por fim, a aplicação em casos reais \cite{NVlabsOlist}, incorporando mapas georreferenciados e tempos de deslocamento não lineares, permitiria avaliar a robustez do SMA-RL frente às imprevisibilidades do transporte urbano, aproximando a pesquisa acadêmica das demandas práticas do setor de logística.
+
+\paragraph{} Outro ponto para o aumento da verossimilhança é o ajuste da função de custo para considerar explicitamente o tempo de espera, já que este fator representou uma parcela significativa do tempo total da rota (não a distância, que é medida) nos experimentos realizados, impactando diretamente na eficiência logística.
+
+\begin{figure}[H]
+    \centering
+    \parbox[htb]{13.0cm}
+    {
+        \centering
+        \includegraphics[scale=0.5]{waiting_time.png}
+        \caption[\small{Tempo de viagem, espera e serviço}]{\label{waiting_time} \small{Tempos gastos com viagem, espera e serviço em uma execução simples de otimização}}
+    }
+\end{figure}
+\vspace{-0.5cm} 
+
+\paragraph{} Note uma desproporção crítica entre o tempo de deslocamento e a ociosidade por espera, evidenciando ineficiências que impactam a viabilidade real das rotas. Visto que o tempo de serviço total é invariante e fixo (por ser a soma dos atendimentos individuais), a elevada espera indica chegadas prematuras às janelas de tempo. Esse cenário reforça o desafio de sincronização temporal do VRPTW, validando a necessidade de mecanismos de controle para mitigar a inatividade operacional.

@@ -1,8 +1,14 @@
+\paragraph{}Este capítulo apresenta a fundamentação teórica essencial para o entendimento das metodologias e soluções computacionais propostas neste trabalho. A \autoref{sec:def_problema} formaliza o conceito do Problema de Roteamento de Veículos e detalha os padrões de avaliação de instâncias da literatura. A \autoref{sec:selecao_meta} justifica a seleção das metodologias heurísticas adotadas (Recozimento Simulado, Busca Tabu e Algoritmo Genético) descrevendo seus funcionamentos e premissas. Posteriormente, a \autoref{sec:sma} explora os princípios de um Sistema Multi-agente, abordando o \textit{framework} de modelagem distribuída escolhido e a estratégia heurística de cooperação implementada para evitar o isolamento de regiões promissoras (\textit{Path Relinking}). Por fim, a compreensão do Aprendizado por Reforço e a lógica da recompensa empregada na estratégia do Q-Learning, que norteia a coordenação estratégica proposta, são objetos da \autoref{sec:rl}.
+
 \section{Definição do problema}
+\label{sec:def_problema}
+
+\paragraph{}Para compreender a avaliação das soluções quantitativas na experimentação futura, faz-se necessário contextualizar a natureza exata e as particularidades do problema central que pauta toda a sequência teórica e empírica deste estudo. Inicialmente, a \autoref{sec:vrp} define o arranjo lógico do conhecido e amplamente mapeado VRP, englobando as dificuldades computacionais e as raízes atadas à complexidade tempo de polinomial não-determinístico difícil (\textit{NP-hard}). Secundariamente, a \autoref{sec:benchmark} elucida a base paramétrica de referências extraída do Benchmark de Solomon de 1987, estabelecendo um padrão ouro viável de contraste na apuração da acurácia e otimização obtida pelas composições desenvolvidas em tempo de execução comparado.
 
 \subsection{O Problema de Roteamento de Veículos}
+\label{sec:vrp}
 
-\paragraph{}Retomando, sucintamente, o que já foi explicado, o Problema de Roteamento de Veículos (VRP) é um desafio de otimização combinatória e programação linear inteira que busca determinar o conjunto ideal de rotas para uma frota de veículos entregarem mercadorias a um conjunto específico de clientes. De forma genérica, o objetivo fundamental do VRP é minimizar o custo total da operação (geralmente expresso em distância total ou tempo) garantindo que:
+\paragraph{}O Problema de Roteamento de Veículos (VRP) é um desafio de otimização combinatória e programação linear inteira que busca determinar o conjunto ideal de rotas para uma frota de veículos entregarem mercadorias a um conjunto específico de clientes. De forma genérica, o objetivo fundamental do VRP é minimizar o custo total da operação (geralmente expresso em distância total ou tempo) garantindo que:
 
 \begin{itemize}
     \item Cada cliente deve ser visitado exatamente uma vez;
@@ -12,10 +18,11 @@
 
 \paragraph{}O VRP é classificado na ciência da computação como um problema \textit{NP-hard} (problemas de tempo polinomial não-determinístico difícil). Isso significa que, à medida que o número de clientes aumenta, o tempo necessário para encontrar a solução ótima cresce de forma exponencial, tornando impossível o uso de métodos exatos (como a força bruta) para instâncias de larga escala.
 
-\paragraph{}É precisamente essa dificuldade computacional que justifica o uso das meta-heurísticas SA, TS e GA) que serão exploradas neste trabalho. Diferente dos métodos exatos, as meta-heurísticas buscam soluções suficientemente boas em um tempo computacional aceitável, permitindo a gestão logística em cenários do mundo real.
+\paragraph{}É precisamente essa complexidade computacional inerente que fundamenta a aplicação das meta-heurísticas (SA, TS e GA) investigadas neste estudo. Em contraste com os métodos de resolução exatos, as abordagens meta-heurísticas são concebidas para encontrar soluções subótimas de alta qualidade em tempo polinomial aceitável, viabilizando assim a aplicação prática em cenários logísticos de envergadura real.
 
 
 \subsection{Metodologia de Avaliação e o Benchmark de Solomon}
+\label{sec:benchmark}
 
 \paragraph{}Para assegurar a validade científica deste estudo e permitir a comparabilidade dos resultados obtidos pelas meta-heurísticas propostas, a modelagem será conduzida estritamente sob os parâmetros do Benchmark de Solomon (1987). A utilização de instâncias consagradas na literatura é imperativa, pois fornecem um ``gabarito'' técnico que permite atestar a precisão e a eficiência de cada algoritmo desenvolvido.
 
@@ -44,6 +51,7 @@
 \paragraph{}Neste trabalho serão utilizadas, fundamentalmente, as instâncias de tipo RC, série 2. Ou seja, a distribuição dos clientes contém algumas aglomerações, mas também pontos aleatórios. Além disso, a capacidade dos veículos é maior e as janelas de tempo mais largas, significando muitos clientes por rota, poucos veículos necessários. Ver \autoref{ApendiceA}.
 
 \section{Seleção do Trio de Meta-heurísticas}
+\label{sec:selecao_meta}
 
 \paragraph{}A escolha das meta-heurísticas Recozimento Simulado, Busca Tabu e Algoritmo Genético para a resolução do VRPTW fundamenta-se na necessidade de realizar uma análise comparativa abrangente, cobrindo dois eixos de vertentes de busca em otimização combinatória:
 
@@ -76,7 +84,7 @@ $$T_{k+1} = \alpha \cdot T_k$$
 
 \paragraph{}No contexto do VRPTW, o SA é essencial para demonstrar como a aceitação controlada de soluções de pior qualidade, governada por um parâmetro de temperatura, permite que o algoritmo escape de ótimos locais prematuros.
 
-\subsubsection{Busca Tabu}
+\subsection{Busca Tabu}
 
 \paragraph{}\cite{Glover89} Método de trajetória única e determinístico. A justificativa reside no seu uso de ``listas tabu'', que impedem o algoritmo de retornar a soluções visitadas recentemente, forçando uma exploração sistemática e agressiva de novas vizinhanças. Mais objetivamente, o algoritmo opera sobre a vizinhança $N(s)$ da solução atual, mas subtrai os movimentos que estão na Lista Tabu ($L$):
 
@@ -90,7 +98,7 @@ $$\text{Se } f(s') < f(s_{best}), \text{ então } s' \in \textit{Candidatos} \te
 
 \paragraph{}Além disso, métodos que residem suas maiores forças no uso de memória são amplamente reconhecidos na literatura como técnicas eficazes para problemas de logística (como o VRPTW).
 
-\subsubsection{Algoritmo Genético}
+\subsection{Algoritmo Genético}
 
 \paragraph{}\cite{Holland75, Goldberg89} Método de população e estocástico. A escolha do GA justifica-se pela sua habilidade de diversificação. Por meio dos operadores de cruzamento e mutação, o algoritmo é capaz de recombinar sub-rotas eficientes de diferentes soluções para gerar descendentes potencialmente superiores. Isso se traduz em converter o problema de minimização de custos em um valor de sobrevivência, representado pela função de aptidão (\textit{fitness}) $F(s)$:
 
@@ -110,8 +118,9 @@ $$\text{Se } f(s') < f(s_{best}), \text{ então } s' \in \textit{Candidatos} \te
 
 
 \section{Sistema multi-agente}
+\label{sec:sma}
 
-\paragraph{}Os \textit{Multi-Agent Systems} (MAS) consistem em um conjunto de elementos computacionais, denominados agentes, que interagem em um ambiente compartilhado para resolver problemas que ultrapassam as capacidades individuais de um único processador ou algoritmo \cite{Wooldridge95}. Muito famoso pelo exemplo de simulação de uma colônia de formigas, onde através da modelagem do comportamento de um único agente, é possível analisar todo o ambiente.
+\paragraph{}Os \textit{Multi-Agent Systems} (MAS) consistem em um conjunto de elementos computacionais, denominados agentes, que interagem em um ambiente compartilhado para resolver problemas que ultrapassam as capacidades individuais de um único processador ou algoritmo \cite{Wooldridge95}. Tais sistemas têm sido aplicados com sucesso em diversas áreas, incluindo otimização de colônias de formigas, onde a emergência de comportamentos complexos globais decorre das interações locais entre agentes relativamente simples.
 
 \paragraph{}No contexto do VRPTW, a abordagem multiagente é empregada para decompor a complexidade da busca em diferentes especialidades: enquanto um agente foca na exploração global do espaço de busca (\textit{exploration}), outro dedica-se ao refinamento local intensivo (\textit{exploitation}).
 
@@ -159,6 +168,7 @@ No âmbito da otimização combinatória, o Mesa destaca-se por permitir que met
 \paragraph{} Como seus operadores e manipuladores de soluções são relativamente simples, o PR é menos custoso computacionalmente que uma meta-heurística, seu esforço reside majoritariamente na verificação das funções de custo. Este é seu ponto forte, mas também ponto fraco, uma vez que depende de boas soluções como entrada para melhorá-las ainda mais. É evidente, portando que deve ser usada em combinação com outros algoritmos, idealmente ao final das etapas.
 
 \section{Aprendizado por Reforço}
+\label{sec:rl}
 
 \paragraph{} O RL é uma área do aprendizado de máquina que se preocupa com a forma como agentes inteligentes devem tomar ações em um ambiente a fim de maximizar uma recompensa acumulada. Diferente do aprendizado supervisionado, que se baseia em um conjunto de dados rotulados, fundamenta-se na experiência direta do agente, que aprende por meio de um processo de tentativa e erro ao interagir com o ambiente \cite{Sutton18}.
 
@@ -180,12 +190,45 @@ No âmbito da otimização combinatória, o Mesa destaca-se por permitir que met
 
 \begin{figure}[H]
     \centering
-    \parbox[htb]{13.0cm}
-    {
-        \centering
-        \includegraphics[scale=0.6]{q-learning-viz.png}
-        \caption[\small{Visão geral do Q-Learning}]{\label{FigQL1} \small{Esquema de interação entre agente e ambiente no processo de aprendizagem.}}
-    }
+    \begin{tikzpicture}[
+        x=1cm,
+        y=1cm,
+        >=Stealth,
+        frame/.style={dash pattern=on 2pt off 2pt, line width=0.4pt},
+        box/.style={
+            draw,
+            rounded corners=2pt,
+            line width=0.5pt,
+            fill=gray!12,
+            align=center,
+            inner xsep=1.5pt,
+            inner ysep=0.6pt,
+            minimum height=0.9cm
+        },
+        flow/.style={-Stealth, line width=0.5pt}
+    ]
+        % Canvas and split between agent side (left) and environment side (right).
+        \draw[frame] (-0.45,0) rectangle (5,7);
+
+        \node[box, minimum width=3cm] (agent) at (2.5,5.5) {Agente de Atualização\\[-8pt]da Função-Q};
+        \node[box, minimum width=3cm] (reward) at (2.5,3.5) {Avaliação de\\[-8pt]Recompensa/Penalidade};
+        \node[box, minimum width=2cm] (actions) at (2.5,1.5) {Conjunto de\\[-8pt]Ações Possíveis};
+        \node[box, minimum width=2cm] (obs) at (7.0,5.5) {Observação};
+        \node[box, minimum width=2cm] (fav) at (7.0,1.5) {Ação Mais\\[-8pt]Favorável};
+        \node[box, minimum width=2cm] (env) at (9.0,3.5) {Ambiente};
+
+        \draw[flow] (obs.west) -- (agent.east);
+        \draw[flow] (env.north) |- (obs.east);
+        \draw[flow] (agent.south) -- (reward.north);
+        \draw[flow] (reward.south) -- (actions.north);
+        \draw[flow] ([xshift=0.45cm]actions.north) -- ([xshift=0.45cm]reward.south);
+        \draw[flow] (actions.east) -- (fav.west);
+        \draw[flow] (fav.east) -| (env.south);
+        \coordinate (leftloop) at ([xshift=-0.2cm]reward.west);
+        \draw[flow] (agent.west) -- (leftloop |- agent.west) -- (leftloop |- actions.west) -- (actions.west);
+
+    \end{tikzpicture}
+    \caption[\small{Visão geral do Q-Learning}]{\label{FigQL1} \small{Esquema de interação entre agente e ambiente no processo de aprendizagem.}}
 \end{figure}
 \vspace{-0.5cm}
 

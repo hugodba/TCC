@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
-from typing import List, Optional, Tuple, Dict
+from threading import Lock
+from typing import Any, Dict, List, Optional, Tuple
 import logging
 import random
 
@@ -44,7 +46,25 @@ class ElitePool:
 class VRPOptimizationModelRL(Model):
     """Mesa model managing heuristic agents with Q-Learning as a Hyper-heuristic."""
 
-    def __init__(self, dataset, pool_size: int = 10, seed: int | None = None, total_steps: int = 100) -> None:
+    def __init__(
+        self,
+        dataset,
+        pool_size: int = 10,
+        seed: int | None = None,
+        total_steps: int = 100,
+        epsilon: float = 0.4,
+        epsilon_min: float = 0.05,
+        epsilon_decay: float = 0.995,
+        alpha: float = 0.2,
+        gamma: float = 0.8,
+        distance_bin_size: int = 300,
+        runs_per_step: int = 3,
+        ga_params: Dict[str, Any] | None = None,
+        sa_params: Dict[str, Any] | None = None,
+        ts_params: Dict[str, Any] | None = None,
+        seed_policy: str = "best",
+        parallel_agents: bool = False,
+    ) -> None:
         """Initialize the model, RL parameters, and agents."""
         super().__init__()
         self.dataset = dataset
@@ -56,16 +76,28 @@ class VRPOptimizationModelRL(Model):
         # --- Reinforcement Learning Parameters ---
         self.q_table: Dict[Tuple[int, int], List[float]] = {} # Map state -> [Q_SA, Q_TS, Q_GA]
         self.action_count_table: Dict[Tuple[int, int], List[int]] = {} # Map state -> [N_SA, N_TS, N_GA]
-        self.epsilon = 0.4          # Exploration rate
-        self.alpha = 0.2              # Learning rate
-        self.gamma = 0.8            # Discount factor
-        self.distance_bin_size = 100 # Discretization factor for state
+        self.epsilon = epsilon
+        self.epsilon_min = epsilon_min
+        self.epsilon_decay = epsilon_decay
+        self.alpha = alpha
+        self.gamma = gamma
+        self.distance_bin_size = distance_bin_size
+        self.runs_per_step = runs_per_step
+        self.parallel_agents = parallel_agents
+
+        if seed_policy not in {"best", "random"}:
+            raise ValueError("seed_policy must be 'best' or 'random'")
+        self.seed_policy = seed_policy
+
+        sa_seed = None if seed is None else seed + 202
+        ts_seed = None if seed is None else seed + 303
+        ga_seed = None if seed is None else seed + 101
 
         # Agents mapping (Action Space)
         # 0: SA, 1: TS, 2: GA
-        self.sa_agent = HeuristicAgent(self, "SA", seed)
-        self.ts_agent = HeuristicAgent(self, "TS", seed)
-        self.ga_agent = HeuristicAgent(self, "GA", seed)
+        self.sa_agent = HeuristicAgent(self, "SA", sa_seed, solver_params=sa_params)
+        self.ts_agent = HeuristicAgent(self, "TS", ts_seed, solver_params=ts_params)
+        self.ga_agent = HeuristicAgent(self, "GA", ga_seed, solver_params=ga_params)
 
         self.agents_list = [self.sa_agent, self.ts_agent, self.ga_agent]
         
@@ -110,8 +142,9 @@ class VRPOptimizationModelRL(Model):
         else:
             # Exploit: choose best Q-value
             q_values = self.get_q_values(state)
-            # Find index of max value (manual argmax)
-            return q_values.index(max(q_values))
+            max_q = max(q_values)
+            best_actions = [idx for idx, q in enumerate(q_values) if q == max_q]
+            return self.random.choice(best_actions)
 
     def calculate_reward(self, prev_best: Optional[Route], curr_best: Optional[Route]) -> float:
         """
@@ -145,26 +178,36 @@ class VRPOptimizationModelRL(Model):
 
     def step(self) -> None:
         """
-        RL Step Logic (3 runs per model step):
-        - For each run, use epsilon-greedy RL to choose an agent.
-        - Execute chosen agent, compute reward, and update Q-table.
-        - Same agent may be chosen multiple times.
+        RL Step Logic:
+        - Select runs_per_step actions via epsilon-greedy policy.
+        - Each selected action corresponds to one agent run.
+        - If parallel_agents=True, execute only the selected runs in parallel.
         """
-        for run_idx in range(3):
+        scheduled_runs: List[Tuple[int, Tuple[int, int], int, HeuristicAgent, Optional[Route]]] = []
+        selected_runs: List[Tuple[int, Tuple[int, int], str]] = []
+        run_results: List[Tuple[int, Tuple[int, int], str, int, float, float, float]] = []
+
+        for run_idx in range(self.runs_per_step):
             # 1) Observe state before action
             current_state = self.get_state()
-            prev_best = self.elite_pool.best()
 
             # 2) RL action selection (always)
             action_idx = self.select_action(current_state)
             selected_agent = self.agents_list[action_idx]
             self.get_action_counts(current_state)[action_idx] += 1
-            logger.info(
-                f"==> RL Run {run_idx + 1}/3 | State {current_state} -> Selected Action: {selected_agent.algo}"
-            )
+            selected_runs.append((run_idx, current_state, selected_agent.algo))
 
             # 3) Execute selected action
-            selected_agent.step()
+            if self.parallel_agents:
+                scheduled_runs.append(
+                    (run_idx, current_state, action_idx, selected_agent, self.get_seed())
+                )
+                continue
+
+            prev_best = self.elite_pool.best()
+            improved = selected_agent.solve_once(self.get_seed())
+            cand_k, cand_d = improved.cost_function()
+            self.add_to_pool(improved)
 
             # 4) Observe transition and reward
             new_state = self.get_state()
@@ -180,22 +223,135 @@ class VRPOptimizationModelRL(Model):
             new_q = current_q + self.alpha * (reward + self.gamma * max_q_next - current_q)
             self.q_table[current_state][action_idx] = new_q
 
-            logger.info(
-                ' '*4 + f"Update: Reward={reward:.2f} | "
-                f"Q({selected_agent.algo}) of state{current_state} updated to {new_q:.2f}"
+            run_results.append(
+                (
+                    run_idx,
+                    current_state,
+                    selected_agent.algo,
+                    cand_k,
+                    cand_d,
+                    reward,
+                    new_q,
+                )
             )
+
+        self._log_selected_runs(selected_runs)
+
+        if self.parallel_agents and scheduled_runs:
+            candidates = self._run_selected_agents_parallel(
+                [(selected_agent, seed_route) for _, _, _, selected_agent, seed_route in scheduled_runs]
+            )
+
+            for (run_idx, current_state, action_idx, selected_agent, _), improved in zip(
+                scheduled_runs, candidates
+            ):
+                prev_best = self.elite_pool.best()
+
+                cand_k, cand_d = improved.cost_function()
+                self.add_to_pool(improved)
+
+                # 4) Observe transition and reward
+                new_state = self.get_state()
+                curr_best = self.elite_pool.best()
+                reward = self.calculate_reward(prev_best, curr_best)
+
+                # 5) Q-learning update
+                q_values_current = self.get_q_values(current_state)
+                q_values_next = self.get_q_values(new_state)
+                max_q_next = max(q_values_next)
+
+                current_q = q_values_current[action_idx]
+                new_q = current_q + self.alpha * (
+                    reward + self.gamma * max_q_next - current_q
+                )
+                self.q_table[current_state][action_idx] = new_q
+
+                run_results.append(
+                    (
+                        run_idx,
+                        current_state,
+                        selected_agent.algo,
+                        cand_k,
+                        cand_d,
+                        reward,
+                        new_q,
+                    )
+                )
+
+        self._log_run_results(run_results)
 
         if len(self.elite_pool.items) >= 2:
             self.run_path_relinking()
+
+        self.epsilon = max(self.epsilon_min, self.epsilon * self.epsilon_decay)
+
+    def _log_selected_runs(self, selected_runs: List[Tuple[int, Tuple[int, int], str]]) -> None:
+        """Log selected actions grouped by state for the current RL step."""
+        if not selected_runs:
+            return
+
+        grouped: Dict[Tuple[int, int], List[Tuple[int, str]]] = {}
+        for run_idx, state, algo in selected_runs:
+            grouped.setdefault(state, []).append((run_idx, algo))
+
+        for state, runs in grouped.items():
+            picks = ", ".join(
+                f"Run {run_idx + 1} selected {algo}" for run_idx, algo in runs
+            )
+            logger.info(f"==> State {state} -> {picks}")
+
+    def _log_run_results(
+        self,
+        run_results: List[Tuple[int, Tuple[int, int], str, int, float, float, float]],
+    ) -> None:
+        """Log per-run result and Q update using a compact tree-like layout."""
+        if not run_results:
+            return
+
+        ordered_results = sorted(run_results, key=lambda item: item[0])
+        for idx, (run_idx, state, algo, k_val, d_val, reward, new_q) in enumerate(
+            ordered_results
+        ):
+            is_last = idx == len(ordered_results) - 1
+            branch = "`--" if is_last else "|--"
+            update_prefix = "    " if is_last else "|   "
+
+            logger.info(
+                f"    {branch} Run {run_idx + 1} agent {algo} result -> "
+                f"vehicles: {k_val}, distance: {d_val:.2f}"
+            )
+            logger.info(
+                f"    {update_prefix}Update: Reward={reward:.2f} | "
+                f"Q({algo}) of state{state} updated to {new_q:.2f}"
+            )
+
+    def _run_selected_agents_parallel(
+        self,
+        scheduled_runs: List[Tuple[HeuristicAgent, Optional[Route]]],
+    ) -> List[Route]:
+        """Execute selected heuristic runs concurrently."""
+        if not scheduled_runs:
+            return []
+        with ThreadPoolExecutor(max_workers=len(scheduled_runs)) as executor:
+            futures = [
+                executor.submit(agent.solve_once, seed_route)
+                for agent, seed_route in scheduled_runs
+            ]
+            return [future.result() for future in futures]
 
     def add_to_pool(self, route: Route) -> None:
         """Add a route to the elite pool if it is valid."""
         if route is None:
             return
+        if not route.is_feasible():
+            logger.debug("Skipping infeasible route during pool update")
+            return
         self.elite_pool.add(route)
 
     def get_seed(self) -> Optional[Route]:
         """Sample a seed route from the elite pool for warm starting."""
+        if self.seed_policy == "best":
+            return self.elite_pool.best()
         return self.elite_pool.sample(self.random)
 
     def run_path_relinking(self) -> None:
@@ -221,7 +377,14 @@ class VRPOptimizationModelRL(Model):
                 max_dist = dist
                 target = candidate
 
+        if target is None:
+            logger.info("==> PR skipped: no valid target found")
+            return
+
         decoder = self._get_decoder()
+        if decoder is None:
+            logger.info("==> PR skipped: decoder unavailable")
+            return
 
         src_k, src_d = source.cost_function()
         tgt_k, tgt_d = target.cost_function()
@@ -291,36 +454,68 @@ class VRPOptimizationModelRL(Model):
 class HeuristicAgent(Agent):
     """Agent that runs a specific metaheuristic and updates the elite pool."""
 
-    def __init__(self, model: VRPOptimizationModelRL, algo: str, seed: int | None) -> None:
+    def __init__(
+        self,
+        model: VRPOptimizationModelRL,
+        algo: str,
+        seed: int | None,
+        solver_params: Dict[str, Any] | None = None,
+    ) -> None:
         """Create an agent bound to a specific metaheuristic solver."""
         super().__init__(model)
         self.algo = algo
-        if algo == "GA":
-            self.solver = GeneticAlgorithm(model.dataset, seed=seed)
-        elif algo == "SA":
-            self.solver = SimulatedAnnealing(model.dataset, seed=seed)
-        elif algo == "TS":
-            self.solver = TabuSearch(model.dataset, seed=seed)
-        else:
-            raise ValueError(f"Unknown algorithm: {algo}")
+        self._base_seed = seed
+        self._solver_params = dict(solver_params or {})
+        self._solver_params.pop("seed", None)
+        self._solve_counter = 0
+        self._solve_counter_lock = Lock()
+
+        # Keep one persistent solver for decoder reuse (path relinking helper).
+        self.solver = self._create_solver(seed=self._base_seed)
 
     def step(self) -> None:
         """Run the solver once and push any improvement to the elite pool."""
         self.model: VRPOptimizationModelRL  # type hint for self.model
 
         seed_route = self.model.get_seed()
-        seed_perm = None
+        improved = self.solve_once(seed_route)
+
+        k, d = improved.cost_function()
+        logger.info(' '*4 + f"Agent {self.algo} step result -> vehicles: {k}, distance: {d:.2f}")
+
+        self.model.add_to_pool(improved)
+
+    def solve_once(self, seed_route: Optional[Route]) -> Route:
+        """Run solver once from an optional warm-start seed route."""
+        seed_perm: Optional[List[int]] = None
         if seed_route:
-            # Helper to extract perm from route inside agent context
             seed_perm = []
             for sub in seed_route.subroutes:
                 for cust in sub:
                     if cust != 0:
                         seed_perm.append(cust)
 
-        improved = self.solver.solve(initial_permutation=seed_perm)
+        solver_seed: Optional[int]
+        if self._base_seed is None:
+            solver_seed = None
+        else:
+            with self._solve_counter_lock:
+                solver_seed = self._base_seed + self._solve_counter
+                self._solve_counter += 1
 
-        k, d = improved.cost_function()
-        logger.info(' '*4 + f"Agent {self.algo} step result -> vehicles: {k}, distance: {d:.2f}")
+        solver = self._create_solver(seed=solver_seed)
+        return solver.solve(initial_permutation=seed_perm)
 
-        self.model.add_to_pool(improved)
+    def _create_solver(self, seed: int | None) -> Metaheuristic:
+        """Build a solver instance for this agent algorithm."""
+        params = dict(self._solver_params)
+        if seed is not None:
+            params["seed"] = seed
+
+        if self.algo == "GA":
+            return GeneticAlgorithm(self.model.dataset, **params)
+        if self.algo == "SA":
+            return SimulatedAnnealing(self.model.dataset, **params)
+        if self.algo == "TS":
+            return TabuSearch(self.model.dataset, **params)
+        raise ValueError(f"Unknown algorithm: {self.algo}")

@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 import logging
 import random
 
@@ -44,7 +45,18 @@ class ElitePool:
 class VRPOptimizationModel(Model):
     """Mesa model managing heuristic agents and a shared elite pool."""
 
-    def __init__(self, dataset, pool_size: int = 10, seed: int | None = None, total_steps: int = 5) -> None:
+    def __init__(
+        self,
+        dataset,
+        pool_size: int = 10,
+        seed: int | None = None,
+        total_steps: int = 5,
+        ga_params: Dict[str, Any] | None = None,
+        sa_params: Dict[str, Any] | None = None,
+        ts_params: Dict[str, Any] | None = None,
+        seed_policy: str = "best",
+        parallel_agents: bool = False,
+    ) -> None:
         """Initialize the model, RNG, agent set, and shared elite pool."""
         super().__init__()
         self.dataset = dataset
@@ -53,10 +65,18 @@ class VRPOptimizationModel(Model):
         self.elite_pool = ElitePool(max_size=pool_size, items=[])
 
         self.total_steps = total_steps
+        if seed_policy not in {"best", "random"}:
+            raise ValueError("seed_policy must be 'best' or 'random'")
+        self.seed_policy = seed_policy
+        self.parallel_agents = parallel_agents
 
-        self.ga_agent = HeuristicAgent(self, "GA", seed)
-        self.sa_agent = HeuristicAgent(self, "SA", seed)
-        self.ts_agent = HeuristicAgent(self, "TS", seed)
+        ga_seed = None if seed is None else seed + 101
+        sa_seed = None if seed is None else seed + 202
+        ts_seed = None if seed is None else seed + 303
+
+        self.ga_agent = HeuristicAgent(self, "GA", ga_seed, solver_params=ga_params)
+        self.sa_agent = HeuristicAgent(self, "SA", sa_seed, solver_params=sa_params)
+        self.ts_agent = HeuristicAgent(self, "TS", ts_seed, solver_params=ts_params)
 
         self.agent_set.add(self.ga_agent)
         self.agent_set.add(self.sa_agent)
@@ -64,18 +84,51 @@ class VRPOptimizationModel(Model):
 
     def step(self) -> None:
         """Run one model tick by stepping all agents once."""
-        self.agent_set.shuffle_do("step")
+        if self.parallel_agents:
+            self._step_parallel()
+        else:
+            self.agent_set.shuffle_do("step")
         if len(self.elite_pool.items) >= 2:
             self.run_path_relinking()
+
+    def _step_parallel(self) -> None:
+        """Run one solver from each agent concurrently and merge outcomes."""
+        agents = list(self.agent_set)
+        self.random.shuffle(agents)
+
+        seeds = [self.get_seed() for _ in agents]
+        with ThreadPoolExecutor(max_workers=len(agents)) as executor:
+            futures = [
+                executor.submit(agent.solve_once, seed_route)
+                for agent, seed_route in zip(agents, seeds)
+            ]
+            results = [future.result() for future in futures]
+
+        for agent, improved in zip(agents, results):
+            if improved is None:
+                continue
+            k, d = improved.cost_function()
+            logger.info(
+                "Agent %s result -> vehicles: %s, distance: %.2f",
+                agent.algo,
+                k,
+                d,
+            )
+            self.add_to_pool(improved)
 
     def add_to_pool(self, route: Route) -> None:
         """Add a route to the elite pool if it is valid."""
         if route is None:
             return
+        if not route.is_feasible():
+            logger.debug("Skipping infeasible route during pool update")
+            return
         self.elite_pool.add(route)
 
     def get_seed(self) -> Optional[Route]:
         """Sample a seed route from the elite pool for warm starting."""
+        if self.seed_policy == "best":
+            return self.elite_pool.best()
         return self.elite_pool.sample(self.random)
 
     def run_path_relinking(self) -> None:
@@ -101,7 +154,14 @@ class VRPOptimizationModel(Model):
                 max_dist = dist
                 target = candidate
 
+        if target is None:
+            logger.info("==> PR skipped: no valid target found")
+            return
+
         decoder = self._get_decoder()
+        if decoder is None:
+            logger.info("==> PR skipped: decoder unavailable")
+            return
 
         src_k, src_d = source.cost_function()
         tgt_k, tgt_d = target.cost_function()
@@ -171,16 +231,27 @@ class VRPOptimizationModel(Model):
 class HeuristicAgent(Agent):
     """Agent that runs a specific metaheuristic and updates the elite pool."""
 
-    def __init__(self, model: VRPOptimizationModel, algo: str, seed: int | None) -> None:
+    def __init__(
+        self,
+        model: VRPOptimizationModel,
+        algo: str,
+        seed: int | None,
+        solver_params: Dict[str, Any] | None = None,
+    ) -> None:
         """Create an agent bound to a specific metaheuristic solver."""
         super().__init__(model)
         self.algo = algo
+        params = dict(solver_params or {})
+        params.pop("seed", None)
+        if seed is not None:
+            params["seed"] = seed
+
         if algo == "GA":
-            self.solver = GeneticAlgorithm(model.dataset, seed=seed)
+            self.solver = GeneticAlgorithm(model.dataset, **params)
         elif algo == "SA":
-            self.solver = SimulatedAnnealing(model.dataset, seed=seed)
+            self.solver = SimulatedAnnealing(model.dataset, **params)
         elif algo == "TS":
-            self.solver = TabuSearch(model.dataset, seed=seed)
+            self.solver = TabuSearch(model.dataset, **params)
         else:
             raise ValueError(f"Unknown algorithm: {algo}")
 
@@ -189,10 +260,7 @@ class HeuristicAgent(Agent):
         self.model: VRPOptimizationModel  # type hint for self.model
 
         seed_route = self.model.get_seed()
-        seed_perm = self._route_to_permutation(seed_route) if seed_route else None
-
-        improved = self.solver.solve(initial_permutation=seed_perm)
-        
+        improved = self.solve_once(seed_route)
         k, d = improved.cost_function()
 
         logger.info(
@@ -201,8 +269,13 @@ class HeuristicAgent(Agent):
             k,
             d,
         )
-        
+
         self.model.add_to_pool(improved)
+
+    def solve_once(self, seed_route: Optional[Route]) -> Route:
+        """Run solver once from an optional warm-start seed route."""
+        seed_perm = self._route_to_permutation(seed_route) if seed_route else None
+        return self.solver.solve(initial_permutation=seed_perm)
 
     def _route_to_permutation(self, route: Route) -> List[int]:
         """Convert a route into a customer permutation, excluding depots."""

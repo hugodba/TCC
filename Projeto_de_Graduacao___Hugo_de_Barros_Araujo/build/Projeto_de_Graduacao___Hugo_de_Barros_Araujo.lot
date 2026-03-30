@@ -2,9 +2,10 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces Resultados das meta-heurísticas isoladas}}{23}{table.3.1}%
-\contentsline {table}{\numberline {3.2}{\ignorespaces Resultados do MAS}}{28}{table.3.2}%
-\contentsline {table}{\numberline {3.3}{\ignorespaces Resultados do MAS-RL}}{31}{table.3.3}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces Resultados das meta-heurísticas isoladas}}{29}{table.4.1}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Resultados do MAS}}{34}{table.4.2}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Resultados do MAS-RL}}{37}{table.4.3}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
