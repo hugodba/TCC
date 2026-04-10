@@ -29,6 +29,7 @@ from __future__ import annotations
 
 import math
 import random
+import time
 from typing import List, Sequence
 
 from ..Dataset import Dataset
@@ -73,6 +74,9 @@ class SimulatedAnnealing(Metaheuristic):
             initial_permutation: Optional customer order used to seed
                 the initial state.
         """
+        self._reset_history()
+        cpu_start = time.process_time()
+
         current_perm = (
             list(initial_permutation)
             if initial_permutation is not None
@@ -83,7 +87,7 @@ class SimulatedAnnealing(Metaheuristic):
         best_cost = self._scalar_cost(best_route)
 
         self.best_route = best_route
-        self.route_historic.append(best_route.clone())
+        self._record_history(best_route, time.process_time() - cpu_start)
 
         temperature = self.initial_temp
         while temperature > self.min_temp:
@@ -101,7 +105,7 @@ class SimulatedAnnealing(Metaheuristic):
                     best_route = current_route.clone()
 
             self.best_route = best_route
-            self.route_historic.append(best_route.clone())
+            self._record_history(best_route, time.process_time() - cpu_start)
             temperature *= self.cooling_rate
 
         return best_route

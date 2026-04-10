@@ -23,6 +23,7 @@ Fitness:
 from __future__ import annotations
 
 import random
+import time
 from typing import List, Sequence, Optional
 
 from ..Dataset import Dataset
@@ -69,6 +70,9 @@ class GeneticAlgorithm(Metaheuristic):
             initial_permutation: Optional customer order used to seed
                 the initial population.
         """
+        self._reset_history()
+        cpu_start = time.process_time()
+
         population = [self._random_individual() for _ in range(self.population_size)]
         if initial_permutation is not None:
             population[0] = list(initial_permutation)
@@ -77,7 +81,7 @@ class GeneticAlgorithm(Metaheuristic):
         self.best_route = routes[0]
         for r in routes[1:]:
             self.best_route = self._compare_routes(r, self.best_route)
-        self.route_historic.append(self.best_route.clone())
+        self._record_history(self.best_route, time.process_time() - cpu_start)
 
         for _ in range(self.generations):
             new_population: List[List[int]] = []
@@ -103,7 +107,7 @@ class GeneticAlgorithm(Metaheuristic):
 
             for r in routes:
                 self.best_route = self._compare_routes(r, self.best_route)
-            self.route_historic.append(self.best_route.clone())
+            self._record_history(self.best_route, time.process_time() - cpu_start)
 
         return self.best_route
     

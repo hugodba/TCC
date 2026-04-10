@@ -23,6 +23,7 @@ Fitness:
 
 from __future__ import annotations
 
+import time
 from typing import Dict, List, Sequence, Tuple
 
 from ..Dataset import Dataset
@@ -62,6 +63,9 @@ class TabuSearch(Metaheuristic):
             initial_permutation: Optional customer order used to seed
                 the initial state.
         """
+        self._reset_history()
+        cpu_start = time.process_time()
+
         current_perm = (
             list(initial_permutation)
             if initial_permutation is not None
@@ -72,7 +76,7 @@ class TabuSearch(Metaheuristic):
 
         tabu: Dict[Tuple[int, int], int] = {}
         self.best_route = best_route
-        self.route_historic.append(best_route.clone())
+        self._record_history(best_route, time.process_time() - cpu_start)
 
         for _ in range(self.max_iterations):
             candidate_perm, candidate_route, move = self._best_neighbor(
@@ -87,7 +91,7 @@ class TabuSearch(Metaheuristic):
 
             best_route = self._select_best(best_route, current_route)
             self.best_route = best_route
-            self.route_historic.append(best_route.clone())
+            self._record_history(best_route, time.process_time() - cpu_start)
 
             self._decrease_tabu(tabu)
 

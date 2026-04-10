@@ -13,7 +13,8 @@ class Metaheuristic(ABC):
     def __init__(self, dataset: Dataset, seed: int | None = None) -> None:
         self.dataset = dataset
         self.best_route: Optional[Route] = None
-        self.route_historic: list[Route] = []    
+        self.route_historic: list[Route] = []
+        self.history_elapsed_sec: list[float] = []
         self.customers: List[int] = list(range(1, len(self.dataset.customers_df)))
         self.random = random.Random(seed)
 
@@ -22,6 +23,24 @@ class Metaheuristic(ABC):
         vehicles_hist = [r.calc_total_vehicles() for r in self.route_historic]
         distance_hist = [r.calc_total_distance() for r in self.route_historic]
         return vehicles_hist, distance_hist
+
+    def history_trace(self) -> List[Tuple[float, int, float]]:
+        """Return history as (elapsed_sec, vehicles, distance)."""
+        trace: List[Tuple[float, int, float]] = []
+        for elapsed_sec, route in zip(self.history_elapsed_sec, self.route_historic):
+            k, d = route.cost_function()
+            trace.append((float(elapsed_sec), int(k), float(d)))
+        return trace
+
+    def _reset_history(self) -> None:
+        """Clear per-run history buffers before solving."""
+        self.route_historic.clear()
+        self.history_elapsed_sec.clear()
+
+    def _record_history(self, route: Route, elapsed_sec: float) -> None:
+        """Store a best-so-far snapshot with cumulative elapsed CPU time."""
+        self.route_historic.append(route.clone())
+        self.history_elapsed_sec.append(float(max(0.0, elapsed_sec)))
 
     def _random_instance(self) -> List[int]:
         """Generate a random permutation of customers."""

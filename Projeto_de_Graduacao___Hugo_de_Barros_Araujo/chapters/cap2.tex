@@ -235,13 +235,37 @@ No âmbito da otimização combinatória, o Mesa destaca-se por permitir que met
 \paragraph{} O núcleo do algoritmo consiste em estimar os valores da função $Q(s, a)$, que mensura a recompensa total esperada a longo prazo que um agente pode obter ao realizar a ação $a$ partindo do estado $s$. Em problemas com espaços de estados discretos, esses valores são armazenados em uma estrutura de dados conhecida como Tabela-Q (\textit{Q-Table}), onde as linhas representam os estados do sistema e as colunas as ações possíveis.
 
 \begin{figure}[H]
-    \centering % Substitui o begin{center} para evitar espaço extra
-    \parbox[htb]{13.0cm}
-    {
-        \centering
-        \includegraphics[scale=0.6]{q-learning-algo.png}
-        \caption[\small{Algoritmo básico de Q-Learning}]{\label{FigQL2} \small{Diagrama do algoritmo de atualização do valor-$Q$.}}
-    }
+    \centering
+    \begin{tikzpicture}[
+        >=Stealth,
+        box/.style={
+            draw,
+            rounded corners=2pt,
+            line width=0.5pt,
+            fill=gray!12,
+            align=center,
+            inner xsep=2pt,
+            inner ysep=1pt,
+            minimum width=2.8cm,
+            minimum height=1.0cm
+        },
+        flow/.style={-Stealth, line width=0.5pt}
+    ]
+        \node[box] (s1) at (0,0) {Inicializar\\[-8pt]Tabela-Q};
+        \node[box] (s2) at (0,-1.8) {Escolher uma\\[-8pt]ação};
+        \node[box] (s3) at (0,-3.6) {Executar\\[-8pt]ação};
+        \node[box] (s4) at (0,-5.4) {Medir\\[-8pt]recompensa};
+        \node[box] (s5) at (0,-7.2) {Atualizar\\[-8pt]Tabela-Q};
+
+        \draw[flow] (s1.south) -- (s2.north);
+        \draw[flow] (s2.south) -- (s3.north);
+        \draw[flow] (s3.south) -- (s4.north);
+        \draw[flow] (s4.south) -- (s5.north);
+        \draw[flow] (s5.east) -- ++(1.9,0) -- ++(0,5.4) -- (s2.east);
+        \node[font=\scriptsize, align=center, rotate=90] at (3.95,-4.5)
+            {Após múltiplas iterações,\\[-1pt]uma boa Tabela-Q está pronta};
+    \end{tikzpicture}
+    \caption[\small{Algoritmo básico de Q-Learning}]{\label{FigQL2} \small{Diagrama do algoritmo de atualização do valor-$Q$.}}
 \end{figure}
 \vspace{-0.5cm} % Ajuste este valor conforme necessário para aproximar o texto
 

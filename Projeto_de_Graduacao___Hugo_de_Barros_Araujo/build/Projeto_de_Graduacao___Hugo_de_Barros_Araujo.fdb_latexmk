@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo"] 1774745536.95107 "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.aux" "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.bbl" "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo" 1774829650.79122 0
+["bibtex build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo"] 1774913596.77215 "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.aux" "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.bbl" "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo" 1774916351.8007 0
   "./bibliography/biblio.bib" 1774710289 4218 f4355b46c2073f5b6de1f172eaae3f81 ""
   "./bibliography/coppe.bst" 1774710289 24458 858d1cea7157546113f910063fcfbbab ""
-  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.aux" 1774829649 27546 9046fb6aa21c43f86d4c8893d763b633 "pdflatex"
+  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.aux" 1774916350 27546 9046fb6aa21c43f86d4c8893d763b633 "pdflatex"
   (generated)
   "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.bbl"
   "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.blg"
   (rewritten before read)
-["pdflatex"] 1774829646.65523 "c:/Users/hugob/Documents/TCC/Projeto_de_Graduacao___Hugo_de_Barros_Araujo/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.tex" "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.pdf" "Projeto_de_Graduacao___Hugo_de_Barros_Araujo" 1774829650.79207 0
+["pdflatex"] 1774916348.70383 "c:/Users/hugob/Documents/TCC/Projeto_de_Graduacao___Hugo_de_Barros_Araujo/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.tex" "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.pdf" "Projeto_de_Graduacao___Hugo_de_Barros_Araujo" 1774916351.80144 0
   "C:/Users/hugob/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1774718667 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/hugob/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbi1200.pk" 1774718681 42728 491a87af46606517789f239706419e91 ""
   "C:/Users/hugob/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbx0800.pk" 1774718675 19872 ef0534d60c4b01f6486cca3211f75d75 ""
@@ -238,15 +238,15 @@
   "Projeto_de_Graduacao___Hugo_de_Barros_Araujo.tex" 1774829647 4026 641ff6b54efd07c8b0c33a0864ee62a6 ""
   "appendices/ApendiceA.tex" 1774710289 3472 02c1278817c7c0d3e99f7691a084ed5b ""
   "appendices/ApendiceB.tex" 1774728209 1799 cabdb9fe81d695d1c621bff532aa7128 ""
-  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.aux" 1774829649 27546 9046fb6aa21c43f86d4c8893d763b633 "pdflatex"
-  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.bbl" 1774745537 3027 06c5828923c362b84aac092c02ada52f "bibtex build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo"
-  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.lof" 1774829649 1902 17f3443dbb8432759a75e37d2056ddf0 "pdflatex"
-  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.lot" 1774829649 469 c5571d4f9f08c1b32fedc94cfb70a068 "pdflatex"
-  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.out" 1774829649 9029 a93645aeef41196ec5e4e3d3d3a87b31 "pdflatex"
-  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.toc" 1774829649 11394 67220da583678aab2a5a31a1691e9158 "pdflatex"
+  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.aux" 1774916350 27546 9046fb6aa21c43f86d4c8893d763b633 "pdflatex"
+  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.bbl" 1774913597 3027 06c5828923c362b84aac092c02ada52f "bibtex build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo"
+  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.lof" 1774916350 1902 17f3443dbb8432759a75e37d2056ddf0 "pdflatex"
+  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.lot" 1774916350 469 c5571d4f9f08c1b32fedc94cfb70a068 "pdflatex"
+  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.out" 1774916350 9029 a93645aeef41196ec5e4e3d3d3a87b31 "pdflatex"
+  "build/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.toc" 1774916350 11394 67220da583678aab2a5a31a1691e9158 "pdflatex"
   "c:/Users/hugob/Documents/TCC/Projeto_de_Graduacao___Hugo_de_Barros_Araujo/Projeto_de_Graduacao___Hugo_de_Barros_Araujo.tex" 1774829647 4026 641ff6b54efd07c8b0c33a0864ee62a6 ""
   "chapters/cap1.tex" 1774745654 10228 a066849f548073b64af122fac791e0bd ""
-  "chapters/cap2.tex" 1774829645 25569 b6e459da655f0a9af1aef6f511477161 ""
+  "chapters/cap2.tex" 1774916348 26535 d8f482f383a4ae173c0221050aef225c ""
   "chapters/cap3.tex" 1774745654 10441 53544edf4bfeaa473f51e98694597b88 ""
   "chapters/cap4.tex" 1774745654 32831 c003e43f744d74926cf582a5181f18f2 ""
   "chapters/cap5.tex" 1774710290 5202 3add178c27319c923df3d70a8618ca1e ""
@@ -260,7 +260,6 @@
   "figuras/full_plot.png" 1774710290 71871 e0e78f95f5e1fbaaad5c234d32ae437a ""
   "figuras/path_relinking.png" 1774710290 19027 2a610fd40d82826e51a494637900e578 ""
   "figuras/poli_novo.eps" 1774710290 52673 6b6efbd3061a7c784b37475cf1ac3c7a ""
-  "figuras/q-learning-algo.png" 1774710290 13240 790a6c6d8fb151d472358590a46dff95 ""
   "figuras/q_table.png" 1774710290 31424 c50f43fd52b88f1ff24daebb302ae4ef ""
   "figuras/solomon_rc201.png" 1774710290 71212 9d2044aeb55e78505aea60cc46d4521d ""
   "figuras/solucao_otima_rc201.png" 1774710290 128859 f024a79c8c5b7e7e990256fa7852e221 ""
