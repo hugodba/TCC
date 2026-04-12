@@ -64,6 +64,8 @@ class VRPOptimizationModelRL(Model):
         ts_params: Dict[str, Any] | None = None,
         seed_policy: str = "best",
         parallel_agents: bool = False,
+        initial_q_table: Dict[Tuple[int, int], List[float]] | None = None,
+        initial_action_count_table: Dict[Tuple[int, int], List[int]] | None = None,
     ) -> None:
         """Initialize the model, RL parameters, and agents."""
         super().__init__()
@@ -74,8 +76,10 @@ class VRPOptimizationModelRL(Model):
         self.total_steps = total_steps
 
         # --- Reinforcement Learning Parameters ---
-        self.q_table: Dict[Tuple[int, int], List[float]] = {} # Map state -> [Q_SA, Q_TS, Q_GA]
-        self.action_count_table: Dict[Tuple[int, int], List[int]] = {} # Map state -> [N_SA, N_TS, N_GA]
+        self.q_table: Dict[Tuple[int, int], List[float]] = self._clone_q_table(initial_q_table)
+        self.action_count_table: Dict[Tuple[int, int], List[int]] = self._clone_action_count_table(
+            initial_action_count_table
+        )
         self.epsilon = epsilon
         self.epsilon_min = epsilon_min
         self.epsilon_decay = epsilon_decay
@@ -105,6 +109,52 @@ class VRPOptimizationModelRL(Model):
         self.agent_set.add(self.ga_agent)
         self.agent_set.add(self.sa_agent)
         self.agent_set.add(self.ts_agent)
+
+    @staticmethod
+    def _clone_q_table(
+        q_table: Dict[Tuple[int, int], List[float]] | None,
+    ) -> Dict[Tuple[int, int], List[float]]:
+        """Deep-copy a Q-table using canonical state/action dimensions."""
+        if not q_table:
+            return {}
+
+        cloned: Dict[Tuple[int, int], List[float]] = {}
+        for state, values in q_table.items():
+            if len(state) != 2:
+                continue
+
+            row = [float(v) for v in list(values)[:3]]
+            if len(row) < 3:
+                row.extend([0.0] * (3 - len(row)))
+            cloned[(int(state[0]), int(state[1]))] = row
+        return cloned
+
+    @staticmethod
+    def _clone_action_count_table(
+        action_count_table: Dict[Tuple[int, int], List[int]] | None,
+    ) -> Dict[Tuple[int, int], List[int]]:
+        """Deep-copy an action-count table using canonical state/action dimensions."""
+        if not action_count_table:
+            return {}
+
+        cloned: Dict[Tuple[int, int], List[int]] = {}
+        for state, values in action_count_table.items():
+            if len(state) != 2:
+                continue
+
+            row = [int(v) for v in list(values)[:3]]
+            if len(row) < 3:
+                row.extend([0] * (3 - len(row)))
+            cloned[(int(state[0]), int(state[1]))] = row
+        return cloned
+
+    def snapshot_q_table(self) -> Dict[Tuple[int, int], List[float]]:
+        """Return a deep copy of the current Q-table."""
+        return self._clone_q_table(self.q_table)
+
+    def snapshot_action_count_table(self) -> Dict[Tuple[int, int], List[int]]:
+        """Return a deep copy of the current action-count table."""
+        return self._clone_action_count_table(self.action_count_table)
 
     def get_state(self) -> Tuple[int, int]:
         """

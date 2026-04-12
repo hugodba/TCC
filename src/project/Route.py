@@ -7,7 +7,6 @@ from typing import List
 import numpy as np
 from .Dataset import Dataset
 from matplotlib import pyplot as plt
-import copy
 
 @dataclass
 class Route:
@@ -34,7 +33,17 @@ class Route:
     total_time: float = 0.0
 
     def clone(self) -> "Route":
-        return copy.deepcopy(self)
+        # Keep dataset shared (read-only) and duplicate only mutable solution state.
+        return Route(
+            dataset=self.dataset,
+            subroutes=[subroute.copy() for subroute in self.subroutes],
+            feasibility=bool(self.feasibility),
+            total_distance=float(self.total_distance),
+            total_vehicles=int(self.total_vehicles),
+            total_waiting_time=float(self.total_waiting_time),
+            total_service_time=float(self.total_service_time),
+            total_time=float(self.total_time),
+        )
     
     def is_feasible(self) -> bool:
         if not self.subroutes:

@@ -111,8 +111,80 @@ pandas                  2.3.2
 \begin{itemize}
     \item \textbf{Agentes Especialistas (\textit{HeuristicAgent}):} Cada instância representa uma meta-heurística (SA, TS ou GA) que atua de forma independente. Em cada ciclo de execução (\textit{step}), o agente recupera uma solução promissora do \textit{pool} de elite para servir como uma solução inicial (evidentemente, em estado melhor que uma solução inicial puramente aleatória), executa sua lógica de busca e devolve o resultado aprimorado ao sistema.
     \item \textbf{Memória Compartilhada (\textit{ElitePool}):} Funciona como um quadro negro (\textit{blackboard}) que armazena as melhores soluções encontradas por todos os agentes. O \textit{pool} possui um tamanho fixo, garantindo que apenas as soluções com menor custo (considerando o número de veículos $K$ e distância total $D$) sejam mantidas e compartilhadas.
-    \item \textbf{Mecanismo de Coordenação e Sincronização:} O modelo gerencia a execução dos agentes de forma embaralhada (\textit{shuffle\_do}), garantindo que a ordem de atuação não vicie a busca e que todos tenham acesso equitativo aos recursos de memória.
+    \item \textbf{Mecanismo de Coordenação e Sincronização:} Cada \textit{step} despacha SA, TS e GA em paralelo, sincroniza os retornos e consolida os candidatos viáveis no \textit{ElitePool}.
 \end{itemize}
+
+\paragraph{Fluxo operacional do MAS simples}
+
+\paragraph{} Na configuração final utilizada nos experimentos (\texttt{parallel\_agents=True}), o \textit{step} do MAS simples executa os três agentes em paralelo, atualiza a memória compartilhada e, quando possível, aplica cooperação por \textit{Path Relinking}. O fluxo está sintetizado na \autoref{FigFluxMASSimples}.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        >=Stealth,
+        node distance=0.75cm and 1.2cm,
+        box/.style={
+            draw,
+            rounded corners=2pt,
+            line width=0.5pt,
+            fill=gray!12,
+            align=center,
+            inner xsep=3pt,
+            inner ysep=2pt,
+            minimum height=0.95cm,
+            text width=4.6cm,
+            font=\scriptsize
+        },
+        smallbox/.style={
+            draw,
+            rounded corners=2pt,
+            line width=0.5pt,
+            fill=gray!12,
+            align=center,
+            inner xsep=2pt,
+            inner ysep=2pt,
+            minimum height=0.9cm,
+            text width=2.8cm,
+            font=\scriptsize
+        },
+        flow/.style={-Stealth, line width=0.5pt}
+    ]
+        \node[box] (start) {Início do \textit{step} do MAS};
+        \node[box, below=of start] (seed) {Obter sementes iniciais para os agentes a partir do \textit{ElitePool} (política \texttt{best} ou \texttt{random})};
+        \node[box, below=of seed] (dispatch) {Despachar SA, TS e GA em paralelo (\texttt{ThreadPoolExecutor})};
+
+        \node[smallbox, below left=of dispatch] (sa) {\textit{Thread} 1\\Agente SA};
+        \node[smallbox, below=of dispatch] (ts) {\textit{Thread} 2\\Agente TS};
+        \node[smallbox, below right=of dispatch] (ga) {\textit{Thread} 3\\Agente GA};
+
+        \node[box, below=1.0cm of ts] (merge) {Sincronizar retornos, validar factibilidade e atualizar \textit{ElitePool}};
+        \node[box, below=of merge] (prcheck) {\textit{ElitePool} possui ao menos 2 soluções?};
+
+        \node[box, below left=1.1cm and 1.6cm of prcheck, text width=4.2cm] (skippr) {Não executa \textit{Path Relinking} neste \textit{step}};
+        \node[box, below right=1.1cm and 1.6cm of prcheck, text width=4.2cm] (runpr) {Executar \textit{Path Relinking} bidirecional e inserir melhoria no \textit{pool} (se houver)};
+
+        \node[box, below=2.1cm of prcheck] (end) {Encerrar \textit{step}};
+
+        \draw[flow] (start) -- (seed);
+        \draw[flow] (seed) -- (dispatch);
+
+        \draw[flow] (dispatch) -- (sa);
+        \draw[flow] (dispatch) -- (ts);
+        \draw[flow] (dispatch) -- (ga);
+
+        \draw[flow] (sa.south) |- (merge.west);
+        \draw[flow] (ts.south) -- (merge.north);
+        \draw[flow] (ga.south) |- (merge.east);
+
+        \draw[flow] (merge) -- (prcheck);
+        \draw[flow] (prcheck) -- node[font=\scriptsize, left] {Não} (skippr);
+        \draw[flow] (prcheck) -- node[font=\scriptsize, right] {Sim} (runpr);
+        \draw[flow] (skippr.south) |- (end.west);
+        \draw[flow] (runpr.south) |- (end.east);
+    \end{tikzpicture}
+    \caption[Fluxograma do MAS simples (paralelo)]{\label{FigFluxMASSimples} \small{Fluxo de execução do \texttt{VRPOptimizationModel} na configuração final paralela. O \textit{step} executa SA, TS e GA em paralelo, consolida soluções no \textit{ElitePool} e aplica \textit{Path Relinking} quando há diversidade suficiente.}}
+\end{figure}
+\vspace{-0.5cm}
 
 \subsection{Cooperação e a Estratégia de Path Relinking}
 
@@ -242,7 +314,70 @@ Mesa MAS best -> vehicles: 11, distance: 3374.26
 
 \subsection{Dinâmica de Cooperação e Atualização}
 
-\paragraph{} A cada \textit{step} do modelo, o sistema realiza três iterações de escolha e execução. Após a execução do agente selecionado, o valor de utilidade $Q(s, a)$ é atualizado na Tabela-Q utilizando a \autoref{EqQLearning}:
+\paragraph{} No método final implementado (classe \texttt{VRPOptimizationModelRL}), cada \textit{step} ocorre em duas fases. Na fase de decisão, o agente de RL seleciona \texttt{runs\_per\_step} ações por política $\epsilon$-\textit{greedy}. Na fase de execução, as ações selecionadas são despachadas em paralelo (\texttt{parallel\_agents=True}) por \texttt{ThreadPoolExecutor}. Após a sincronização das \textit{threads}, cada solução retornada é avaliada, inserida no \textit{ElitePool} (quando viável), e o valor de utilidade $Q(s,a)$ é atualizado conforme a \autoref{EqQLearning}.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        >=Stealth,
+        node distance=0.75cm and 1.2cm,
+        box/.style={
+            draw,
+            rounded corners=2pt,
+            line width=0.5pt,
+            fill=gray!12,
+            align=center,
+            inner xsep=3pt,
+            inner ysep=2pt,
+            minimum height=0.95cm,
+            text width=4.6cm,
+            font=\scriptsize
+        },
+        smallbox/.style={
+            draw,
+            rounded corners=2pt,
+            line width=0.5pt,
+            fill=gray!12,
+            align=center,
+            inner xsep=2pt,
+            inner ysep=2pt,
+            minimum height=0.9cm,
+            text width=2.8cm,
+            font=\scriptsize
+        },
+        flow/.style={-Stealth, line width=0.5pt}
+    ]
+        \node[box] (start) {Início do \textit{step} do MAS-RL};
+        \node[box, below=of start] (select) {Para cada execução ($r=1,\dots,\texttt{runs\_per\_step}$): observar estado $(K,D_{bin})$, selecionar ação via $\epsilon$-\textit{greedy} e registrar (agente, semente)};
+        \node[box, below=of select] (dispatch) {Despachar execuções selecionadas em paralelo (\texttt{ThreadPoolExecutor})};
+
+        \node[smallbox, below left=of dispatch] (sa) {\textit{Thread} 1\\Agente SA};
+        \node[smallbox, below=of dispatch] (ts) {\textit{Thread} 2\\Agente TS};
+        \node[smallbox, below right=of dispatch] (ga) {\textit{Thread} 3\\Agente GA};
+
+        \node[box, below=1.0cm of ts] (merge) {Sincronizar retornos, validar factibilidade e atualizar \textit{ElitePool}};
+        \node[box, below=of merge] (qupdate) {Para cada retorno: calcular recompensa, observar novo estado e atualizar $Q(s,a)$};
+        \node[box, below=of qupdate] (prcheck) {Se houver ao menos 2 soluções no \textit{pool}, executar \textit{Path Relinking} bidirecional};
+        \node[box, below=of prcheck] (end) {Aplicar decaimento de $\epsilon$ e encerrar \textit{step}};
+
+        \draw[flow] (start) -- (select);
+        \draw[flow] (select) -- (dispatch);
+
+        \draw[flow] (dispatch) -- (sa);
+        \draw[flow] (dispatch) -- (ts);
+        \draw[flow] (dispatch) -- (ga);
+
+        \draw[flow] (sa.south) |- (merge.west);
+        \draw[flow] (ts.south) -- (merge.north);
+        \draw[flow] (ga.south) |- (merge.east);
+
+        \draw[flow] (merge) -- (qupdate);
+        \draw[flow] (qupdate) -- (prcheck);
+        \draw[flow] (prcheck) -- (end);
+    \end{tikzpicture}
+    \caption[Fluxograma do método final (MAS-RL paralelo)]{\label{FigFluxFinalMASRL} \small{Fluxo de execução do método final implementado em \texttt{VRPOptimizationModelRL}. A seleção de ações é feita pelo agente de RL, enquanto as execuções das meta-heurísticas são despachadas em paralelo; nesta configuração não há uso de \textit{shuffle\_do}.}}
+\end{figure}
+\vspace{-0.5cm}
 
 \paragraph{} Os hiperparâmetros adotados incluem uma taxa de aprendizado $\alpha = 0,2$ e um fator de desconto $\gamma = 0,8$, priorizando a importância de recompensas a curto e médio prazo no processo de otimização. Paralelamente ao RL, o método \texttt{run\_path\_relinking} continua a promover a síntese de soluções de elite, agora alimentado por um \textit{pool} cujos candidatos são gerados por agentes selecionados de forma adaptativa.
 

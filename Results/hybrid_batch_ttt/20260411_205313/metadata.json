@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-04-11 20:53:13",
+  "source": "csv:C:\\Users\\hugob\\Documents\\TCC\\Results\\hybrid_batch_run_level_20260406_083711.csv",
+  "source_csv": "C:\\Users\\hugob\\Documents\\TCC\\Results\\hybrid_batch_run_level_20260406_083711.csv",
+  "target_k_gap_pct": 300,
+  "available_k_gaps": [
+    100,
+    150,
+    200,
+    250,
+    300
+  ],
+  "available_d_gaps": [
+    100,
+    150,
+    200,
+    250,
+    300
+  ]
+}

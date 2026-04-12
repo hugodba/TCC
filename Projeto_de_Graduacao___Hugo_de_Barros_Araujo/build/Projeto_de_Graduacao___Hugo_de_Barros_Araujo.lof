@@ -10,14 +10,16 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {4.1}{\ignorespaces \small {Rotas encontradas pelas meta-heurísticas}}}{28}{figure.4.1}%
 \contentsline {figure}{\numberline {4.2}{\ignorespaces \small {Evolução da função custo pelas meta-heurísticas}}}{29}{figure.4.2}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces \small {Evolução da função custo no MAS-RL}}}{34}{figure.4.3}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces \small {Evolução da função custo no MAS-RL}}}{38}{figure.4.4}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces \small {Q-table}}}{40}{figure.4.5}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces \small {Distribuição de execução dos agentes}}}{40}{figure.4.6}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Fluxograma do MAS simples (paralelo)}}{33}{figure.4.3}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces \small {Evolução da função custo no MAS-RL}}}{35}{figure.4.4}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Fluxograma do método final (MAS-RL paralelo)}}{39}{figure.4.5}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces \small {Evolução da função custo no MAS-RL}}}{40}{figure.4.6}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces \small {Q-table}}}{42}{figure.4.7}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces \small {Distribuição de execução dos agentes}}}{42}{figure.4.8}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces \small {Tempo de viagem, espera e serviço}}}{45}{figure.5.1}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces \small {Tempo de viagem, espera e serviço}}}{47}{figure.5.1}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {A.1}{\ignorespaces \small {Mapa da instância C101}}}{48}{figure.A.1}%
-\contentsline {figure}{\numberline {A.2}{\ignorespaces \small {Mapa da instância R101}}}{49}{figure.A.2}%
-\contentsline {figure}{\numberline {A.3}{\ignorespaces \small {Mapa da instância RC101}}}{49}{figure.A.3}%
+\contentsline {figure}{\numberline {A.1}{\ignorespaces \small {Mapa da instância C101}}}{50}{figure.A.1}%
+\contentsline {figure}{\numberline {A.2}{\ignorespaces \small {Mapa da instância R101}}}{51}{figure.A.2}%
+\contentsline {figure}{\numberline {A.3}{\ignorespaces \small {Mapa da instância RC101}}}{51}{figure.A.3}%
 \addvspace {10\p@ }

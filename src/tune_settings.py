@@ -267,7 +267,7 @@ def main(
 
 
     _status("Tunning MAS family parameters with feedback from inner solvers...")
-    # Tune MAS/MAS_RL runtime using inner params only (step controls are fixed).
+    # Tune MAS-family runtime using inner params only (step controls are fixed).
     mas_steps = cfg.MAS_N_STEPS
 
     target_mas_run_sec = target_method_run_sec
@@ -277,7 +277,7 @@ def main(
     parallel_method_runs = cfg.MAS_RL_PARAMS['runs_per_step']
     inner_solver_target_sec = target_mas_step_sec / parallel_method_runs
     _status(
-        "Running MAS and MAS_RL feedback tunning | "
+        "Running MAS family feedback tunning | "
         f"target_run_mas={target_mas_run_sec:.3f}s, "
         f"fixed_steps_mas={mas_steps}, "
         f"target_step_mas={target_mas_step_sec:.3f}s, "
@@ -337,7 +337,7 @@ def main(
     est_total = (
         cfg.N_RUNS
         * instance_count
-        * (est_sa + est_ts + est_ga + est_mas + est_mas)
+        * (est_sa + est_ts + est_ga + est_mas + est_mas + est_mas)
     )
 
     report = {
@@ -357,6 +357,7 @@ def main(
             "GA": float(est_ga),
             "MAS": float(est_mas),
             "MAS_RL": float(est_mas),
+            "MAS_RL_WARM": float(est_mas),
         },
         "estimated_total_main_runtime_sec": float(est_total),
         "estimated_total_main_runtime_min": float(est_total / 60.0),

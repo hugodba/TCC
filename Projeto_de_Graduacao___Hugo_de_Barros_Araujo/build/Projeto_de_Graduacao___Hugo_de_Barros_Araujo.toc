@@ -151,50 +151,52 @@
 \contentsline {paragraph}{}{32}{section*.119}%
 \contentsline {subsection}{\numberline {4.3.1}Arquitetura e Componentes do Sistema}{32}{subsection.4.3.1}%
 \contentsline {paragraph}{}{32}{section*.120}%
-\contentsline {subsection}{\numberline {4.3.2}Cooperação e a Estratégia de Path Relinking}{33}{subsection.4.3.2}%
-\contentsline {paragraph}{}{33}{section*.121}%
-\contentsline {subsection}{\numberline {4.3.3}Resultados}{33}{subsection.4.3.3}%
+\contentsline {paragraph}{Fluxo operacional do MAS simples}{33}{section*.121}%
 \contentsline {paragraph}{}{33}{section*.122}%
+\contentsline {subsection}{\numberline {4.3.2}Cooperação e a Estratégia de Path Relinking}{34}{subsection.4.3.2}%
 \contentsline {paragraph}{}{34}{section*.123}%
+\contentsline {subsection}{\numberline {4.3.3}Resultados}{34}{subsection.4.3.3}%
 \contentsline {paragraph}{}{34}{section*.124}%
-\contentsline {subsection}{\numberline {4.3.4}Análise dos resultados}{35}{subsection.4.3.4}%
 \contentsline {paragraph}{}{35}{section*.125}%
 \contentsline {paragraph}{}{35}{section*.126}%
+\contentsline {subsection}{\numberline {4.3.4}Análise dos resultados}{36}{subsection.4.3.4}%
 \contentsline {paragraph}{}{36}{section*.127}%
 \contentsline {paragraph}{}{36}{section*.128}%
-\contentsline {section}{\numberline {4.4}Hiper-heurística baseada em Aprendizado por Reforço}{36}{section.4.4}%
 \contentsline {paragraph}{}{36}{section*.129}%
-\contentsline {subsection}{\numberline {4.4.1}Modelagem do Q-Learning}{36}{subsection.4.4.1}%
-\contentsline {paragraph}{}{36}{section*.130}%
-\contentsline {subsection}{\numberline {4.4.2}Dinâmica de Cooperação e Atualização}{37}{subsection.4.4.2}%
+\contentsline {paragraph}{}{37}{section*.130}%
+\contentsline {section}{\numberline {4.4}Hiper-heurística baseada em Aprendizado por Reforço}{37}{section.4.4}%
 \contentsline {paragraph}{}{37}{section*.131}%
+\contentsline {subsection}{\numberline {4.4.1}Modelagem do Q-Learning}{37}{subsection.4.4.1}%
 \contentsline {paragraph}{}{37}{section*.132}%
-\contentsline {subsection}{\numberline {4.4.3}Resultados}{37}{subsection.4.4.3}%
+\contentsline {subsection}{\numberline {4.4.2}Dinâmica de Cooperação e Atualização}{38}{subsection.4.4.2}%
 \contentsline {paragraph}{}{38}{section*.133}%
-\contentsline {paragraph}{}{40}{section*.134}%
-\contentsline {subsection}{\numberline {4.4.4}Análise dos Resultados}{40}{subsection.4.4.4}%
+\contentsline {paragraph}{}{39}{section*.134}%
+\contentsline {subsection}{\numberline {4.4.3}Resultados}{40}{subsection.4.4.3}%
 \contentsline {paragraph}{}{40}{section*.135}%
-\contentsline {paragraph}{}{41}{section*.136}%
-\contentsline {paragraph}{}{41}{section*.137}%
-\contentsline {paragraph}{}{41}{section*.138}%
-\contentsline {chapter}{\numberline {5}Conclusão}{43}{chapter.5}%
+\contentsline {paragraph}{}{42}{section*.136}%
+\contentsline {subsection}{\numberline {4.4.4}Análise dos Resultados}{43}{subsection.4.4.4}%
+\contentsline {paragraph}{}{43}{section*.137}%
+\contentsline {paragraph}{}{43}{section*.138}%
 \contentsline {paragraph}{}{43}{section*.139}%
-\contentsline {section}{\numberline {5.1}Resultados e análises finais}{43}{section.5.1}%
-\contentsline {paragraph}{}{43}{section*.140}%
-\contentsline {paragraph}{}{44}{section*.141}%
-\contentsline {paragraph}{}{44}{section*.142}%
-\contentsline {section}{\numberline {5.2}Oportunidades de melhoria}{44}{section.5.2}%
-\contentsline {paragraph}{}{44}{section*.143}%
-\contentsline {paragraph}{}{44}{section*.144}%
-\contentsline {paragraph}{}{45}{section*.145}%
-\contentsline {paragraph}{}{45}{section*.146}%
-\contentsline {chapter}{Bibliografia}{46}{section*.146}%
-\contentsline {chapter}{\numberline {A}Benchmark de Solomon}{48}{appendix.A}%
-\contentsline {paragraph}{}{48}{section*.148}%
-\contentsline {paragraph}{}{50}{section*.149}%
-\contentsline {chapter}{\numberline {B}Estimativa para Busca Exaustiva}{51}{appendix.B}%
-\contentsline {paragraph}{}{51}{section*.150}%
-\contentsline {paragraph}{}{51}{section*.151}%
-\contentsline {paragraph}{}{51}{section*.152}%
-\contentsline {paragraph}{}{51}{section*.153}%
-\contentsline {paragraph}{}{51}{section*.154}%
+\contentsline {paragraph}{}{44}{section*.140}%
+\contentsline {chapter}{\numberline {5}Conclusão}{45}{chapter.5}%
+\contentsline {paragraph}{}{45}{section*.141}%
+\contentsline {section}{\numberline {5.1}Resultados e análises finais}{45}{section.5.1}%
+\contentsline {paragraph}{}{45}{section*.142}%
+\contentsline {paragraph}{}{46}{section*.143}%
+\contentsline {paragraph}{}{46}{section*.144}%
+\contentsline {section}{\numberline {5.2}Oportunidades de melhoria}{46}{section.5.2}%
+\contentsline {paragraph}{}{46}{section*.145}%
+\contentsline {paragraph}{}{46}{section*.146}%
+\contentsline {paragraph}{}{47}{section*.147}%
+\contentsline {paragraph}{}{47}{section*.148}%
+\contentsline {chapter}{Bibliografia}{48}{section*.148}%
+\contentsline {chapter}{\numberline {A}Benchmark de Solomon}{50}{appendix.A}%
+\contentsline {paragraph}{}{50}{section*.150}%
+\contentsline {paragraph}{}{52}{section*.151}%
+\contentsline {chapter}{\numberline {B}Estimativa para Busca Exaustiva}{53}{appendix.B}%
+\contentsline {paragraph}{}{53}{section*.152}%
+\contentsline {paragraph}{}{53}{section*.153}%
+\contentsline {paragraph}{}{53}{section*.154}%
+\contentsline {paragraph}{}{53}{section*.155}%
+\contentsline {paragraph}{}{53}{section*.156}%
