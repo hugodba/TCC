@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-04-14 06:48:38",
+  "source": "memory:BATCH_RUN_LEVEL_DF",
+  "source_csv": null,
+  "target_k_gap_pct": 300,
+  "available_k_gaps": [
+    100,
+    150,
+    200,
+    250,
+    300
+  ],
+  "available_d_gaps": [
+    100,
+    150,
+    200,
+    250,
+    300
+  ]
+}

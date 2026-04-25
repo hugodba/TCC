@@ -1,0 +1,8 @@
+{
+  "generated_at": "2026-04-14 07:59:34",
+  "method": "MAS_RL",
+  "instance": "rc204.txt",
+  "seed": 1,
+  "rows_q_table": 27,
+  "rows_action_count_table": 24
+}

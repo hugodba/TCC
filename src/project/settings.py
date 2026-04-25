@@ -7,23 +7,24 @@ PARALLEL_AGENTS = True
 
 # Time-budget controls (used by the external tuner)
 METHOD_COUNT = 6
-TOTAL_MAIN_BUDGET_SEC = 60*60*24 # 24 hours
+TOTAL_MAIN_BUDGET_SEC = 60*60*12 # 12 hours
 
 # MAS controls
-MAS_POOL_SIZE = 5
+MAS_POOL_SIZE = 10
+ELITE_POOL_DIVERSITY_TRESHOLD = 10
 MAS_SEED_POLICY = "random"  # Options: "best", "random"
 MAS_N_STEPS = 200
 
 # Isolated metaheuristics params (auto-tuned by src/tune_settings.py)
 # Tunnable params are: iterations_per_temp | max_iterations, tabu_tenure | generations
-SA_PARAMS = {'initial_temp': 1000.0, 'cooling_rate': 0.95, 'min_temp': 10.0, 'iterations_per_temp': 949}
-TS_PARAMS = {'max_iterations': 1738, 'tabu_tenure': 243, 'neighbor_samples': 50}
-GA_PARAMS = {'population_size': 64, 'generations': 1063, 'crossover_rate': 0.8, 'mutation_rate': 0.1}
+SA_PARAMS = {'initial_temp': 1000.0, 'cooling_rate': 0.95, 'min_temp': 10.0, 'iterations_per_temp': 1049}
+TS_PARAMS = {'max_iterations': 1256, 'tabu_tenure': 176, 'neighbor_samples': 50}
+GA_PARAMS = {'population_size': 64, 'generations': 1131, 'crossover_rate': 0.8, 'mutation_rate': 0.1}
 
 # Cooperative inner configs (auto-tuned by src/tune_settings.py)
 MAS_SA_PARAMS = {'initial_temp': 300.0, 'cooling_rate': 0.95, 'min_temp': 10.0, 'iterations_per_temp': 1}
-MAS_TS_PARAMS = {'max_iterations': 3, 'tabu_tenure': 0, 'neighbor_samples': 20}
-MAS_GA_PARAMS = {'population_size': 16, 'generations': 2, 'crossover_rate': 0.8, 'mutation_rate': 0.1}
+MAS_TS_PARAMS = {'max_iterations': 4, 'tabu_tenure': 1, 'neighbor_samples': 20}
+MAS_GA_PARAMS = {'population_size': 16, 'generations': 4, 'crossover_rate': 0.8, 'mutation_rate': 0.1}
 
 # RL controls
 MAS_RL_PARAMS = {
@@ -105,22 +106,22 @@ DEFAULT_TUNING_DATASET = "rc201.txt"
 
 # Updated by src/tune_settings.py
 LAST_TUNING_REPORT = {'dataset': 'rc201.txt',
- 'method_runs': 2,
- 'total_main_budegt_sec': 86400,
- 'mas_n_steps': 300,
+ 'method_runs': 1,
+ 'total_main_budegt_sec': 43200,
+ 'mas_n_steps': 200,
  'method_count': 6,
- 'instance_count': 13,
- 'target_method_runs': 156,
- 'target_method_run_sec': 553.8461538461538,
- 'estimated_method_run_sec': {'SA': 551.1875,
-                              'TS': 561.140625,
-                              'GA': 549.046875,
-                              'MAS': 679.6875,
-                              'MAS_RL': 679.6875,
-                              'MAS_RL_WARM': 679.6875},
- 'estimated_total_main_runtime_sec': 96211.375,
- 'estimated_total_main_runtime_min': 1603.5229166666666,
- 'fixed_controls': {'MAS_POOL_SIZE': 5,
+ 'instance_count': 12,
+ 'target_method_runs': 72,
+ 'target_method_run_sec': 600.0,
+ 'estimated_method_run_sec': {'SA': 580.125,
+                              'TS': 575.078125,
+                              'GA': 602.4375,
+                              'MAS': 556.25,
+                              'MAS_RL': 556.25,
+                              'MAS_RL_WARM': 556.25},
+ 'estimated_total_main_runtime_sec': 41116.6875,
+ 'estimated_total_main_runtime_min': 685.278125,
+ 'fixed_controls': {'MAS_POOL_SIZE': 10,
                     'MAS_SEED_POLICY': 'random',
                     'MAS_RL_PARAMS': {'epsilon': 0.8,
                                       'epsilon_min': 0.05,

@@ -12,6 +12,7 @@ from mesa.agent import AgentSet
 
 from .Route import Route
 from .Metaheuristics import GeneticAlgorithm, SimulatedAnnealing, TabuSearch, Metaheuristic
+from . import settings as cfg
 
 logger = logging.getLogger("TCC")
 
@@ -21,11 +22,54 @@ class ElitePool:
     """Shared memory of best solutions (blackboard)."""
 
     max_size: int
+    diversity_treshold: int
     items: List[Route]
 
+    @staticmethod
+    def _route_to_permutation(route: Route) -> List[int]:
+        """Convert a route into a customer permutation, excluding depots."""
+        perm: List[int] = []
+        for sub in route.subroutes:
+            for cust in sub:
+                if cust != 0:
+                    perm.append(cust)
+        return perm
+
+    @classmethod
+    def _diversity(cls, left: Route, right: Route) -> int:
+        """Compute Hamming diversity between two customer permutations."""
+        left_perm = cls._route_to_permutation(left)
+        right_perm = cls._route_to_permutation(right)
+        shared = sum(a != b for a, b in zip(left_perm, right_perm))
+        return shared + abs(len(left_perm) - len(right_perm))
+
     def add(self, route: Route) -> None:
-        """Add a cloned route to the pool and keep only the best max_size."""
-        self.items.append(route.clone())
+        """Add a cloned route to the pool while enforcing diversity constraints."""
+        candidate = route.clone()
+        candidate_cost = candidate.cost_function()
+
+        conflicting_indexes: List[int] = []
+        best_conflict_cost: Optional[Tuple[int, float]] = None
+        for idx, existing in enumerate(self.items):
+            diversity = self._diversity(candidate, existing)
+            if diversity == 0 or diversity < self.diversity_treshold:
+                conflicting_indexes.append(idx)
+                existing_cost = existing.cost_function()
+                if best_conflict_cost is None or existing_cost < best_conflict_cost:
+                    best_conflict_cost = existing_cost
+
+        if conflicting_indexes:
+            if best_conflict_cost is not None and candidate_cost >= best_conflict_cost:
+                return
+
+            conflicting_index_set = set(conflicting_indexes)
+            self.items = [
+                existing
+                for idx, existing in enumerate(self.items)
+                if idx not in conflicting_index_set
+            ]
+
+        self.items.append(candidate)
         self.items.sort(key=lambda r: r.cost_function())
         if len(self.items) > self.max_size:
             del self.items[self.max_size :]
@@ -50,6 +94,7 @@ class VRPOptimizationModelRL(Model):
         self,
         dataset,
         pool_size: int = 10,
+        elite_pool_diversity_treshold: int = cfg.ELITE_POOL_DIVERSITY_TRESHOLD,
         seed: int | None = None,
         total_steps: int = 100,
         epsilon: float = 0.4,
@@ -72,7 +117,11 @@ class VRPOptimizationModelRL(Model):
         self.dataset = dataset
         self.random = random.Random(seed)
         self.agent_set = AgentSet([], random=self.random)
-        self.elite_pool = ElitePool(max_size=pool_size, items=[])
+        self.elite_pool = ElitePool(
+            max_size=pool_size,
+            diversity_treshold=elite_pool_diversity_treshold,
+            items=[],
+        )
         self.total_steps = total_steps
 
         # --- Reinforcement Learning Parameters ---
@@ -220,7 +269,7 @@ class VRPOptimizationModelRL(Model):
             if curr_d < prev_d:
                 reward += (prev_d - curr_d) # Reward = magnitude of improvement
             else:
-                reward -= 1 # Small penalty for stagnation/time wasting
+                reward -= 0.05 # Small penalty for stagnation/time wasting
         else:
             reward -= 20 # Penalty for worsening solution (rare, but possible)
 

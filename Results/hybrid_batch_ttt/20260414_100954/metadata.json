@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-04-14 10:09:54",
+  "source": "memory:BATCH_RUN_LEVEL_DF",
+  "source_csv": null,
+  "k_targets_for_plot": [
+    "K",
+    "K+100%",
+    "K+150%",
+    "K+200%",
+    "K+250%",
+    "K+300%"
+  ],
+  "available_k_gaps": [
+    100,
+    150,
+    200,
+    250,
+    300
+  ],
+  "available_d_gaps": [
+    100,
+    150,
+    200,
+    250,
+    300
+  ]
+}
