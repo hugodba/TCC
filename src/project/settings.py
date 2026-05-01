@@ -1,30 +1,36 @@
 from __future__ import annotations
 
 # Experiment controls
-N_RUNS = 1
+N_RUNS = 2
 SEED_START = 1
 PARALLEL_AGENTS = True
 
-# Time-budget controls (used by the external tuner)
-METHOD_COUNT = 6
-TOTAL_MAIN_BUDGET_SEC = 60*60*12 # 12 hours
-
 # MAS controls
-MAS_POOL_SIZE = 10
+MAS_POOL_SIZE = 7
 ELITE_POOL_DIVERSITY_TRESHOLD = 10
 MAS_SEED_POLICY = "random"  # Options: "best", "random"
-MAS_N_STEPS = 200
+MAS_N_STEPS = 80
+
+# # Isolated metaheuristics params (auto-tuned by src/tune_settings.py)
+# SA_PARAMS = {'initial_temp': 1800, 'cooling_rate': 0.99, 'min_temp': 3, 'iterations_per_temp': 800} # iterations per temp * math.log(min_temp / initial_temp) / math.log(cooling_rate)
+# TS_PARAMS = {'max_iterations': 2000, 'tabu_tenure': 20, 'neighbor_samples': 300} # max iters * neighbor samples
+# GA_PARAMS = {'population_size': 70, 'generations': 10_000, 'crossover_rate': 0.7, 'mutation_rate': 0.05} # generations * population size
+
+# # Cooperative inner configs (auto-tuned by src/tune_settings.py)
+# MAS_SA_PARAMS = {'initial_temp': 1800.0, 'cooling_rate': 0.99, 'min_temp': 3.0, 'iterations_per_temp': 50}
+# MAS_TS_PARAMS = {'max_iterations': 500, 'tabu_tenure': 20, 'neighbor_samples': 75}
+# MAS_GA_PARAMS = {'population_size': 70, 'generations': 500, 'crossover_rate': 0.7, 'mutation_rate': 0.05}
+
 
 # Isolated metaheuristics params (auto-tuned by src/tune_settings.py)
-# Tunnable params are: iterations_per_temp | max_iterations, tabu_tenure | generations
-SA_PARAMS = {'initial_temp': 1000.0, 'cooling_rate': 0.95, 'min_temp': 10.0, 'iterations_per_temp': 1049}
-TS_PARAMS = {'max_iterations': 1256, 'tabu_tenure': 176, 'neighbor_samples': 50}
-GA_PARAMS = {'population_size': 64, 'generations': 1131, 'crossover_rate': 0.8, 'mutation_rate': 0.1}
+SA_PARAMS = {'initial_temp': 1800, 'cooling_rate': 0.99, 'min_temp': 3, 'iterations_per_temp': 20} # iterations per temp * math.log(min_temp / initial_temp) / math.log(cooling_rate)
+TS_PARAMS = {'max_iterations': 100, 'tabu_tenure': 20, 'neighbor_samples': 100} # max iters * neighbor samples
+GA_PARAMS = {'population_size': 70, 'generations': 40, 'crossover_rate': 0.7, 'mutation_rate': 0.05} # generations * population size
 
 # Cooperative inner configs (auto-tuned by src/tune_settings.py)
-MAS_SA_PARAMS = {'initial_temp': 300.0, 'cooling_rate': 0.95, 'min_temp': 10.0, 'iterations_per_temp': 1}
-MAS_TS_PARAMS = {'max_iterations': 4, 'tabu_tenure': 1, 'neighbor_samples': 20}
-MAS_GA_PARAMS = {'population_size': 16, 'generations': 4, 'crossover_rate': 0.8, 'mutation_rate': 0.1}
+MAS_SA_PARAMS = {'initial_temp': 1800.0, 'cooling_rate': 0.99, 'min_temp': 3.0, 'iterations_per_temp': 20}
+MAS_TS_PARAMS = {'max_iterations': 100, 'tabu_tenure': 20, 'neighbor_samples': 75}
+MAS_GA_PARAMS = {'population_size': 70, 'generations': 20, 'crossover_rate': 0.7, 'mutation_rate': 0.05}
 
 # RL controls
 MAS_RL_PARAMS = {
@@ -50,83 +56,68 @@ D_GAPS = [1.0, 1.5, 2.0, 2.5, 3.0] #1.0 means +100%, 3.0 means +300%.
 K_GAPS = [1.0, 1.5, 2.0, 2.5, 3.0]
 TTT_TARGETS = {"vehicles": True, "distance": True,}
 METHOD_LABELS = ["SA", "TS", "GA", "MAS", "MAS_RL", "MAS_RL_WARM"]
-INSTANCE_GROUPS = {
-    "C1": [
-        "c101.txt",
-        "c102.txt",
-        #"c103.txt",
-        #"c104.txt",
-        #"c105.txt"
-    ],
-    "C2": [
-        "c201.txt",
-        "c202.txt",
-        #"c203.txt",
-        #"c204.txt",
-        #"c205.txt"
-    ],
-    "R1": [
-        "r101.txt",
-        "r102.txt",
-        #"r103.txt",
-        #"r104.txt",
-        #"r105.txt"
-    ],
-    "R2": [
-        "r201.txt",
-        "r202.txt",
-        #"r204.txt",
-        #"r206.txt",
-        #"r208.txt"
-    ],
-    "RC1": [
-        "rc102.txt",
-        "rc103.txt",
-        #"rc104.txt",
-        #"rc105.txt",
-        #"rc106.txt"
-    ],
-    "RC2": [
-        "rc201.txt",
-        "rc204.txt",
-        #"rc205.txt",
-        #"rc206.txt",
-        #"rc207.txt"
-    ],
-}
-
-# Calculations
-INSTANCE_COUNT = sum([len(group_instances) for group_instances in INSTANCE_GROUPS.values()])
-TARGET_METHOD_RUNS = METHOD_COUNT * INSTANCE_COUNT * N_RUNS
-TARGET_METHOD_RUN_SEC = TOTAL_MAIN_BUDGET_SEC / TARGET_METHOD_RUNS
-
+INSTANCES = ["rc201.txt", "rc204.txt", "rc205.txt", "rc206.txt", "rc207.txt"]
 
 # External tuner defaults
 DEFAULT_TUNING_DATASET = "rc201.txt"
 
 # Updated by src/tune_settings.py
-LAST_TUNING_REPORT = {'dataset': 'rc201.txt',
- 'method_runs': 1,
- 'total_main_budegt_sec': 43200,
- 'mas_n_steps': 200,
- 'method_count': 6,
- 'instance_count': 12,
- 'target_method_runs': 72,
- 'target_method_run_sec': 600.0,
- 'estimated_method_run_sec': {'SA': 580.125,
-                              'TS': 575.078125,
-                              'GA': 602.4375,
-                              'MAS': 556.25,
-                              'MAS_RL': 556.25,
-                              'MAS_RL_WARM': 556.25},
- 'estimated_total_main_runtime_sec': 41116.6875,
- 'estimated_total_main_runtime_min': 685.278125,
- 'fixed_controls': {'MAS_POOL_SIZE': 10,
-                    'MAS_SEED_POLICY': 'random',
-                    'MAS_RL_PARAMS': {'epsilon': 0.8,
-                                      'epsilon_min': 0.05,
-                                      'epsilon_decay': 0.992,
-                                      'alpha': 0.2,
-                                      'gamma': 0.8,
-                                      'distance_bin_size': 100,
-                                      'runs_per_step': 3}}}
+LAST_TUNING_REPORT = {'tuner': 'optuna_single_objective',
+ 'objective_strategy': 'vehicles_scaled_priority',
+ 'objective_formula': 'vehicles * 1000000 + distance',
+ 'dataset': 'rc201.txt',
+ 'seed_start': 1,
+ 'eval_runs': 1,
+ 'n_trials_per_method': 30,
+ 'methods': {'SA': {'best_params': {'initial_temp': 222.51446048745515,
+                                    'cooling_rate': 0.9834211564571398,
+                                    'min_temp': 1.1524825557934042,
+                                    'iterations_per_temp': 571},
+                    'selected_objective': {'scalar': 9001832.606042597,
+                                           'avg_vehicles': 9.0,
+                                           'avg_distance': 1832.606042597375,
+                                           'avg_scalar_objective': 9001832.606042597},
+                    'selected_trial_number': 3,
+                    'n_trials': 30,
+                    'best_params_run_time_sec': 1348.8125,
+                    'best_metrics': {'avg_vehicles': 9.0,
+                                     'avg_distance': 1832.606042597375,
+                                     'avg_scalar_objective': 9001832.606042597,
+                                     'avg_runtime_sec': 1348.8125,
+                                     'best_run_vehicles': 9,
+                                     'best_run_distance': 1832.606042597375}},
+             'TS': {'best_params': {'max_iterations': 1316,
+                                    'tabu_tenure': 321,
+                                    'neighbor_samples': 25},
+                    'selected_objective': {'scalar': 12003108.070439514,
+                                           'avg_vehicles': 12.0,
+                                           'avg_distance': 3108.07043951299,
+                                           'avg_scalar_objective': 12003108.070439514},
+                    'selected_trial_number': 23,
+                    'n_trials': 30,
+                    'best_params_run_time_sec': 284.78125,
+                    'best_metrics': {'avg_vehicles': 12.0,
+                                     'avg_distance': 3108.07043951299,
+                                     'avg_scalar_objective': 12003108.070439514,
+                                     'avg_runtime_sec': 284.78125,
+                                     'best_run_vehicles': 12,
+                                     'best_run_distance': 3108.07043951299}},
+             'GA': {'best_params': {'population_size': 79,
+                                    'generations': 445,
+                                    'crossover_rate': 0.5508609045034749,
+                                    'mutation_rate': 0.21642252201152065},
+                    'selected_objective': {'scalar': 12003414.607561821,
+                                           'avg_vehicles': 12.0,
+                                           'avg_distance': 3414.607561821397,
+                                           'avg_scalar_objective': 12003414.607561821},
+                    'selected_trial_number': 27,
+                    'n_trials': 30,
+                    'best_params_run_time_sec': 323.953125,
+                    'best_metrics': {'avg_vehicles': 12.0,
+                                     'avg_distance': 3414.607561821397,
+                                     'avg_scalar_objective': 12003414.607561821,
+                                     'avg_runtime_sec': 323.953125,
+                                     'best_run_vehicles': 12,
+                                     'best_run_distance': 3414.607561821397}}},
+ 'generated_at': '2026-04-27 19:38:23'}
+

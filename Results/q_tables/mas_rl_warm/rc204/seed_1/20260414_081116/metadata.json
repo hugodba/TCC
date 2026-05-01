@@ -1,9 +1,0 @@
-{
-  "source": "in_memory_best_model",
-  "method": "MAS_RL_WARM",
-  "instance": "rc204.txt",
-  "seed": 1,
-  "generated_at": "2026-04-14 08:11:16",
-  "rows_q_table": 43,
-  "rows_action_count_table": 43
-}

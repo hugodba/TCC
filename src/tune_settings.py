@@ -1,17 +1,36 @@
 from __future__ import annotations
 
 import ast
+import math
 import pprint
 import sys
 import time
 from pathlib import Path
+from statistics import fmean
 from typing import Any, Callable
 
-import numpy as np
+import optuna
 
 SRC_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SRC_DIR.parent
 SETTINGS_PATH = SRC_DIR / "project" / "settings.py"
+
+# Method-specific guardrails to avoid very slow trials.
+MAX_ESTIMATED_WORK_UNITS = {
+    "SA": 600_000,
+    "TS": 700_000,
+    "GA": 900_000,
+}
+STAGE1_MAX_RUNTIME_SEC = {
+    "SA": 120.0,
+    "TS": 90.0,
+    "GA": 120.0,
+}
+STAGE_RUNTIME_GROWTH_LIMIT = {
+    "SA": 1.25,
+    "TS": 1.30,
+    "GA": 1.30,
+}
 
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
@@ -19,135 +38,12 @@ if str(SRC_DIR) not in sys.path:
 from project import Dataset
 from project import settings as cfg
 from project.Metaheuristics import GeneticAlgorithm, Metaheuristic, SimulatedAnnealing, TabuSearch
-from project.mesa_model import VRPOptimizationModel
-from project.mesa_model_rl import VRPOptimizationModelRL
 
 
 def _status(message: str) -> None:
     stamp = time.strftime("%H:%M:%S")
     print(f"[tune_settings {stamp}] {message}", flush=True)
 
-def _sa_temperature_levels(initial_temp: float, cooling_rate: float, min_temp: float) -> int:
-    '''
-    Calculate the number of temperature levels in SA given the cooling schedule.
-    This basically estimates how many iterations the SA will run for, since each level runs a fixed number of iterations.
-     - If the initial temperature is already at or below the minimum, or if the cooling rate is invalid, we consider it as 1 level (no cooling).
-     - Otherwise, we calculate the number of levels until the temperature drops below the minimum using the formula:
-       levels = ceil(log(min_temp / initial_temp) / log(cooling_rate))
-    '''
-    if initial_temp <= min_temp or not (0.0 < cooling_rate < 1.0):
-        return 1
-    levels = int(np.ceil(np.log(min_temp / initial_temp) / np.log(cooling_rate)))
-    return max(1, levels)
-
-
-def _sa_work_units(params: dict[str, float | int]) -> float:
-    levels = _sa_temperature_levels(
-        float(params["initial_temp"]),
-        float(params["cooling_rate"]),
-        float(params["min_temp"]),
-    )
-    return float(levels * int(params["iterations_per_temp"]))
-
-
-def _ts_work_units(params: dict[str, float | int]) -> float:
-    return float(int(params["max_iterations"]) * int(params["neighbor_samples"]))
-
-
-def _ga_work_units(params: dict[str, float | int]) -> float:
-    return float(int(params["population_size"]) * int(params["generations"]))
-
-
-def _measure_solver_runtime(
-    dataset: Dataset,
-    algo_cls: type[Metaheuristic],
-    params: dict[str, float | int],
-    seed: int,
-) -> float:
-    solver = algo_cls(dataset=dataset, seed=seed, **params)
-    # Use CPU time so tuner and notebook runner measure runtime consistently.
-    start = time.process_time()
-    _ = solver.solve()
-    return time.process_time() - start
-
-
-def _safe_rate(elapsed_sec: float, work_units: float) -> float:
-    return max(1e-9, elapsed_sec / max(1.0, work_units))
-
-
-def _scale_sa_params(
-    params: dict[str, float | int],
-    scale: float,
-) -> dict[str, float | int]:
-    scaled = dict(params)
-    scaled["iterations_per_temp"] = round(params["iterations_per_temp"] * scale)
-    return scaled
-
-def _scale_ts_params(
-    params: dict[str, float | int],
-    scale: float,
-) -> dict[str, float | int]:
-    scaled = dict(params)
-    scaled["max_iterations"] = round(params["max_iterations"] * scale)
-    scaled["tabu_tenure"] = round(scaled["max_iterations"] * 0.14)
-    return scaled
-
-def _scale_ga_params(
-    params: dict[str, float | int],
-    scale: float,
-) -> dict[str, float | int]:
-    scaled = dict(params)
-    scaled["generations"] = round(params["generations"] * scale)
-    return scaled
-
-
-def _feedback_tune_isolated(
-    name: str,
-    dataset: Dataset,
-    algo_cls: type[Metaheuristic],
-    params: dict[str, float | int],
-    target_sec: float,
-    tolerance: float,
-    seed: int,
-    max_iters: int,
-    scale_fn: Callable[[dict[str, float | int], float], dict[str, float | int]],
-) -> tuple[dict[str, float | int], float]:
-    """Tune one isolated method using measured one-run feedback."""
-    current = dict(params)
-    measured_sec = float("nan")
-
-    for iter_idx in range(1, max_iters + 1):
-        measured_sec = _measure_solver_runtime(dataset, algo_cls, current, seed=seed)
-        error_sec = measured_sec - target_sec
-
-        _status(
-            f"{name} feedback iter {iter_idx} | "
-            f"measured={measured_sec:.3f}s, target={target_sec:.3f}s, "
-            f"error={error_sec:+.3f}s"
-        )
-
-        over_target_ratio = abs(error_sec) / target_sec
-        if 0.0 <= over_target_ratio <= tolerance:
-            if iter_idx == 1:
-                _status(
-                    f"{name} already within +{tolerance * 100.0:.1f}% over target; "
-                    "skipping further adjustments"
-                )
-            else:
-                _status(f"{name} converged within +{tolerance * 100.0:.1f}% over target")
-            break
-
-        scale = target_sec / measured_sec
-        candidate = scale_fn(current, scale)
-
-        if candidate == current:
-            _status(f"{name} parameters reached bounds; cannot adjust further")
-            break
-
-        _status(f"{name} adjust -> scale={scale:.3f}")
-        current = candidate
-
-    return current, measured_sec
 
 def _format_assignment(name: str, value: Any) -> list[str]:
     rendered = pprint.pformat(value, width=100, sort_dicts=False)
@@ -185,206 +81,420 @@ def _replace_assignments(path: Path, updates: dict[str, Any]) -> None:
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def main(
-    tolerance: float = 0.03,
-    max_iters: int = 4,
+def _scalarized_objective(vehicles: int, distance: float) -> float:
+    # Single-objective score with vehicles prioritized over distance.
+    return float(vehicles) * 1_000_000.0 + float(distance)
+
+
+def _estimate_sa_temperature_levels(
+    initial_temp: float,
+    cooling_rate: float,
+    min_temp: float,
 ) -> int:
-    _status("Timing metric: CPU process time (time.process_time)")
+    initial = max(1e-9, float(initial_temp))
+    minimum = max(1e-9, float(min_temp))
+    cooling = float(cooling_rate)
 
-    dataset_name = cfg.DEFAULT_TUNING_DATASET
-    dataset_path = REPO_ROOT / "Datasets" / dataset_name
+    if cooling <= 0.0 or cooling >= 1.0:
+        return 10**9
+    if minimum >= initial:
+        return 1
+
+    try:
+        levels = int(math.ceil(math.log(minimum / initial) / math.log(cooling)))
+    except (ValueError, ZeroDivisionError):
+        return 10**9
+
+    return max(1, levels)
+
+
+def _estimate_work_units(
+    method_name: str,
+    params: dict[str, float | int],
+) -> int:
+    if method_name == "SA":
+        levels = _estimate_sa_temperature_levels(
+            initial_temp=float(params["initial_temp"]),
+            cooling_rate=float(params["cooling_rate"]),
+            min_temp=float(params["min_temp"]),
+        )
+        return int(levels * int(params["iterations_per_temp"]))
+
+    if method_name == "TS":
+        max_iterations = int(params["max_iterations"])
+        neighbor_samples = int(params["neighbor_samples"])
+        return int(max_iterations * neighbor_samples)
+
+    if method_name == "GA":
+        population_size = int(params["population_size"])
+        generations = int(params["generations"])
+        return int(population_size * generations)
+
+    return 0
+
+
+def _scaled_params_by_budget(
+    method_name: str,
+    params: dict[str, float | int],
+    budget_ratio: float,
+) -> dict[str, float | int]:
+    scaled = dict(params)
+    ratio = min(1.0, max(0.05, float(budget_ratio)))
+
+    if method_name == "SA":
+        base_iterations = int(params["iterations_per_temp"])
+        scaled["iterations_per_temp"] = max(1, int(round(base_iterations * ratio)))
+
+        initial_temp = max(1e-9, float(params["initial_temp"]))
+        base_min_temp = min(initial_temp, max(1e-9, float(params["min_temp"])))
+
+        # Keep early stages cheap by shortening the cooling depth.
+        scaled_min_temp = initial_temp * ((base_min_temp / initial_temp) ** ratio)
+        scaled["min_temp"] = float(min(initial_temp, max(base_min_temp, scaled_min_temp)))
+    elif method_name == "TS":
+        base_iterations = int(params["max_iterations"])
+        base_tabu_tenure = int(params["tabu_tenure"])
+
+        scaled_iterations = max(1, int(round(base_iterations * ratio)))
+        scaled_tabu_tenure = max(1, int(round(base_tabu_tenure * ratio)))
+
+        scaled["max_iterations"] = scaled_iterations
+        scaled["tabu_tenure"] = min(scaled_iterations, scaled_tabu_tenure)
+    elif method_name == "GA":
+        base = int(params["generations"])
+        scaled["generations"] = max(1, int(round(base * ratio)))
+
+    return scaled
+
+
+def _evaluate_solver_params(
+    dataset: Dataset,
+    algo_cls: type[Metaheuristic],
+    params: dict[str, float | int],
+    seed_start: int,
+    eval_runs: int,
+) -> dict[str, Any]:
+    vehicles_values: list[int] = []
+    distance_values: list[float] = []
+    scalar_values: list[float] = []
+    runtime_values: list[float] = []
+    objective_pairs: list[tuple[int, float]] = []
+
+    for run_idx in range(eval_runs):
+        seed = seed_start + run_idx
+        solver = algo_cls(dataset=dataset, seed=seed, **params)
+
+        start = time.process_time()
+        best_route = solver.solve()
+        elapsed_sec = time.process_time() - start
+
+        vehicles, distance = best_route.cost_function()
+        scalar_value = _scalarized_objective(vehicles, distance)
+
+        vehicles_values.append(int(vehicles))
+        distance_values.append(float(distance))
+        scalar_values.append(float(scalar_value))
+        runtime_values.append(float(elapsed_sec))
+        objective_pairs.append((int(vehicles), float(distance)))
+
+    best_pair = min(objective_pairs)
+
+    return {
+        "avg_vehicles": float(fmean(vehicles_values)),
+        "avg_distance": float(fmean(distance_values)),
+        "avg_scalar_objective": float(fmean(scalar_values)),
+        "avg_runtime_sec": float(fmean(runtime_values)),
+        "best_run_vehicles": int(best_pair[0]),
+        "best_run_distance": float(best_pair[1]),
+    }
+
+
+def _suggest_sa_params(trial: optuna.Trial) -> dict[str, float | int]:
+    initial_temp = trial.suggest_float("initial_temp", 100.0, 5_000.0, log=True)
+    cooling_rate = trial.suggest_float("cooling_rate", 0.90, 0.995)
+    min_temp_upper = min(250.0, max(1.0, initial_temp * 0.8))
+    min_temp = trial.suggest_float("min_temp", 1.0, min_temp_upper, log=True)
+    iterations_per_temp = trial.suggest_int("iterations_per_temp", 20, 3_000, log=True)
+
+    return {
+        "initial_temp": float(initial_temp),
+        "cooling_rate": float(cooling_rate),
+        "min_temp": float(min_temp),
+        "iterations_per_temp": int(iterations_per_temp),
+    }
+
+
+def _suggest_ts_params(trial: optuna.Trial) -> dict[str, float | int]:
+    max_iterations = trial.suggest_int("max_iterations", 50, 5_000, log=True)
+    max_tabu_tenure = max(2, min(500, max_iterations // 2))
+    tabu_tenure = trial.suggest_int("tabu_tenure", 2, max_tabu_tenure)
+    neighbor_samples = trial.suggest_int("neighbor_samples", 5, 250, log=True)
+
+    return {
+        "max_iterations": int(max_iterations),
+        "tabu_tenure": int(tabu_tenure),
+        "neighbor_samples": int(neighbor_samples),
+    }
+
+
+def _suggest_ga_params(trial: optuna.Trial) -> dict[str, float | int]:
+    population_size = trial.suggest_int("population_size", 16, 512, log=True)
+    generations = trial.suggest_int("generations", 20, 4_000, log=True)
+    crossover_rate = trial.suggest_float("crossover_rate", 0.5, 1.0)
+    mutation_rate = trial.suggest_float("mutation_rate", 0.01, 0.5)
+
+    return {
+        "population_size": int(population_size),
+        "generations": int(generations),
+        "crossover_rate": float(crossover_rate),
+        "mutation_rate": float(mutation_rate),
+    }
+
+
+def _optimize_method(
+    method_name: str,
+    dataset: Dataset,
+    algo_cls: type[Metaheuristic],
+    suggest_params_fn: Callable[[optuna.Trial], dict[str, float | int]],
+    seed_start: int,
+    eval_runs: int,
+    n_trials: int,
+    optuna_n_jobs: int,
+) -> dict[str, Any]:
+    stage_ratios = (0.25, 0.5, 1.0)
+    resolved_optuna_n_jobs = max(1, int(optuna_n_jobs))
+    max_estimated_work_units = int(MAX_ESTIMATED_WORK_UNITS.get(method_name, 0))
+    stage1_runtime_limit_sec = float(STAGE1_MAX_RUNTIME_SEC.get(method_name, 0.0))
+    runtime_growth_limit = float(STAGE_RUNTIME_GROWTH_LIMIT.get(method_name, 1.25))
+
+    _status(
+        f"Optuna tuning {method_name} | trials={n_trials}, "
+        f"eval_runs={eval_runs}, seed_start={seed_start}, "
+        f"pruning=Hyperband, stage_budgets={stage_ratios}, "
+        f"optuna_jobs={resolved_optuna_n_jobs}, "
+        f"max_est_work={max_estimated_work_units}, "
+        f"stage1_max_runtime={stage1_runtime_limit_sec:.1f}s, "
+        f"runtime_growth_limit=x{runtime_growth_limit:.2f}"
+    )
+
+    sampler = optuna.samplers.TPESampler(seed=seed_start)
+    pruner = optuna.pruners.HyperbandPruner(
+        min_resource=1,
+        max_resource=len(stage_ratios),
+        reduction_factor=2,
+    )
+    study = optuna.create_study(
+        direction="minimize",
+        sampler=sampler,
+        pruner=pruner,
+        study_name=f"{method_name}_tuning",
+    )
+
+    def objective(trial: optuna.Trial) -> float:
+        params = suggest_params_fn(trial)
+        final_metrics: dict[str, Any] | None = None
+        previous_stage_objective: float | None = None
+        previous_stage_runtime_sec: float | None = None
+        estimated_work_units = _estimate_work_units(method_name=method_name, params=params)
+
+        trial.set_user_attr("estimated_work_units", int(estimated_work_units))
+
+        if max_estimated_work_units > 0 and estimated_work_units > max_estimated_work_units:
+            raise optuna.TrialPruned(
+                f"Estimated {method_name} effort too high "
+                f"({estimated_work_units} > {max_estimated_work_units})"
+            )
+
+        if method_name == "SA":
+            estimated_levels = _estimate_sa_temperature_levels(
+                initial_temp=float(params["initial_temp"]),
+                cooling_rate=float(params["cooling_rate"]),
+                min_temp=float(params["min_temp"]),
+            )
+
+            trial.set_user_attr("sa_estimated_temp_levels", int(estimated_levels))
+            trial.set_user_attr("sa_estimated_neighbor_evals", int(estimated_work_units))
+        elif method_name == "TS":
+            trial.set_user_attr("ts_estimated_neighbor_evals", int(estimated_work_units))
+        elif method_name == "GA":
+            trial.set_user_attr("ga_estimated_population_updates", int(estimated_work_units))
+
+        for stage_idx, stage_ratio in enumerate(stage_ratios, start=1):
+            stage_params = _scaled_params_by_budget(
+                method_name=method_name,
+                params=params,
+                budget_ratio=stage_ratio,
+            )
+
+            stage_start = time.process_time()
+            stage_metrics = _evaluate_solver_params(
+                dataset=dataset,
+                algo_cls=algo_cls,
+                params=stage_params,
+                seed_start=seed_start,
+                eval_runs=eval_runs,
+            )
+            stage_runtime_sec = time.process_time() - stage_start
+            stage_objective = float(stage_metrics["avg_scalar_objective"])
+
+            trial.set_user_attr(f"stage_{stage_idx}_ratio", float(stage_ratio))
+            trial.set_user_attr(f"stage_{stage_idx}_objective", float(stage_objective))
+            trial.set_user_attr(f"stage_{stage_idx}_runtime_sec", float(stage_runtime_sec))
+
+            if stage_idx == 1 and stage1_runtime_limit_sec > 0.0 and stage_runtime_sec > stage1_runtime_limit_sec:
+                raise optuna.TrialPruned(
+                    f"Stage 1 runtime too high for {method_name} "
+                    f"({stage_runtime_sec:.2f}s > {stage1_runtime_limit_sec:.2f}s)"
+                )
+
+            trial.report(stage_objective, stage_idx)
+
+            if (
+                previous_stage_objective is not None
+                and previous_stage_runtime_sec is not None
+                and stage_idx < len(stage_ratios)
+                and stage_objective >= previous_stage_objective
+                and stage_runtime_sec > previous_stage_runtime_sec * runtime_growth_limit
+            ):
+                raise optuna.TrialPruned(
+                    f"No objective improvement by stage {stage_idx}; "
+                    f"runtime grew by more than x{runtime_growth_limit:.2f}"
+                )
+
+            if trial.should_prune():
+                raise optuna.TrialPruned(f"Pruned by Hyperband at stage {stage_idx}")
+
+            previous_stage_objective = stage_objective
+            previous_stage_runtime_sec = stage_runtime_sec
+            final_metrics = stage_metrics
+
+        assert final_metrics is not None
+        trial.set_user_attr("avg_vehicles", final_metrics["avg_vehicles"])
+        trial.set_user_attr("avg_distance", final_metrics["avg_distance"])
+        trial.set_user_attr("avg_scalar_objective", final_metrics["avg_scalar_objective"])
+        trial.set_user_attr("avg_runtime_sec", final_metrics["avg_runtime_sec"])
+        return float(final_metrics["avg_scalar_objective"])
+
+    study.optimize(
+        objective,
+        n_trials=n_trials,
+        n_jobs=resolved_optuna_n_jobs,
+        show_progress_bar=(resolved_optuna_n_jobs == 1),
+    )
+
+    selected_trial = study.best_trial
+    best_params = suggest_params_fn(optuna.trial.FixedTrial(selected_trial.params))
+    best_metrics = _evaluate_solver_params(
+        dataset=dataset,
+        algo_cls=algo_cls,
+        params=best_params,
+        seed_start=seed_start,
+        eval_runs=eval_runs,
+    )
+
+    _status(
+        f"{method_name} done | selected_trial={selected_trial.number}, "
+        f"selected_objective={float(selected_trial.value):.3f}, "
+        f"selected_avg_k={float(selected_trial.user_attrs.get('avg_vehicles', float('nan'))):.3f}, "
+        f"selected_avg_d={float(selected_trial.user_attrs.get('avg_distance', float('nan'))):.3f}, "
+        f"pruned_trials={len([t for t in study.trials if t.state == optuna.trial.TrialState.PRUNED])}, "
+        f"best_params_run_time={best_metrics['avg_runtime_sec']:.3f}s"
+    )
+
+    return {
+        "best_params": best_params,
+        "selected_objective": {
+            "scalar": float(selected_trial.value),
+            "avg_vehicles": float(selected_trial.user_attrs.get("avg_vehicles", float("nan"))),
+            "avg_distance": float(selected_trial.user_attrs.get("avg_distance", float("nan"))),
+            "avg_scalar_objective": float(
+                selected_trial.user_attrs.get("avg_scalar_objective", float("nan"))
+            ),
+        },
+        "selected_trial_number": int(selected_trial.number),
+        "n_trials": int(len(study.trials)),
+        "best_params_run_time_sec": float(best_metrics["avg_runtime_sec"]),
+        "best_metrics": best_metrics,
+    }
+
+
+def main(
+    dataset_name: str | None = None,
+    n_trials_per_method: int = 30,
+    eval_runs: int = 1,
+    optuna_n_jobs: int = 1,
+) -> int:
+    #optuna.logging.set_verbosity(optuna.logging.WARNING)
+
+    resolved_dataset = dataset_name or cfg.DEFAULT_TUNING_DATASET
+    resolved_trials = max(1, n_trials_per_method)
+    resolved_eval_runs = max(1, eval_runs)
+    resolved_optuna_jobs = max(1, int(optuna_n_jobs))
+    seed_start = int(cfg.SEED_START)
+
+    dataset_path = REPO_ROOT / "Datasets" / resolved_dataset
+
     dataset = Dataset(dataset_path)
-    _status(f"Starting tune run | dataset={dataset_name} | settings={SETTINGS_PATH}")
+    _status(f"Starting Optuna tune | dataset={resolved_dataset} | settings={SETTINGS_PATH}")
 
-    instance_count = cfg.INSTANCE_COUNT
-    total_budget_sec = cfg.TOTAL_MAIN_BUDGET_SEC
-    target_method_runs = cfg.TARGET_METHOD_RUNS
-    target_method_run_sec = cfg.TARGET_METHOD_RUN_SEC
-    _status(
-        "Budget and controls | "
-        f"total={total_budget_sec:.1f}s ({total_budget_sec / 60.0:.1f} min), "
-        f"runs={int(cfg.N_RUNS)}, methods={int(cfg.METHOD_COUNT)}, "
-        f"instances={instance_count}, method-runs={target_method_runs}, "
-        f"target/method-run={target_method_run_sec:.2f}s"
-    )
+    methods: list[tuple[str, type[Metaheuristic], Callable[[optuna.Trial], dict[str, float | int]]]] = [
+        ("SA", SimulatedAnnealing, _suggest_sa_params),
+        ("TS", TabuSearch, _suggest_ts_params),
+        ("GA", GeneticAlgorithm, _suggest_ga_params),
+    ]
 
-    tolerance = tolerance
-    max_iters = max_iters
-    seed = cfg.SEED_START
-    _status(
-        "Feedback controls | "
-        f"tolerance=+{tolerance * 100.0:.1f}% over target, "
-        f"max_iters={max_iters}, seed={seed}"
-    )
+    results: dict[str, dict[str, Any]] = {}
+    for method_name, algo_cls, suggest_fn in methods:
+        results[method_name] = _optimize_method(
+            method_name=method_name,
+            dataset=dataset,
+            algo_cls=algo_cls,
+            suggest_params_fn=suggest_fn,
+            seed_start=seed_start,
+            eval_runs=resolved_eval_runs,
+            n_trials=resolved_trials,
+            optuna_n_jobs=resolved_optuna_jobs,
+        )
 
-    _status("Tuning isolated SA/TS/GA parameters...")
+    for method_name in ("SA", "TS", "GA"):
+        method_time_sec = float(results[method_name]["best_params_run_time_sec"])
+        _status(
+            f"{method_name} final best-params run time: {method_time_sec:.3f}s"
+        )
 
-    sa_params = cfg.SA_PARAMS
-    ts_params = cfg.TS_PARAMS
-    ga_params = cfg.GA_PARAMS
-
-    _status(f"SA initial params from probe-rates: {sa_params}")
-    _status(f"TS initial params from probe-rates: {ts_params}")
-    _status(f"GA initial params from probe-rates: {ga_params}")
-
-    _status("Running isolated feedback tuning ...")
-    sa_params, sa_measured_sec = _feedback_tune_isolated(
-        "SA",
-        dataset,
-        SimulatedAnnealing,
-        sa_params,
-        target_method_run_sec,
-        tolerance,
-        seed=cfg.SEED_START,
-        max_iters=max_iters,
-        scale_fn=_scale_sa_params,
-    )
-    ts_params, ts_measured_sec = _feedback_tune_isolated(
-        "TS",
-        dataset,
-        TabuSearch,
-        ts_params,
-        target_method_run_sec,
-        tolerance,
-        seed=cfg.SEED_START,
-        max_iters=max_iters,
-        scale_fn=_scale_ts_params,
-    )
-    ga_params, ga_measured_sec = _feedback_tune_isolated(
-        "GA",
-        dataset,
-        GeneticAlgorithm,
-        ga_params,
-        target_method_run_sec,
-        tolerance,
-        seed=cfg.SEED_START,
-        max_iters=max_iters,
-        scale_fn=_scale_ga_params,
-    )
-    _status(f"SA final params after feedback: {sa_params}")
-    _status(f"TS final params after feedback: {ts_params}")
-    _status(f"GA final params after feedback: {ga_params}")
-
-
-    _status("Tunning MAS family parameters with feedback from inner solvers...")
-    # Tune MAS-family runtime using inner params only (step controls are fixed).
-    mas_steps = cfg.MAS_N_STEPS
-
-    target_mas_run_sec = target_method_run_sec
-    target_mas_step_sec = target_mas_run_sec / mas_steps
-
-    # With CPU-time measurement, parallel SA/TS/GA costs are additive.
-    parallel_method_runs = cfg.MAS_RL_PARAMS['runs_per_step']
-    inner_solver_target_sec = target_mas_step_sec / parallel_method_runs
-    _status(
-        "Running MAS family feedback tunning | "
-        f"target_run_mas={target_mas_run_sec:.3f}s, "
-        f"fixed_steps_mas={mas_steps}, "
-        f"target_step_mas={target_mas_step_sec:.3f}s, "
-        f"parallel_method_runs={parallel_method_runs}, "
-        f"inner_solver_target={inner_solver_target_sec:.3f}s, "
-        f"parallel_agents={cfg.PARALLEL_AGENTS}"
-    )
-
-    mas_sa_params = cfg.MAS_SA_PARAMS
-    mas_ts_params = cfg.MAS_TS_PARAMS
-    mas_ga_params = cfg.MAS_GA_PARAMS
-
-    _status(f"MAS family initial params from probe-rates: SA={mas_sa_params}, TS={mas_ts_params}, GA={mas_ga_params}")
-
-    _status("Running feedback tuning for MAS agents...")
-    mas_sa_params, mas_sa_measured_sec = _feedback_tune_isolated(
-        "MAS SA",
-        dataset,
-        SimulatedAnnealing,
-        mas_sa_params,
-        inner_solver_target_sec,
-        tolerance,
-        seed=cfg.SEED_START,
-        max_iters=max_iters,
-        scale_fn=_scale_sa_params,
-    )
-    mas_ts_params, mas_ts_measured_sec = _feedback_tune_isolated(
-        "MAS TS",
-        dataset,
-        TabuSearch,
-        mas_ts_params,
-        inner_solver_target_sec,
-        tolerance,
-        seed=cfg.SEED_START,
-        max_iters=max_iters,
-        scale_fn=_scale_ts_params,
-    )
-    mas_ga_params, mas_ga_measured_sec = _feedback_tune_isolated(
-        "MAS GA",
-        dataset,
-        GeneticAlgorithm,
-        mas_ga_params,
-        inner_solver_target_sec,
-        tolerance,
-        seed=cfg.SEED_START,
-        max_iters=max_iters,
-        scale_fn=_scale_ga_params,
-    )
-    _status(f"MAS SA final params after feedback: {mas_sa_params}")
-    _status(f"MAS TS final params after feedback: {mas_ts_params}")
-    _status(f"MAS GA final params after feedback: {mas_ga_params}")
-
-    est_sa = sa_measured_sec
-    est_ts = ts_measured_sec
-    est_ga = ga_measured_sec
-    est_mas = (mas_sa_measured_sec + mas_ts_measured_sec + mas_ga_measured_sec) * cfg.MAS_N_STEPS
-    est_total = (
-        cfg.N_RUNS
-        * instance_count
-        * (est_sa + est_ts + est_ga + est_mas + est_mas + est_mas)
-    )
+    sa_params = results["SA"]["best_params"]
+    ts_params = results["TS"]["best_params"]
+    ga_params = results["GA"]["best_params"]
 
     report = {
-        "dataset": dataset_name,
-        "method_runs": cfg.N_RUNS,
-        "total_main_budegt_sec": cfg.TOTAL_MAIN_BUDGET_SEC,
-        "mas_n_steps": cfg.MAS_N_STEPS,
-
-        "method_count": cfg.METHOD_COUNT,
-        "instance_count": cfg.INSTANCE_COUNT,
-        "target_method_runs": cfg.TARGET_METHOD_RUNS,
-        "target_method_run_sec": cfg.TARGET_METHOD_RUN_SEC,
-
-        "estimated_method_run_sec": {
-            "SA": float(est_sa),
-            "TS": float(est_ts),
-            "GA": float(est_ga),
-            "MAS": float(est_mas),
-            "MAS_RL": float(est_mas),
-            "MAS_RL_WARM": float(est_mas),
+        "tuner": "optuna_single_objective",
+        "objective_strategy": "vehicles_scaled_priority",
+        "objective_formula": "vehicles * 1000000 + distance",
+        "dataset": resolved_dataset,
+        "seed_start": seed_start,
+        "eval_runs": resolved_eval_runs,
+        "n_trials_per_method": resolved_trials,
+        "methods": {
+            "SA": results["SA"],
+            "TS": results["TS"],
+            "GA": results["GA"],
         },
-        "estimated_total_main_runtime_sec": float(est_total),
-        "estimated_total_main_runtime_min": float(est_total / 60.0),
-
-        "fixed_controls": {
-            "MAS_POOL_SIZE": cfg.MAS_POOL_SIZE,
-            "MAS_SEED_POLICY": cfg.MAS_SEED_POLICY,
-            "MAS_RL_PARAMS": cfg.MAS_RL_PARAMS,
-        },
+        "generated_at": time.strftime("%Y-%m-%d %H:%M:%S"),
     }
 
     updates: dict[str, Any] = {
         "SA_PARAMS": sa_params,
         "TS_PARAMS": ts_params,
         "GA_PARAMS": ga_params,
-        "MAS_SA_PARAMS": mas_sa_params,
-        "MAS_TS_PARAMS": mas_ts_params,
-        "MAS_GA_PARAMS": mas_ga_params,
         "LAST_TUNING_REPORT": report,
     }
 
     _status("Writing tuned parameters into settings.py...")
     _replace_assignments(SETTINGS_PATH, updates)
     _status("settings.py updated successfully")
+    return 0
+
 
 if __name__ == "__main__":
     main()
-    
-
     
