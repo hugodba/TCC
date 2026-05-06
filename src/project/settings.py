@@ -1,36 +1,36 @@
 from __future__ import annotations
 
 # Experiment controls
-N_RUNS = 2
+N_RUNS = 1 #2
 SEED_START = 1
 PARALLEL_AGENTS = True
 
 # MAS controls
 MAS_POOL_SIZE = 7
-ELITE_POOL_DIVERSITY_TRESHOLD = 10
+ELITE_POOL_DIVERSITY_TRESHOLD = 10 # TODO: colocar no relatorio
 MAS_SEED_POLICY = "random"  # Options: "best", "random"
-MAS_N_STEPS = 80
-
-# # Isolated metaheuristics params (auto-tuned by src/tune_settings.py)
-# SA_PARAMS = {'initial_temp': 1800, 'cooling_rate': 0.99, 'min_temp': 3, 'iterations_per_temp': 800} # iterations per temp * math.log(min_temp / initial_temp) / math.log(cooling_rate)
-# TS_PARAMS = {'max_iterations': 2000, 'tabu_tenure': 20, 'neighbor_samples': 300} # max iters * neighbor samples
-# GA_PARAMS = {'population_size': 70, 'generations': 10_000, 'crossover_rate': 0.7, 'mutation_rate': 0.05} # generations * population size
-
-# # Cooperative inner configs (auto-tuned by src/tune_settings.py)
-# MAS_SA_PARAMS = {'initial_temp': 1800.0, 'cooling_rate': 0.99, 'min_temp': 3.0, 'iterations_per_temp': 50}
-# MAS_TS_PARAMS = {'max_iterations': 500, 'tabu_tenure': 20, 'neighbor_samples': 75}
-# MAS_GA_PARAMS = {'population_size': 70, 'generations': 500, 'crossover_rate': 0.7, 'mutation_rate': 0.05}
-
+MAS_N_STEPS = 100
 
 # Isolated metaheuristics params (auto-tuned by src/tune_settings.py)
-SA_PARAMS = {'initial_temp': 1800, 'cooling_rate': 0.99, 'min_temp': 3, 'iterations_per_temp': 20} # iterations per temp * math.log(min_temp / initial_temp) / math.log(cooling_rate)
-TS_PARAMS = {'max_iterations': 100, 'tabu_tenure': 20, 'neighbor_samples': 100} # max iters * neighbor samples
-GA_PARAMS = {'population_size': 70, 'generations': 40, 'crossover_rate': 0.7, 'mutation_rate': 0.05} # generations * population size
+SA_PARAMS = {'initial_temp': 1800, 'cooling_rate': 0.99, 'min_temp': 3, 'iterations_per_temp': 800} # iterations per temp * math.log(min_temp / initial_temp) / math.log(cooling_rate)
+TS_PARAMS = {'max_iterations': 2000, 'tabu_tenure': 20, 'neighbor_samples': 350} # max iters * neighbor samples
+GA_PARAMS = {'population_size': 70, 'generations': 8_000, 'crossover_rate': 0.7, 'mutation_rate': 0.05} # generations * population size
 
 # Cooperative inner configs (auto-tuned by src/tune_settings.py)
-MAS_SA_PARAMS = {'initial_temp': 1800.0, 'cooling_rate': 0.99, 'min_temp': 3.0, 'iterations_per_temp': 20}
-MAS_TS_PARAMS = {'max_iterations': 100, 'tabu_tenure': 20, 'neighbor_samples': 75}
-MAS_GA_PARAMS = {'population_size': 70, 'generations': 20, 'crossover_rate': 0.7, 'mutation_rate': 0.05}
+MAS_SA_PARAMS = {'initial_temp': 1800, 'cooling_rate': 0.99, 'min_temp': 3, 'iterations_per_temp': 50}
+MAS_TS_PARAMS = {'max_iterations': 500, 'tabu_tenure': 20, 'neighbor_samples': 75}
+MAS_GA_PARAMS = {'population_size': 70, 'generations': 500, 'crossover_rate': 0.7, 'mutation_rate': 0.05}
+
+
+# # Isolated metaheuristics params (auto-tuned by src/tune_settings.py)
+# SA_PARAMS = {'initial_temp': 10, 'cooling_rate': 0.9, 'min_temp': 3, 'iterations_per_temp': 15} # iterations per temp * math.log(min_temp / initial_temp) / math.log(cooling_rate)
+# TS_PARAMS = {'max_iterations': 10, 'tabu_tenure': 2, 'neighbor_samples': 10} # max iters * neighbor samples
+# GA_PARAMS = {'population_size': 10, 'generations': 15, 'crossover_rate': 0.7, 'mutation_rate': 0.05} # generations * population size
+
+# # Cooperative inner configs (auto-tuned by src/tune_settings.py)
+# MAS_SA_PARAMS = {'initial_temp': 4, 'cooling_rate': 0.9, 'min_temp': 3.0, 'iterations_per_temp': 5}
+# MAS_TS_PARAMS = {'max_iterations': 3, 'tabu_tenure': 1, 'neighbor_samples': 5}
+# MAS_GA_PARAMS = {'population_size': 2, 'generations': 3, 'crossover_rate': 0.7, 'mutation_rate': 0.05}
 
 # RL controls
 MAS_RL_PARAMS = {
@@ -52,8 +52,7 @@ MAS_RL_PARAMS = {
 }
 
 # Comparison controls
-D_GAPS = [1.0, 1.5, 2.0, 2.5, 3.0] #1.0 means +100%, 3.0 means +300%.
-K_GAPS = [1.0, 1.5, 2.0, 2.5, 3.0]
+K_GAPS = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0] #1.0 means +100%, 3.0 means +300%.
 TTT_TARGETS = {"vehicles": True, "distance": True,}
 METHOD_LABELS = ["SA", "TS", "GA", "MAS", "MAS_RL", "MAS_RL_WARM"]
 INSTANCES = ["rc201.txt", "rc204.txt", "rc205.txt", "rc206.txt", "rc207.txt"]

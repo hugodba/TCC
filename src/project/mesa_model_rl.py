@@ -116,6 +116,9 @@ class VRPOptimizationModelRL(Model):
         super().__init__()
         self.dataset = dataset
         self.random = random.Random(seed)
+        self._seed = seed
+        self._step_counter = 0
+        self.run_label = None
         self.agent_set = AgentSet([], random=self.random)
         self.elite_pool = ElitePool(
             max_size=pool_size,
@@ -282,6 +285,9 @@ class VRPOptimizationModelRL(Model):
         - Each selected action corresponds to one agent run.
         - If parallel_agents=True, execute only the selected runs in parallel.
         """
+        self._step_counter += 1
+        run_label = f"run={self.run_label}" if getattr(self, "run_label", None) is not None else f"seed={self._seed}"
+        logger.info(f"MAS {run_label} RL Step {self._step_counter}")
         scheduled_runs: List[Tuple[int, Tuple[int, int], int, HeuristicAgent, Optional[Route]]] = []
         selected_runs: List[Tuple[int, Tuple[int, int], str]] = []
         run_results: List[Tuple[int, Tuple[int, int], str, int, float, float, float]] = []

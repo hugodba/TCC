@@ -5,44 +5,44 @@ Reallocating 'name_of_file' (item size: 1) to 19 items.
 The style file: bibliography/coppe.bst
 Reallocating 'name_of_file' (item size: 1) to 20 items.
 Database file #1: bibliography/biblio.bib
-You've used 16 entries,
+You've used 17 entries,
             2465 wiz_defined-function locations,
-            683 strings with 6591 characters,
-and the built_in function-call counts, 4074 in all, are:
-= -- 456
-> -- 117
-< -- 10
-+ -- 45
-- -- 29
-* -- 313
-:= -- 650
-add.period$ -- 21
-call.type$ -- 16
-change.case$ -- 19
+            692 strings with 6776 characters,
+and the built_in function-call counts, 4402 in all, are:
+= -- 493
+> -- 129
+< -- 11
++ -- 49
+- -- 32
+* -- 343
+:= -- 702
+add.period$ -- 22
+call.type$ -- 17
+change.case$ -- 20
 chr.to.int$ -- 3
-cite$ -- 16
-duplicate$ -- 196
-empty$ -- 448
-format.name$ -- 29
-if$ -- 1013
+cite$ -- 17
+duplicate$ -- 210
+empty$ -- 480
+format.name$ -- 32
+if$ -- 1093
 int.to.chr$ -- 0
-int.to.str$ -- 16
-missing$ -- 17
-newline$ -- 52
-num.names$ -- 16
-pop$ -- 64
+int.to.str$ -- 17
+missing$ -- 18
+newline$ -- 55
+num.names$ -- 17
+pop$ -- 67
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 56
+skip$ -- 61
 stack$ -- 0
-substring$ -- 182
-swap$ -- 59
-text.length$ -- 9
+substring$ -- 203
+swap$ -- 64
+text.length$ -- 10
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 26
-width$ -- 18
-write$ -- 177
+while$ -- 28
+width$ -- 19
+write$ -- 189

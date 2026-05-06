@@ -14,6 +14,11 @@ SOLOMON, M.~M., \enquote{Algorithms for the vehicle routing and scheduling
   problems with time window constraints}, \emph{Operations Research}, v.~35,
   n.~2, pp.~254--265, 1987.
 
+\bibitem{Vidal20}
+VIDAL, T., LAPORTE, G., MATL, P., \enquote{A concise guide to existing and
+  emerging vehicle routing problem variants}, \emph{European Journal of
+  Operational Research}, v.~286, n.~2, pp.~401--416, 2020.
+
 \bibitem{Kirkpatrick83}
 KIRKPATRICK, S., GELATT, C.~D., VECCHI, M.~P., \enquote{Optimization by
   simulated annealing}, \emph{Science}, v.~220, n. 4598, pp.~671--680, 1983.

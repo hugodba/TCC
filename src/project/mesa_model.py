@@ -106,6 +106,9 @@ class VRPOptimizationModel(Model):
         super().__init__()
         self.dataset = dataset
         self.random = random.Random(seed)
+        self._seed = seed
+        self._step_counter = 0
+        self.run_label = None
         self.agent_set = AgentSet([], random=self.random)
         self.elite_pool = ElitePool(
             max_size=pool_size,
@@ -133,6 +136,9 @@ class VRPOptimizationModel(Model):
 
     def step(self) -> None:
         """Run one model tick by stepping all agents once."""
+        self._step_counter += 1
+        run_label = f"run={self.run_label}" if getattr(self, "run_label", None) is not None else f"seed={self._seed}"
+        logger.info(f"MAS {run_label} Step {self._step_counter}")
         if self.parallel_agents:
             self._step_parallel()
         else:

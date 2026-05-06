@@ -1,4 +1,4 @@
-\paragraph{}Este capítulo apresenta a fundamentação teórica essencial para o entendimento das metodologias e soluções computacionais propostas neste trabalho. A \autoref{sec:def_problema} formaliza o conceito do Problema de Roteamento de Veículos e detalha os padrões de avaliação de instâncias da literatura. A \autoref{sec:selecao_meta} justifica a seleção das metodologias heurísticas adotadas (Recozimento Simulado, Busca Tabu e Algoritmo Genético) descrevendo seus funcionamentos e premissas. Posteriormente, a \autoref{sec:sma} explora os princípios de um Sistema Multi-agente, abordando o \textit{framework} de modelagem distribuída escolhido e a estratégia heurística de cooperação implementada para evitar o isolamento de regiões promissoras (\textit{Path Relinking}). Por fim, a compreensão do Aprendizado por Reforço e a lógica da recompensa empregada na estratégia do Q-Learning, que norteia a coordenação estratégica proposta, são objetos da \autoref{sec:rl}.
+\paragraph{}Este capítulo apresenta a fundamentação teórica essencial para o entendimento das metodologias e soluções computacionais propostas neste trabalho. A \autoref{sec:def_problema} formaliza o conceito do Problema de Roteamento de Veículos e detalha os padrões de avaliação de instâncias da literatura. A \autoref{sec:selecao_meta} apresenta as meta-heurísticas adotadas (Recozimento Simulado, Busca Tabu e Algoritmo Genético) descrevendo sucintamente seus funcionamentos e premissas. Posteriormente, a \autoref{sec:sma} explora os princípios de um Sistema Multi-agente, abordando o \textit{framework} de modelagem distribuída escolhido e a estratégia de cooperação implementada, o \textit{Path Relinking}. Por fim, a compreensão do Aprendizado por Reforço e a lógica da recompensa empregada na estratégia do \textit{Q-Learning}, que norteia a coordenação estratégica proposta, são objetos da \autoref{sec:rl}.
 
 \section{Definição do problema}
 \label{sec:def_problema}
@@ -8,7 +8,7 @@
 \subsection{O Problema de Roteamento de Veículos}
 \label{sec:vrp}
 
-\paragraph{}O Problema de Roteamento de Veículos (VRP) é um desafio de otimização combinatória e programação linear inteira que busca determinar o conjunto ideal de rotas para uma frota de veículos entregarem mercadorias a um conjunto específico de clientes. De forma genérica, o objetivo fundamental do VRP é minimizar o custo total da operação (geralmente expresso em distância total ou tempo) garantindo que:
+\paragraph{}O Problema de Roteamento de Veículos (VRP) é um desafio de otimização combinatória e programação linear inteira que busca determinar o conjunto ideal de rotas para uma frota de veículos entregarem mercadorias a um conjunto específico de clientes \cite{Dantzig59, Vidal20}. De forma genérica, o objetivo fundamental do VRP é minimizar o custo total da operação (geralmente expresso em distância total ou tempo) garantindo que:
 
 \begin{itemize}
     \item Cada cliente deve ser visitado exatamente uma vez;
@@ -16,10 +16,7 @@
     \item As restrições operacionais (como capacidade de carga ou janelas de tempo) devem ser estritamente respeitadas.
 \end{itemize}
 
-\paragraph{}O VRP é classificado na ciência da computação como um problema \textit{NP-hard} (problemas de tempo polinomial não-determinístico difícil). Isso significa que, à medida que o número de clientes aumenta, o tempo necessário para encontrar a solução ótima cresce de forma exponencial, tornando impossível o uso de métodos exatos (como a força bruta) para instâncias de larga escala.
-
-\paragraph{}É precisamente essa complexidade computacional inerente que fundamenta a aplicação das meta-heurísticas (SA, TS e GA) investigadas neste estudo. Em contraste com os métodos de resolução exatos, as abordagens meta-heurísticas são concebidas para encontrar soluções subótimas de alta qualidade em tempo polinomial aceitável, viabilizando assim a aplicação prática em cenários logísticos de envergadura real.
-
+\paragraph{}O VRP é classificado na teoria da complexidade computacional como um problema \textit{NP-hard} \cite{Garey79}. Do ponto de vista teórico, isso implica que qualquer problema da classe NP pode ser reduzido ao VRP em tempo polinomial. Na prática, significa que não se conhece nenhum algoritmo capaz de encontrar a solução ótima para o problema em tempo polinomial. É precisamente essa complexidade computacional inerente que fundamenta a aplicação das meta-heurísticas (SA, TS e GA) investigadas neste estudo. Em contraste com os métodos de resolução exatos, as abordagens meta-heurísticas são concebidas para encontrar soluções subótimas de alta qualidade em tempo que viabilize a aplicação prática em cenários de envergadura real.
 
 \subsection{Metodologia de Avaliação e o Benchmark de Solomon}
 \label{sec:benchmark}
@@ -43,34 +40,26 @@
 
     \item \textbf{Ponto de Origem e Retorno:} O cliente indexado como 0 define o depósito central, ponto obrigatório de partida e encerramento de todas as rotas.
     
-    \item \textbf{Restrições de Viabilidade:} Uma rota é considerada válida apenas se respeitar simultaneamente a Capacidade do Veículo ($Q$), a soma das demandas dos clientes atendidos e o atendimento dentro das janelas de tempo estabelecidas (\textit{Ready Time} e \textit{Due Date}), somando-se a isso o \textit{Service Time} (Tempo de Serviço) em cada parada.
+    \item \textbf{Restrições de Viabilidade:} Uma solução para o problema é considerada válida apenas se garantir o atendimento da demanda de todos os clientes em sua totalidade. Além disso, cada rota individual deve respeitar rigorosamente as seguintes restrições operacionais: a soma das demandas dos clientes inseridos em uma mesma rota não pode exceder a Capacidade Máxima do Veículo ($Q$); e o serviço deve ser iniciado e finalizado dentro da Janela de Tempo estabelecida pelo cliente (\textit{Ready Time} e \textit{Due Date}), computando-se obrigatoriamente o Tempo de Serviço (\textit{Service Time}) em cada parada.
 \end{enumerate}
 
 \paragraph{}Esta abordagem padronizada transforma o problema em um estudo de caráter matemático e exploratório, estabelecendo uma base sólida que pode, futuramente, ser adaptada para modelos logísticos de maior complexidade e variáveis dinâmicas.
 
 \paragraph{}Neste trabalho serão utilizadas, fundamentalmente, as instâncias de tipo RC, série 2. Ou seja, a distribuição dos clientes contém algumas aglomerações, mas também pontos aleatórios. Além disso, a capacidade dos veículos é maior e as janelas de tempo mais largas, significando muitos clientes por rota, poucos veículos necessários. Ver \autoref{ApendiceA}.
 
-\section{Seleção do Trio de Meta-heurísticas}
+\section{Meta-heurísticas selecionadas}
 \label{sec:selecao_meta}
 
-\paragraph{}A escolha das meta-heurísticas Recozimento Simulado, Busca Tabu e Algoritmo Genético para a resolução do VRPTW fundamenta-se na necessidade de realizar uma análise comparativa abrangente, cobrindo dois eixos de vertentes de busca em otimização combinatória:
-
-\begin{itemize}
-    \item \textbf{Vertente de Trajetória Única vs. População}: Métodos de trajetória única trabalham com apenas uma solução por vez. No caso do VRPTW, é como se houvesse um único agente caminhando pelo mapa das rotas, tentando dar passos para direções melhores. O foco é a intensificação, lapidar uma solução até o limite. Métodos de população trabalham com múltiplas soluções simultâneas. É como se houvesse diversos agentes espalhados pelo mapa. O foco é a diversificação, explorar várias áreas ao mesmo tempo para não ficar preso em uma única região.
-
-    \item \textbf{Vertente Estocástica vs. Determinística}: Esta divisão foca em como o algoritmo toma decisões. No caso estocástico, as decisões de aceitar ou não uma rota pior dependem de probabilidades. Já na vertente determinística, as decisões são baseadas em regras lógicas e no histórico.
-\end{itemize}
-
-\paragraph{}A diversidade técnica entre esses métodos permite utilizar diferentes mecanismos de escape de ótimos locais e estratégias de exploração do espaço de busca diante das restrições de roteamento. Busca-se usar suas maiores forças em conjunto: aleatoriedade, memória e compartilhamento de informações entre soluções. A seguir, cada método tem sua escolha justificada em mais detalhes.
-
+\paragraph{}As meta-heurísticas Recozimento Simulado, Busca Tabu e Algoritmo Genético são clássicas no contexto do VRP, portanto adequadas para o presente estudo. A diversidade técnica entre esses métodos permite utilizar diferentes mecanismos de escape de ótimos locais e estratégias de exploração do espaço de busca diante das restrições de roteamento. A seguir, serão apresentados os fundamentos do funcionamento de cada um deles.
 
 \subsection{Recozimento Simulado}
 
-\paragraph{}\cite{Kirkpatrick83} Método de trajetória única e estocástico. Sua inclusão é justificada pela sua capacidade de exploração global por meio de um mecanismo probabilístico. Se $\Delta f$ é a diferença de custo entre a nova solução ($s'$) e a atual ($s$):
+\paragraph{} Explora possíveis soluções por meio de um mecanismo probabilístico inspirado no processo de resfriamento de metais \cite{Kirkpatrick83}. Se $\Delta f$ é a diferença de custo entre a nova solução ($s'$) e a atual ($s$):
 
 $$\Delta f = f(s') - f(s)$$
 
-\paragraph{}A probabilidade $P$ de aceitação é definida por:
+\vspace{0.5cm}
+\noindent a probabilidade $P$ de aceitação é definida por:
 
 $$P(\text{aceitar } s') = 
 \begin{cases} 
@@ -78,15 +67,14 @@ $$P(\text{aceitar } s') =
 e^{-\frac{\Delta f}{T}}, & \text{se } \Delta f \geq 0 
 \end{cases}$$
 
-\paragraph{}Onde $T$ é a temperatura, que decai ao longo do tempo conforme uma taxa de resfriamento $\alpha$:
+\vspace{0.5cm}
+\noindent onde $T$ é a temperatura, que decai ao longo do tempo conforme uma taxa de resfriamento $\alpha$:
 
 $$T_{k+1} = \alpha \cdot T_k$$
 
-\paragraph{}No contexto do VRPTW, o SA é essencial para demonstrar como a aceitação controlada de soluções de pior qualidade, governada por um parâmetro de temperatura, permite que o algoritmo escape de ótimos locais prematuros.
-
 \subsection{Busca Tabu}
 
-\paragraph{}\cite{Glover89} Método de trajetória única e determinístico. A justificativa reside no seu uso de ``listas tabu'', que impedem o algoritmo de retornar a soluções visitadas recentemente, forçando uma exploração sistemática e agressiva de novas vizinhanças. Mais objetivamente, o algoritmo opera sobre a vizinhança $N(s)$ da solução atual, mas subtrai os movimentos que estão na Lista Tabu ($L$):
+\paragraph{} O método utiliza ``listas tabu'', que impedem o algoritmo de retornar a soluções visitadas recentemente, forçando uma exploração sistemática e agressiva de novas vizinhanças \cite{Glover89}. Mais objetivamente, o algoritmo opera sobre a vizinhança $N(s)$ da solução atual, mas subtrai os movimentos que estão na Lista Tabu ($L$):
 
 $$s_{next} = \text{argmin} \{f(s') \mid s' \in N(s) \setminus L\}$$
 
@@ -94,27 +82,23 @@ $$s_{next} = \text{argmin} \{f(s') \mid s' \in N(s) \setminus L\}$$
 
 $$\text{Se } f(s') < f(s_{best}), \text{ então } s' \in \textit{Candidatos} \text{ mesmo se } s' \in L$$
 
-\paragraph{}Isso mostra que a memória do algoritmo é inteligente e não impede o progresso caso uma solução excepcional seja encontrada por um caminho anteriormente proibido.
-
-\paragraph{}Além disso, métodos que residem suas maiores forças no uso de memória são amplamente reconhecidos na literatura como técnicas eficazes para problemas de logística (como o VRPTW).
-
 \subsection{Algoritmo Genético}
 
-\paragraph{}\cite{Holland75, Goldberg89} Método de população e estocástico. A escolha do GA justifica-se pela sua habilidade de diversificação. Por meio dos operadores de cruzamento e mutação, o algoritmo é capaz de recombinar sub-rotas eficientes de diferentes soluções para gerar descendentes potencialmente superiores. Isso se traduz em converter o problema de minimização de custos em um valor de sobrevivência, representado pela função de aptidão (\textit{fitness}) $F(s)$:
+\paragraph{} Por meio dos operadores de cruzamento, mutação e seleção, o algoritmo é capaz de recombinar sub-rotas eficientes de diferentes soluções para gerar descendentes potencialmente superiores \cite{Holland75, Goldberg89}. Isso se traduz em converter o problema de minimização de custos em um valor de sobrevivência, representado pela função de aptidão (\textit{fitness}) $F(s)$:
 
 \begin{equation}
     F(s) = \frac{1}{C(s) + \epsilon}
 \end{equation}
 
-\paragraph{}Onde $\epsilon$ é um valor infinitesimal para evitar divisão por zero. Presente, neste caso, apenas por rigor teórico, pois a função de custo que será utilizada é sempre maior que 0. A probabilidade de um indivíduo ser selecionado para o cruzamento é dada por:
+\vspace{0.5cm}
+\noindent onde $\epsilon$ é um valor infinitesimal para evitar divisão por zero. Presente, neste caso, apenas por rigor teórico, pois a função de custo que será utilizada é sempre maior que 0. A probabilidade de um indivíduo ser selecionado para o cruzamento é dada por:
 
 \begin{equation}
     P_i = \frac{F(s_i)}{\sum_{j=1}^{N} F(s_j)}
 \end{equation}
 
-\paragraph{}Onde $N$ é o tamanho da população. Isso garante que rotas mais curtas tenham maior probabilidade biológica de transmitir seus genes (sequências de clientes).
-
-\paragraph{}No VRPTW, isso permite observar como características geográficas de boas rotas podem ser preservadas e transmitidas, oferecendo uma dinâmica de busca completamente distinta dos métodos de trajetória única.
+\vspace{0.5cm}
+\noindent onde $N$ é o tamanho da população. Isso garante que rotas mais curtas tenham maior probabilidade biológica de transmitir seus genes (sequências de clientes).
 
 
 \section{Sistema multi-agente}
@@ -128,7 +112,7 @@ $$\text{Se } f(s') < f(s_{best}), \text{ então } s' \in \textit{Candidatos} \te
 
 \subsection{Framework Mesa}
 
-\paragraph{}O Mesa é uma biblioteca de código aberto desenvolvida em \textit{Python} para a modelagem baseada em agentes, permitindo que pesquisadores a criação, manipulação e análise de sistemas complexos compostos por múltiplos elementos autônomos \cite{TerHoeven25}. Diferente de modelos matemáticos puramente estáticos, o Mesa fornece uma estrutura computacional que facilita a observação de comportamentos emergentes a partir das interações locais entre agentes em um ambiente dinâmico.
+\paragraph{}O Mesa é um framework de código aberto desenvolvido em \textit{Python} para a modelagem baseada em agentes, permitindo que pesquisadores criem, manipulem e analisem sistemas complexos compostos por múltiplos elementos autônomos \cite{TerHoeven25}. Diferente de modelos matemáticos puramente estáticos, o Mesa fornece uma estrutura computacional que facilita a observação de comportamentos emergentes a partir das interações locais entre agentes em um ambiente dinâmico.
 
 \paragraph{}A arquitetura do Mesa é fundamentada em uma separação clara de responsabilidades, baseada em três componentes principais que seguem padrões de projeto modernos:
 
@@ -142,13 +126,48 @@ $$\text{Se } f(s') < f(s_{best}), \text{ então } s' \in \textit{Candidatos} \te
 
 No âmbito da otimização combinatória, o Mesa destaca-se por permitir que meta-heurísticas distintas sejam encapsuladas em agentes independentes, transformando um problema de busca individual em um processo de cooperação distribuída.
 
-\subsection{Estratégia de cooperação: Path Relinking}
+\subsection{Estratégia de cooperação: \textit{Path Relinking}}
 
-\paragraph{} O PR é uma estratégia de intensificação de busca originalmente proposta como um componente de memória para a Busca Tabu \cite{Glover00}, mas que se consolidou como uma técnica poderosa para a integração de soluções em diversos contextos de otimização combinatória.
+\paragraph{} O \textit{Path Relinking} (PR) é uma estratégia de intensificação de busca originalmente proposta como um componente de memória para a Busca Tabu \cite{Glover00}, mas que se consolidou como uma técnica poderosa para a integração de soluções em diversos contextos de otimização combinatória.
 
-\paragraph{} O conceito fundamental do \textit{PR} reside na exploração sistemática de trajetórias que conectam duas soluções de alta qualidade, denominadas solução inicial ($S_i$) e solução guia ($S_g$). A premissa teórica do método é que, ao navegar pelo caminho que transforma a solução inicial na solução guia, o algoritmo pode descobrir soluções intermediárias que compartilham características de ambas e que, em muitos casos, superam as referências originais em termos de qualidade.
+\paragraph{} O conceito fundamental do PR reside na exploração sistemática de trajetórias que conectam duas soluções de alta qualidade, denominadas solução inicial ($S_i$) e solução guia ($S_g$). A premissa teórica do método é que, ao navegar pelo caminho que transforma a solução inicial na solução guia, o algoritmo pode descobrir soluções intermediárias que compartilham características de ambas e que, em muitos casos, superam as referências originais em termos de qualidade.
 
-\paragraph{} Esse processo é realizado por meio de uma sequência de movimentos de vizinhança que reduzem progressivamente a distância, comumente medida pela distância de Hamming ou por diferenças estruturais em rotas, entre as duas soluções.
+\paragraph{} Esse processo é realizado por meio de uma sequência de movimentos de vizinhança 
+que reduzem progressivamente a distância, comumente medida pela distância de 
+Hamming ou por diferenças estruturais em rotas, entre as duas soluções. Embora 
+o conceito fundamental descreva uma trajetória entre dois pontos, a literatura 
+clássica \cite{Glover00} categoriza o \textit{Path Relinking} em diferentes 
+tipos, dependendo de como e em qual direção essa trajetória é explorada:
+
+\begin{itemize}
+    \item \textbf{\textit{Forward Path Relinking} (Direto):} A busca parte da 
+    pior solução (Solução Inicial - $S_i$) em direção à melhor solução (Solução Guia 
+    - $S_g$). A premissa é incorporar progressivamente as boas características da 
+    solução guia na solução inicial.
+    
+    \item \textbf{\textit{Backward Path Relinking} (Reverso):} A trajetória é 
+    percorrida no sentido inverso, partindo da melhor solução ($S_g$) em direção à 
+    pior ($S_i$). Esta variante costuma apresentar resultados superiores na 
+    prática, pois o algoritmo explora a vizinhança imediata da solução de mais 
+    alta qualidade logo nos primeiros passos da trajetória.
+    
+    \item \textbf{\textit{Mixed Path Relinking} (Misto):} A exploração ocorre de 
+    forma alternada, avançando simultaneamente a partir de ambas as extremidades 
+    ($S_i$ e $S_g$) até que os caminhos se encontrem no centro da trajetória, 
+    garantindo uma amostragem equilibrada de ambas as vizinhanças.
+\end{itemize}
+
+\paragraph{} Para o escopo do modelo de cooperação proposto neste trabalho, a implementação 
+foca especificamente nas estratégias \textit{Forward} e \textit{Backward}, 
+permitindo que os agentes explorem essas trajetórias bidirecionalmente para 
+maximizar a extração de características promissoras das rotas.
+
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=\textwidth]{sua_imagem.png}
+    \caption{Representação do caminho entre $S_i$ e $S_g$.}
+    \label{fig:path_relinking}
+\end{figure}
 
 \begin{figure}[H]
     \centering
@@ -161,16 +180,16 @@ No âmbito da otimização combinatória, o Mesa destaca-se por permitir que met
 \end{figure}
 \vspace{-0.5cm}
 
-\paragraph{} No contexto do \textit{VRPTW}, o \textit{Path Relinking} atua como um mecanismo de cooperação de alto nível ao permitir a sinergia estrutural, combinando a eficiência de sequenciamento de uma solução com a estrutura de particionamento de veículos de outra para criar rotas que nenhum agente isolado seria capaz de conceber. Além disso, a técnica possibilita a exploração de vizinhanças distantes, uma vez que, ao contrário de buscas locais tradicionais que exploram apenas o entorno imediato, o PR investiga uma região específica do espaço de busca delimitada por duas soluções de elite, focando o esforço computacional em áreas comprovadamente promissoras.
+\paragraph{} No contexto do VRPTW, o \textit{Path Relinking} atua como um mecanismo de cooperação de alto nível ao permitir a sinergia estrutural, combinando a eficiência de sequenciamento de uma solução com a estrutura de particionamento de veículos de outra para criar rotas que nenhum agente isolado seria capaz de conceber. Além disso, a técnica possibilita a exploração de vizinhanças distantes, uma vez que, ao contrário de buscas locais tradicionais que exploram apenas o entorno imediato, o PR investiga uma região específica do espaço de busca delimitada por duas soluções de elite, focando o esforço computacional em áreas comprovadamente promissoras.
 
 \paragraph{} Outro fator determinante é a sua capacidade de facilitar o escape de ótimos locais, pois a trajetória entre as soluções pode atravessar vales de soluções inviáveis ou de baixa qualidade para alcançar picos de aptidão mais elevados, agindo como um catalisador para a convergência global do sistema multiagente. Dessa forma, o PR não é apenas um método de busca, mas uma filosofia de cooperação que utiliza o conhecimento acumulado por diferentes agentes especialistas para sintetizar soluções superiores, mitigando as fraquezas individuais observadas em execuções isoladas. 
 
-\paragraph{} Como seus operadores e manipuladores de soluções são relativamente simples, o PR é menos custoso computacionalmente que uma meta-heurística, seu esforço reside majoritariamente na verificação das funções de custo. Este é seu ponto forte, mas também ponto fraco, uma vez que depende de boas soluções como entrada para melhorá-las ainda mais. É evidente, portando que deve ser usada em combinação com outros algoritmos, idealmente ao final das etapas.
+\paragraph{} Como seus operadores e manipuladores de soluções são relativamente simples, o PR é menos custoso computacionalmente que uma meta-heurística, seu esforço reside majoritariamente na verificação das funções de custo. Este é seu ponto forte, mas também ponto fraco, uma vez que depende de boas soluções como entrada para melhorá-las ainda mais. É evidente, portanto, que deve ser usada em combinação com outros algoritmos, idealmente ao final das etapas.
 
 \section{Aprendizado por Reforço}
 \label{sec:rl}
 
-\paragraph{} O RL é uma área do aprendizado de máquina que se preocupa com a forma como agentes inteligentes devem tomar ações em um ambiente a fim de maximizar uma recompensa acumulada. Diferente do aprendizado supervisionado, que se baseia em um conjunto de dados rotulados, fundamenta-se na experiência direta do agente, que aprende por meio de um processo de tentativa e erro ao interagir com o ambiente \cite{Sutton18}.
+\paragraph{} O Aprendizado por Reforço (\textit{Reinforcement Learning} - RL) é uma área do aprendizado de máquina que se preocupa com a forma como agentes inteligentes devem tomar ações em um ambiente a fim de maximizar uma recompensa acumulada. Diferente do aprendizado supervisionado, que se baseia em um conjunto de dados rotulados, fundamenta-se na experiência direta do agente, que aprende por meio de um processo de tentativa e erro ao interagir com o ambiente \cite{Sutton18}.
 
 \paragraph{} A estrutura básica de um problema de RL é frequentemente modelada como um Processo de Decisão de Markov, que envolve os seguintes componentes fundamentais:
 
@@ -184,9 +203,7 @@ No âmbito da otimização combinatória, o Mesa destaca-se por permitir que met
 
 \paragraph{} O objetivo do RL é encontrar uma política ($\pi$), que é um mapeamento de estados para ações que maximizem o retorno esperado a longo prazo. Um conceito crítico neste processo é o equilíbrio entre exploração (\textit{exploration}), onde o agente testa novas ações para descobrir sua utilidade, e explotação (\textit{exploitation}), onde o agente utiliza o conhecimento já adquirido para escolher as ações que renderam as maiores recompensas anteriormente.
 
-\subsection{Q-Learning}
-
-\paragraph{} O Q-Learning \cite{Watkins92} é um algoritmo de Aprendizado por Reforço do tipo \textit{off-policy} e \textit{model-free}, o que significa que ele pode aprender a política ótima de tomada de decisão sem a necessidade de um modelo prévio das transições do ambiente ou das probabilidades de recompensa. O ``Q'' na nomenclatura refere-se à Qualidade (ou valor de utilidade), representando o quão proveitosa é uma determinada ação em um estado específico.
+\paragraph{} Um dos mais clássicos algoritmos de RL, O Q-Learning \cite{Watkins92} é do tipo \textit{off-policy} e \textit{model-free}, o que significa que ele pode aprender a política ótima de tomada de decisão sem a necessidade de um modelo prévio das transições do ambiente ou das probabilidades de recompensa. O ``Q'' na nomenclatura refere-se à Qualidade (ou valor de utilidade), representando o quão proveitosa é uma determinada ação em um estado específico.
 
 \begin{figure}[H]
     \centering

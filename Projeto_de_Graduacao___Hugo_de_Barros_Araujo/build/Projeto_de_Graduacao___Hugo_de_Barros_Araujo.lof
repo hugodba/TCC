@@ -1,9 +1,10 @@
 \babel@toc {brazilian}{}\relax 
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces \small {Diagrama de Path Relinking}}}{14}{figure.2.1}%
-\contentsline {figure}{\numberline {2.2}{\ignorespaces \small {Visão geral do Q-Learning}}}{16}{figure.2.2}%
-\contentsline {figure}{\numberline {2.3}{\ignorespaces \small {Algoritmo básico de Q-Learning}}}{17}{figure.2.3}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Representação do caminho entre $S_i$ e $S_g$.}}{14}{figure.2.1}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces \small {Diagrama de Path Relinking}}}{14}{figure.2.2}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces \small {Visão geral do Q-Learning}}}{16}{figure.2.3}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces \small {Algoritmo básico de Q-Learning}}}{17}{figure.2.4}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {3.1}{\ignorespaces \small {Distribuição da instância RC201}}}{20}{figure.3.1}%
 \contentsline {figure}{\numberline {3.2}{\ignorespaces \small {Rotas ótimas da instância RC201}}}{21}{figure.3.2}%
