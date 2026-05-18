@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
 from threading import Lock
 from typing import Any, Dict, List, Optional, Tuple
@@ -108,7 +108,7 @@ class VRPOptimizationModelRL(Model):
         sa_params: Dict[str, Any] | None = None,
         ts_params: Dict[str, Any] | None = None,
         seed_policy: str = "best",
-        parallel_agents: bool = False,
+        parallel_agents: bool = True,
         initial_q_table: Dict[Tuple[int, int], List[float]] | None = None,
         initial_action_count_table: Dict[Tuple[int, int], List[int]] | None = None,
     ) -> None:
@@ -437,7 +437,7 @@ class VRPOptimizationModelRL(Model):
         """Execute selected heuristic runs concurrently."""
         if not scheduled_runs:
             return []
-        with ThreadPoolExecutor(max_workers=len(scheduled_runs)) as executor:
+        with ProcessPoolExecutor(max_workers=len(scheduled_runs)) as executor:
             futures = [
                 executor.submit(agent.solve_once, seed_route)
                 for agent, seed_route in scheduled_runs
@@ -577,6 +577,17 @@ class HeuristicAgent(Agent):
 
         # Keep one persistent solver for decoder reuse (path relinking helper).
         self.solver = self._create_solver(seed=self._base_seed)
+
+    def __getstate__(self) -> Dict[str, Any]:
+        """Exclude Lock from pickle serialization."""
+        state = self.__dict__.copy()
+        state.pop("_solve_counter_lock", None)
+        return state
+
+    def __setstate__(self, state: Dict[str, Any]) -> None:
+        """Restore object from pickle and recreate Lock."""
+        self.__dict__.update(state)
+        self._solve_counter_lock = Lock()
 
     def step(self) -> None:
         """Run the solver once and push any improvement to the elite pool."""

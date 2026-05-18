@@ -71,7 +71,7 @@ class GeneticAlgorithm(Metaheuristic):
                 the initial population.
         """
         self._reset_history()
-        cpu_start = time.process_time()
+        cpu_start = time.perf_counter()
 
         population = [self._random_individual() for _ in range(self.population_size)]
         if initial_permutation is not None:
@@ -81,7 +81,7 @@ class GeneticAlgorithm(Metaheuristic):
         self.best_route = routes[0]
         for r in routes[1:]:
             self.best_route = self._compare_routes(r, self.best_route)
-        self._record_history(self.best_route, time.process_time() - cpu_start)
+        self._record_history(self.best_route, time.perf_counter() - cpu_start)
 
         for _ in range(self.generations):
             new_population: List[List[int]] = []
@@ -107,7 +107,7 @@ class GeneticAlgorithm(Metaheuristic):
 
             for r in routes:
                 self.best_route = self._compare_routes(r, self.best_route)
-            self._record_history(self.best_route, time.process_time() - cpu_start)
+            self._record_history(self.best_route, time.perf_counter() - cpu_start)
 
         return self.best_route
     

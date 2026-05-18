@@ -184,9 +184,9 @@ def _evaluate_solver_params(
         seed = seed_start + run_idx
         solver = algo_cls(dataset=dataset, seed=seed, **params)
 
-        start = time.process_time()
+        start = time.perf_counter()
         best_route = solver.solve()
-        elapsed_sec = time.process_time() - start
+        elapsed_sec = time.perf_counter() - start
 
         vehicles, distance = best_route.cost_function()
         scalar_value = _scalarized_objective(vehicles, distance)
@@ -326,7 +326,7 @@ def _optimize_method(
                 budget_ratio=stage_ratio,
             )
 
-            stage_start = time.process_time()
+            stage_start = time.perf_counter()
             stage_metrics = _evaluate_solver_params(
                 dataset=dataset,
                 algo_cls=algo_cls,
@@ -334,7 +334,7 @@ def _optimize_method(
                 seed_start=seed_start,
                 eval_runs=eval_runs,
             )
-            stage_runtime_sec = time.process_time() - stage_start
+            stage_runtime_sec = time.perf_counter() - stage_start
             stage_objective = float(stage_metrics["avg_scalar_objective"])
 
             trial.set_user_attr(f"stage_{stage_idx}_ratio", float(stage_ratio))

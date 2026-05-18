@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 import logging
@@ -100,7 +100,7 @@ class VRPOptimizationModel(Model):
         sa_params: Dict[str, Any] | None = None,
         ts_params: Dict[str, Any] | None = None,
         seed_policy: str = "best",
-        parallel_agents: bool = False,
+        parallel_agents: bool = True,
     ) -> None:
         """Initialize the model, RNG, agent set, and shared elite pool."""
         super().__init__()
@@ -152,7 +152,7 @@ class VRPOptimizationModel(Model):
         self.random.shuffle(agents)
 
         seeds = [self.get_seed() for _ in agents]
-        with ThreadPoolExecutor(max_workers=len(agents)) as executor:
+        with ProcessPoolExecutor(max_workers=len(agents)) as executor:
             futures = [
                 executor.submit(agent.solve_once, seed_route)
                 for agent, seed_route in zip(agents, seeds)

@@ -64,7 +64,7 @@ class TabuSearch(Metaheuristic):
                 the initial state.
         """
         self._reset_history()
-        cpu_start = time.process_time()
+        cpu_start = time.perf_counter()
 
         current_perm = (
             list(initial_permutation)
@@ -76,7 +76,7 @@ class TabuSearch(Metaheuristic):
 
         tabu: Dict[Tuple[int, int], int] = {}
         self.best_route = best_route
-        self._record_history(best_route, time.process_time() - cpu_start)
+        self._record_history(best_route, time.perf_counter() - cpu_start)
 
         for _ in range(self.max_iterations):
             candidate_perm, candidate_route, move = self._best_neighbor(
@@ -91,7 +91,7 @@ class TabuSearch(Metaheuristic):
 
             best_route = self._select_best(best_route, current_route)
             self.best_route = best_route
-            self._record_history(best_route, time.process_time() - cpu_start)
+            self._record_history(best_route, time.perf_counter() - cpu_start)
 
             self._decrease_tabu(tabu)
 

@@ -75,7 +75,7 @@ class SimulatedAnnealing(Metaheuristic):
                 the initial state.
         """
         self._reset_history()
-        cpu_start = time.process_time()
+        cpu_start = time.perf_counter()
 
         current_perm = (
             list(initial_permutation)
@@ -87,7 +87,7 @@ class SimulatedAnnealing(Metaheuristic):
         best_cost = self._scalar_cost(best_route)
 
         self.best_route = best_route
-        self._record_history(best_route, time.process_time() - cpu_start)
+        self._record_history(best_route, time.perf_counter() - cpu_start)
 
         temperature = self.initial_temp
         while temperature > self.min_temp:
@@ -105,7 +105,7 @@ class SimulatedAnnealing(Metaheuristic):
                     best_route = current_route.clone()
 
             self.best_route = best_route
-            self._record_history(best_route, time.process_time() - cpu_start)
+            self._record_history(best_route, time.perf_counter() - cpu_start)
             temperature *= self.cooling_rate
 
         return best_route
