@@ -22,7 +22,7 @@ MAS_N_STEPS = 20
 # MAS_GA_PARAMS = {'population_size': 70, 'generations': 1150, 'crossover_rate': 0.7, 'mutation_rate': 0.05}
 
 # Isolated metaheuristics params (auto-tuned by src/tune_settings.py)
-SA_PARAMS = {'initial_temp': 1800, 'cooling_rate': 0.99, 'min_temp': 3, 'iterations_per_temp': 290} # iterations per temp * math.log(min_temp / initial_temp) / math.log(cooling_rate)
+SA_PARAMS = {'initial_temp': 1800, 'cooling_rate': 0.99, 'min_temp': 3, 'iterations_per_temp': 275} # iterations per temp * math.log(min_temp / initial_temp) / math.log(cooling_rate)
 TS_PARAMS = {'max_iterations': 480, 'tabu_tenure': 20, 'neighbor_samples': 350} # max iters * neighbor samples
 GA_PARAMS = {'population_size': 70, 'generations': 2300, 'crossover_rate': 0.7, 'mutation_rate': 0.05} # generations * population size
 
