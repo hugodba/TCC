@@ -4,6 +4,7 @@ from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 import logging
+import multiprocessing as mp
 import random
 
 from mesa import Agent, Model
@@ -14,6 +15,25 @@ from .Metaheuristics import GeneticAlgorithm, SimulatedAnnealing, TabuSearch, Me
 from . import settings as cfg
 
 logger = logging.getLogger(__name__)
+
+
+def _create_process_pool(max_workers: int) -> ProcessPoolExecutor:
+    ctx = mp.get_context("spawn")
+    try:
+        return ProcessPoolExecutor(
+            max_workers=max_workers,
+            mp_context=ctx,
+            max_tasks_per_child=1,
+        )
+    except TypeError:
+        return ProcessPoolExecutor(max_workers=max_workers, mp_context=ctx)
+
+
+def _shutdown_process_pool(executor: ProcessPoolExecutor) -> None:
+    try:
+        executor.shutdown(wait=True, cancel_futures=True)
+    except TypeError:
+        executor.shutdown(wait=True)
 
 
 @dataclass
@@ -152,12 +172,15 @@ class VRPOptimizationModel(Model):
         self.random.shuffle(agents)
 
         seeds = [self.get_seed() for _ in agents]
-        with ProcessPoolExecutor(max_workers=len(agents)) as executor:
+        executor = _create_process_pool(len(agents))
+        try:
             futures = [
                 executor.submit(agent.solve_once, seed_route)
                 for agent, seed_route in zip(agents, seeds)
             ]
             results = [future.result() for future in futures]
+        finally:
+            _shutdown_process_pool(executor)
 
         for agent, improved in zip(agents, results):
             if improved is None:
