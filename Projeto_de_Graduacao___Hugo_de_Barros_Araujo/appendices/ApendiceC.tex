@@ -1,0 +1,95 @@
+\paragraph{} A tabela apresenta os resultados completos de cada método para todas as instâncias testadas, incluindo o número médio de veículos ($K$), a distância total média ($D$) e o tempo médio de execução. Os valores de $K$, $D$ e tempo são apresentados com seus respectivos desvios padrão. O tempo é apresentado em segundos.
+
+{\footnotesize
+\begin{longtable}{llcccc}
+\caption[\small{Resultados completos por instância e método.}]{\label{tab:resultados_completos} \small{Resultados completos dos experimemtos por instância e método.}} \\
+\toprule
+\textbf{Instância} & \textbf{Método} & \textbf{Ref. $(K^*, D^*)$} & \textbf{$K$ Médio} & \textbf{$D$ Médio} & \textbf{Tempo de CPU (s)} \\
+\midrule
+\endfirsthead
+
+\toprule
+\textbf{Instância} & \textbf{Método} & \textbf{Ref. $(K^*, D^*)$} & \textbf{$K$ Médio} & \textbf{$D$ Médio} & \textbf{Tempo de CPU (s)} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{6}{r}{\textit{Continua na próxima página}} \\
+\midrule
+\endfoot
+
+\bottomrule
+\endlastfoot
+\multirow{5}{*}{c101} & SA & (10, 828) & $18.2 \pm 0.9$ & $1564 \pm 73$ & $1458 \pm 20$ \\*
+ & TS & (10, 828) & $18.8 \pm 1.5$ & $1542 \pm 94$ & $1559 \pm 41$ \\*
+ & GA & (10, 828) & $19.1 \pm 0.6$ & $2802 \pm 215$ & $1616 \pm 185$ \\*
+ & MAS & (10, 828) & $17.0 \pm 0.7$ & $1583 \pm 115$ & $3811 \pm 512$ \\*
+ & MAS-RL & (10, 828) & $17.1 \pm 0.7$ & $1637 \pm 165$ & $3417 \pm 165$ \\
+\midrule
+\multirow{5}{*}{c102} & SA & (10, 828) & $15.2 \pm 0.9$ & $1477 \pm 53$ & $1474 \pm 170$ \\*
+ & TS & (10, 828) & $17.0 \pm 1.1$ & $1453 \pm 59$ & $1468 \pm 172$ \\*
+ & GA & (10, 828) & $16.5 \pm 0.7$ & $2778 \pm 230$ & $1419 \pm 13$ \\*
+ & MAS & (10, 828) & $15.0 \pm 0.8$ & $1476 \pm 86$ & $3270 \pm 62$ \\*
+ & MAS-RL & (10, 828) & $14.8 \pm 0.6$ & $1530 \pm 174$ & $3144 \pm 77$ \\
+\midrule
+\multirow{5}{*}{c201} & SA & (3, 591) & $11.1 \pm 0.7$ & $1439 \pm 61$ & $1273 \pm 78$ \\*
+ & TS & (3, 591) & $12.1 \pm 1.4$ & $1423 \pm 95$ & $1212 \pm 61$ \\*
+ & GA & (3, 591) & $11.3 \pm 0.7$ & $2635 \pm 181$ & $1267 \pm 17$ \\*
+ & MAS & (3, 591) & $10.1 \pm 0.9$ & $1449 \pm 90$ & $2947 \pm 97$ \\*
+ & MAS-RL & (3, 591) & $10.2 \pm 1.0$ & $1554 \pm 126$ & $2779 \pm 110$ \\
+\midrule
+\multirow{5}{*}{c202} & SA & (3, 591) & $8.5 \pm 0.5$ & $1298 \pm 55$ & $1174 \pm 128$ \\*
+ & TS & (3, 591) & $10.6 \pm 1.4$ & $1293 \pm 76$ & $1154 \pm 37$ \\*
+ & GA & (3, 591) & $9.2 \pm 0.6$ & $2642 \pm 203$ & $1151 \pm 11$ \\*
+ & MAS & (3, 591) & $7.6 \pm 0.5$ & $1306 \pm 104$ & $2681 \pm 82$ \\*
+ & MAS-RL & (3, 591) & $7.7 \pm 0.7$ & $1295 \pm 93$ & $2516 \pm 88$ \\
+\midrule
+\multirow{5}{*}{r101} & SA & (19, 1650) & $25.2 \pm 0.8$ & $1979 \pm 36$ & $1924 \pm 168$ \\*
+ & TS & (19, 1650) & $25.5 \pm 0.7$ & $1927 \pm 29$ & $1870 \pm 178$ \\*
+ & GA & (19, 1650) & $26.7 \pm 0.8$ & $2391 \pm 91$ & $1904 \pm 199$ \\*
+ & MAS & (19, 1650) & $24.0 \pm 1.1$ & $1967 \pm 76$ & $4247 \pm 101$ \\*
+ & MAS-RL & (19, 1650) & $24.0 \pm 0.8$ & $1967 \pm 58$ & $4008 \pm 143$ \\
+\midrule
+\multirow{5}{*}{r102} & SA & (17, 1486) & $21.1 \pm 1.1$ & $1839 \pm 57$ & $1687 \pm 31$ \\*
+ & TS & (17, 1486) & $21.6 \pm 1.0$ & $1744 \pm 42$ & $1669 \pm 146$ \\*
+ & GA & (17, 1486) & $22.5 \pm 1.0$ & $2282 \pm 102$ & $1665 \pm 19$ \\*
+ & MAS & (17, 1486) & $20.1 \pm 0.6$ & $1750 \pm 31$ & $3862 \pm 117$ \\*
+ & MAS-RL & (17, 1486) & $20.5 \pm 0.7$ & $1753 \pm 38$ & $3593 \pm 106$ \\
+\midrule
+\multirow{5}{*}{r201} & SA & (4, 1252) & $9.3 \pm 0.8$ & $1594 \pm 24$ & $1260 \pm 137$ \\*
+ & TS & (4, 1252) & $12.5 \pm 1.1$ & $1482 \pm 56$ & $1255 \pm 37$ \\*
+ & GA & (4, 1252) & $9.8 \pm 0.8$ & $2466 \pm 148$ & $1191 \pm 13$ \\*
+ & MAS & (4, 1252) & $9.1 \pm 0.6$ & $1589 \pm 76$ & $3602 \pm 294$ \\*
+ & MAS-RL & (4, 1252) & $9.0 \pm 0.8$ & $1580 \pm 98$ & $2667 \pm 90$ \\
+\midrule
+\multirow{5}{*}{r202} & SA & (3, 1191) & $7.8 \pm 0.8$ & $1443 \pm 33$ & $1101 \pm 17$ \\*
+ & TS & (3, 1191) & $11.1 \pm 0.7$ & $1430 \pm 41$ & $1156 \pm 23$ \\*
+ & GA & (3, 1191) & $7.8 \pm 0.4$ & $2386 \pm 136$ & $1171 \pm 148$ \\*
+ & MAS & (3, 1191) & $7.2 \pm 0.4$ & $1520 \pm 197$ & $2561 \pm 66$ \\*
+ & MAS-RL & (3, 1191) & $7.4 \pm 0.7$ & $1490 \pm 179$ & $2453 \pm 113$ \\
+\midrule
+\multirow{5}{*}{rc102} & SA & (12, 1554) & $19.0 \pm 0.9$ & $1952 \pm 54$ & $1644 \pm 21$ \\*
+ & TS & (12, 1554) & $20.4 \pm 0.7$ & $1940 \pm 45$ & $1547 \pm 17$ \\*
+ & GA & (12, 1554) & $21.4 \pm 0.5$ & $2587 \pm 77$ & $1626 \pm 23$ \\*
+ & MAS & (12, 1554) & $18.1 \pm 0.9$ & $1961 \pm 166$ & $3638 \pm 149$ \\*
+ & MAS-RL & (12, 1554) & $18.0 \pm 0.9$ & $1895 \pm 76$ & $3481 \pm 117$ \\
+\midrule
+\multirow{5}{*}{rc103} & SA & (11, 1261) & $16.3 \pm 0.5$ & $1747 \pm 55$ & $1613 \pm 172$ \\*
+ & TS & (11, 1261) & $17.7 \pm 1.8$ & $1743 \pm 100$ & $1518 \pm 169$ \\*
+ & GA & (11, 1261) & $18.7 \pm 0.7$ & $2452 \pm 92$ & $1515 \pm 14$ \\*
+ & MAS & (11, 1261) & $16.3 \pm 1.1$ & $1710 \pm 110$ & $3346 \pm 64$ \\*
+ & MAS-RL & (11, 1261) & $16.2 \pm 0.6$ & $1666 \pm 39$ & $3281 \pm 109$ \\
+\midrule
+\multirow{5}{*}{rc201} & SA & (4, 1406) & $10.5 \pm 0.7$ & $1853 \pm 91$ & $1221 \pm 16$ \\*
+ & TS & (4, 1406) & $13.2 \pm 1.0$ & $1867 \pm 85$ & $1268 \pm 44$ \\*
+ & GA & (4, 1406) & $10.5 \pm 0.5$ & $3183 \pm 216$ & $1299 \pm 164$ \\*
+ & MAS & (4, 1406) & $9.5 \pm 0.8$ & $1956 \pm 185$ & $2762 \pm 58$ \\*
+ & MAS-RL & (4, 1406) & $9.4 \pm 1.0$ & $1913 \pm 74$ & $2696 \pm 72$ \\
+\midrule
+\multirow{5}{*}{rc204} & SA & (3, 798) & $5.2 \pm 0.6$ & $1262 \pm 45$ & $1078 \pm 142$ \\*
+ & TS & (3, 798) & $5.8 \pm 0.9$ & $1307 \pm 96$ & $921 \pm 24$ \\*
+ & GA & (3, 798) & $5.0 \pm 0.0$ & $2704 \pm 215$ & $936 \pm 11$ \\*
+ & MAS & (3, 798) & $4.6 \pm 0.5$ & $1284 \pm 69$ & $2210 \pm 49$ \\*
+ & MAS-RL & (3, 798) & $4.6 \pm 0.5$ & $1302 \pm 129$ & $2151 \pm 61$ \\
+\end{longtable}
+}

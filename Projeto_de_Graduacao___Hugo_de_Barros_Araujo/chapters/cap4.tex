@@ -1,6 +1,7 @@
-\paragraph{}O intuito delineado para este capítulo é a observação fundamentada e relatoria exaustiva sobre as dinâmicas de comportamento captadas durante a maratona dos cálculos propostos da heurística gerada versus o cenário preestabelecido para testes e referências. Dessa forma, a \autoref{sec:soft_hard} garante a transparência detalhando as configurações de hardware, softwares base e bibliotecas com os arranjos empíricos fixados do tempo máximo de CPU para cada bateria experimental. Dando andamento de forma segmentada, a \autoref{sec:testes_meta_puros} expõe e analisa os rendimentos brutos unitários dos métodos Recozimento Simulado, Busca Tabu e Algoritmo Genético de maneira segregada. Subsequentemente contrapõe-se o contexto anterior com a arquitetura colaborativa Multi-Agente Simples submetida às mesmas bases analíticas na \autoref{sec:testes_sma}, evidenciando as mudanças nos índices de redução global da frota exigida ao fim cronológico. Rematando essa gradação, a \autoref{sec:testes_hip_sma} afere o pico do arranjo integratizado ao dispor os relatórios perante o painel da hiper-heurística gerenciada por aprendizado, quantificando o custo marginal computacional no balanceamento tático da aprendizagem com explotação iterativa do estado-ação na meta primária.
+\paragraph{}
+Este capítulo detalha o protocolo experimental adotado para a avaliação das meta-heurísticas clássicas e dos sistemas multiagente propostos. Inicialmente, a \autoref{sec:soft_hard} especifica os recursos computacionais e os pacotes de software utilizados, garantindo a reprodutibilidade dos experimentos. Na sequência, a \autoref{sec:instancias} apresenta as instâncias do \textit{benchmark} de Solomon selecionadas, enquanto a \autoref{sec:implementacao} descreve os hiperparâmetros e os detalhes de implementação que regem cada estratégia de busca. Por fim, a \autoref{sec:resultados} discute os resultados obtidos sob duas perspectivas: uma análise global agregada, que utiliza métricas de \textit{gap} normalizado para comparar a eficácia das abordagens, e uma análise individualizada por instância, que ilustra a consistência da superioridade das estratégias multiagente em diversos cenários logísticos.
 
-\section{Software e Hardware}
+\section{Software e hardware}
 \label{sec:soft_hard}
 
 \paragraph{} Uma vez que o tempo de processamento é relevante para a análise deste trabalho, serão especificadas as configurações do ambiente nos quais os testes foram realizados, bem como o código fonte utilizado, permitindo a reprodutibilidade dos resultados.
@@ -25,501 +26,196 @@ pandas                  2.3.2
 
 \paragraph{} O código fonte se encontra em: \href{https://github.com/hugodba/TCC}{https://github.com/hugodba/TCC}
 
-\paragraph{} Dado que os algoritmos podem continuar executando por tempo indefinido, o critério de parada foi balizado pelo tempo de execução, buscando-se por volta de ao menos 300 segundos no ambiente de \textit{hardware} utilizado. Quanto à instrumentação dos testes, adotou-se, para mensuração do tempo, a função \texttt{time.process\_time()}, que contabiliza exclusivamente o tempo de CPU dedicado ao processo, ignorando períodos de ociosidade (\textit{sleep}) e operações de entrada/saída (I/O). Essa escolha garante que a métrica de desempenho reflita mais fielmente o esforço computacional do algoritmo.
 
-\paragraph{} Para reprodutibilidade, com o intuito de mitigar a aleatoriedade inerente às meta-heurísticas, foi implementado o uso de \textit{seeds} fixas nos geradores de números aleatórios. Tal procedimento assegura que os experimentos sejam determinísticos, permitindo a comparação direta entre diferentes rodadas e configurações. Além disso, para obtenção de maior validade estatística, cada algoritmo foi executado 10 vezes e foi levado em consideração suas médias de resultado nas análises e comparações.
+\section{Instâncias de teste}
+\label{sec:instancias}
 
-\section{Testes com metaheurísticos puros}
-\label{sec:testes_meta_puros}
+\paragraph{}Neste trabalho, os experimentos numéricos são realizados utilizando um conjunto diversificado de instâncias, englobando diferentes disposições geográficas, características de janelas de tempo e capacidades de carga. Especificamente, o conjunto de testes é composto por 12 instâncias, escolhidas de forma a constituirem um conjunto representativo: \textit{c101}, \textit{c102}, \textit{c201}, \textit{c202}, \textit{r101}, \textit{r102}, \textit{r201}, \textit{r202}, \textit{rc102}, \textit{rc103}, \textit{rc201} e \textit{rc204}. Detalhes adicionais sobre os parâmetros operacionais de cada cenário podem ser verificados no \autoref{ApendiceA}.
 
-\paragraph{} Inicialmente, os três algoritmos foram avaliados de forma isolada, visando aferir suas performances e características intrínsecas, tanto em termos gerais quanto nas especificidades do \textit{VRPTW}. Essa análise individual é fundamental para compreender como cada meta-heurística pode contribuir para uma solução híbrida, permitindo que as forças de um método compensem as limitações do outro.
+\section{Detalhes de implementação e parametrização}
+\label{sec:implementacao}
 
-\paragraph{} A calibração dos hiperparâmetros foi realizada predominantemente de forma empírica. Contudo, zelou-se pela proporcionalidade entre as variáveis, mantendo a coerência com os valores consolidados na literatura técnica.
+\paragraph{} Dado que a meta-heurísticas podem continuar executando por tempo indefinido, os seus hiperparâmetros foram escolhidos balizados pela performance e estagnação. Ou seja, ao longo de testes preliminares, buscou-se um resultado ótimo e o encerramento da execução o mais rápido possível após atingi-lo. Os hiperparâmetros globais de controle do MAS e do RL também buscaram resultados ótimos, porém sem a preocupação de limitar o tempo de execução quando estagnado.
 
-\subsection{Resultados}
+\paragraph{} Para reprodutibilidade, com o intuito de mitigar a aleatoriedade inerente às meta-heurísticas, foi implementado o uso de \textit{seeds} fixas nos geradores de números aleatórios. Tal procedimento assegura que os experimentos sejam determinísticos, permitindo a comparação direta entre diferentes rodadas e configurações. Além disso, para obtenção de maior validade estatística, dada a exstência inerente de elementos estocásticos nos métodos propostos, cada algoritmo foi executado 10 vezes para cada instância e foram levados em consideração suas médias de resultado nas análises e comparações.
 
-\begin{figure}[H]
-    \centering
-    \parbox[htb]{13.0cm}
-    {
-        \centering
-        \includegraphics[scale=0.65]{full_map.png}
-        \caption[\small{Rotas encontradas pelas meta-heurísticas}]{\label{FigMaps} \small{Visualização dos melhores conjuntos de subrotas das soluções encontradas pelas meta-heurísticas}}
-    }
-\end{figure}
-\vspace{-0.5cm}
+\paragraph{} Quanto à instrumentação dos testes, adotou-se, para mensuração do tempo, a função \texttt{time.process\_time()}, que contabiliza exclusivamente o tempo de CPU dedicado ao processo, ignorando períodos de ociosidade (\textit{sleep}) e operações de entrada/saída (I/O). Essa escolha garante que a métrica de desempenho reflita mais fielmente o esforço computacional do algoritmo.
 
-\begin{figure}[H]
-    \centering
-    \parbox[htb]{13.0cm}
-    {
-        \centering
-        \includegraphics[scale=1.0]{full_plot.png}
-        \caption[\small{Evolução da função custo pelas meta-heurísticas}]{\label{FigHists} \small{Evolução da função custo para as melhores soluções encontradas por cada meta-heurística}}
-    }
-\end{figure}
-\vspace{-0.5cm}
-
-\noindent
-\begin{table}[H]
-	\centering
-	\scriptsize 
-	\caption[Resultados das meta-heurísticas isoladas]{Resultados dos algoritmos avaliados de forma isolada na instância RC201. Note que a coluna \textit{iterações} representa a quantidade de avaliações da função custo, ou seja, os eixos X dos gráficos da \autoref{FigHists}}
-	\vspace{10pt} % Adiciona o espaçamento entre a legenda e a tabela
-	\label{TabResultadosIsolados}
-	\begin{tabular}{|l|c|c|c|c|c|}\hline
-		\textbf{Algoritmo} & \textbf{Tempo Médio (s)} & \textbf{Iterações} & \textbf{Média $K$} & \textbf{Média $D$} & \textbf{Melhor Solução} \\ \hline \vspace{-1.0mm}
-		Simulated Annealing & $310,34 \pm 8,75$ & $606$ & $11,50 \pm 0,53$ & $2151,30 \pm 58,61$ & $K=11, D=2062,88$ \\ \hline \vspace{-1.0mm}
-		Tabu Search & $309,41 \pm 11,77$ & $701$ & $12,00 \pm 0,82$ & $2195,63 \pm 125,05$ & $K=11, D=2106,50$ \\ \hline \vspace{-1.0mm}
-		Genetic Algorithm & $356,83 \pm 6,29$ & $651$ & $14,90 \pm 0,74$ & $4020,04 \pm 245,83$ & $K=14, D=3952,73$ \\ \hline
-	\end{tabular}
+\begin{table}[h]
+\centering
+\caption[\small{Parâmetros de implementação dos experimentos.}] {\label{tab:parametros} \small{Parâmetros de implementação e controle dos experimentos.}}
+\footnotesize
+\begin{tabular}{lll}
+\toprule
+\textbf{Categoria} & \textbf{Parâmetro} & \textbf{Valor} \\
+\midrule
+\multirow{3}{*}{\textbf{Controles}} & Número de rodadas & 10 \\
+& Seed inicial & 1 \\
+\midrule
+\multirow{4}{*}{\textbf{MAS}} & Tamanho do \textit{Pool} & 3 \\
+& Limiar de diversidade & 10 \\
+& Passos por ciclo (N\_STEPS) & 20 \\
+& Política de escolha & Aleatória \\
+\midrule
+\multirow{3}{*}{\textbf{Meta-heurísticas}} & SA (Temp. Inicial, $\alpha$, Min, Iters) & 1800, 0.99, 3, 275 \\
+& TS (\textit{Max Iters}, \textit{Tenure}, \textit{Samples}) & 480, 20, 350 \\
+& GA (Pop., Gen., $P_{cross}$, $P_{mut}$) & 70, 2300, 0.7, 0.05 \\
+\midrule
+\multirow{3}{*}{\textbf{Meta-heurísticas (MAS)}} & SA (Temp. Inicial, $\alpha$, Min, Iters) & 1800, 0.99, 3, 28 \\
+& TS (\textit{Max Iters}, \textit{Tenure}, \textit{Samples}) & 80, 20, 180 \\
+& GA (Pop., Gen., $P_{cross}$, $P_{mut}$) & 70, 210, 0.7, 0.05 \\
+\midrule
+\multirow{6}{*}{\textbf{Q-Learning}} & $\epsilon$ (Inicial / Mínimo) & 0.8 / 0.05 \\
+& Decaimento de $\epsilon$ & 0.992 \\
+& $\alpha$ (Taxa de aprendizado) & 0.2 \\
+& $\gamma$ (Fator de desconto) & 0.8 \\
+& Bin de distância & 100 \\
+& Execuções por \textit{step} & 3 \\
+\bottomrule
+\end{tabular}
 \end{table}
 
-\subsection{Análise comparativa}
+\section{Resultados dos experimentos}
+\label{sec:resultados}
 
-\paragraph{} Os resultados da \autoref{TabResultadosIsolados} indicam que as meta-heurísticas de busca local (SA e TS) superaram significativamente a abordagem populacional (GA) para este problema específico.
+\paragraph{} Nesta seção, serão apresentados e analisados os resultados obtidos a partir dos experimentos conduzidos, com foco na comparação entre as meta-heurísticas puras e o sistema multiagente proposto. A análise será estruturada em torno de métricas de desempenho relevantes, como o número de veículos utilizados ($K$) e o tempo de execução, além de considerar a evolução das soluções ao longo do tempo e a estabilidade dos resultados. Como objetivo secundário, a distância total percorrida ($D$) também será avaliada, porém com menor ênfase. Os dados brutos de retorno dos experiments pode ser encontrado no \autoref{ApendiceC}.
 
-\paragraph{} O SA apresentou a melhor performance geral, atingindo a menor distância média ($D = 2151,30$) e a melhor solução individual ($K = 11, D = 2062,88$). O TS demonstrou resultados muito próximos ao SA, com uma média de veículos de $K = 12,00$. É notável que, apesar de uma distância média ligeiramente superior, seu tempo de execução foi o menor entre os três ($309,41s$). Já o GA mostrou-se menos eficiente para a instância RC201, com médias de $K$ ($14,90$) e $D$ ($4020,04$) consideravelmente mais altas, além de configurar-se como o algoritmo com maior demanda computacional ($356,83s$).
 
-\paragraph{} Observando o comportamento de convergência na \autoref{FigHists}, notam-se perfis distintos de evolução. O SA exibe uma redução acentuada do número de veículos no início, enquanto a redução da distância apresenta um comportamento mais linear. Ao reconfigurar as sub-rotas para priorizar a redução da frota — objetivo principal do problema — o algoritmo frequentemente sacrificou o objetivo secundário, gerando pioras temporárias na distância $D$. Nas iterações finais, as oscilações diminuem drasticamente devido ao efeito do resfriamento da temperatura, momento em que o critério de aceitação torna-se mais rigoroso e o algoritmo foca exclusivamente no ajuste fino (\textit{fine-tuning}) da solução.
+\paragraph{Desempenho global}
 
-\paragraph{} O TS mostra uma queda abrupta nas iterações iniciais tanto para $K$ quanto para $D$, estabilizando-se rapidamente sem apresentar picos de piora na distância. Isso evidencia uma alta capacidade de refino de soluções, mas também uma relativa inabilidade em explorar novas regiões do espaço de busca (\textit{exploration}). Tal característica provavelmente resultou na estagnação do algoritmo ao atingir as vizinhanças de um ótimo local.
+\paragraph{}
+Para possibilitar uma análise comparativa equitativa e agregada entre instâncias com ordens de grandeza de frotas e distâncias marcadamente distintas, aplicou-se um procedimento de normalização adimensional sobre os resultados brutos. A métrica adotada fundamenta-se no cálculo do \textit{gap} relativo percentual em relação às melhores soluções conhecidas na literatura (\textit{Best Known Solutions} — BKS), conforme estabelecido pelas Equações a seguir:
 
-\paragraph{} Já o gráfico do GA revela uma dinâmica de busca populacional que enfrenta desafios significativos de estabilidade diante das restrições do VRPTW. A curva de distância exibe um comportamento extremamente serrilhado, sugerindo que os operadores de \textit{crossover} e mutação geram descendentes que frequentemente sacrificam a eficiência geográfica. Embora tenha reduzido a frota inicialmente, o algoritmo atingiu um platô de estagnação por volta da iteração 200. Este fenômeno sinaliza uma convergência prematura, onde a população tornou-se geneticamente similar, exaurindo a capacidade de descoberta de melhorias.
+$$\text{Gap } K = \frac{K_{\text{médio}} - K_{\text{ref}}}{K_{\text{ref}}}$$
 
-\paragraph{} A análise cruzada estabelece que o GA, embora potente em diversificação, mostrou-se ineficiente comparado aos demais métodos, confirmando que algoritmos de trajetória única (SA e TS) tendem a apresentar resultados mais imediatos e consistentes para as especificidades da instância RC201.
+$$\text{Gap } D = \frac{D_{\text{médio}} - D_{\text{ref}}}{D_{\text{ref}}}$$
 
-\paragraph{Número de iterações e tempo de execução}
+\paragraph{}
+Onde $K_{\text{médio}}$ e $D_{\text{médio}}$ representam as médias obtidas pelo algoritmo ao longo das 10 rodadas experimentais, enquanto $K_{\text{ref}}$ e $D_{\text{ref}}$ correspondem aos valores de referência de Solomon. Sob essa ótica, um \textit{gap} igual a zero indica o alcance exato da melhor solução da literatura. Essa metodologia viabiliza o agrupamento macro de todas as 120 execuções do lote de testes em distribuições estatísticas unificadas.
 
-\paragraph{} Como observado na \autoref{TabResultadosIsolados}, o algoritmo \textit{Tabu Search} (TS) realizou o maior número de iterações ($701$) no menor tempo médio observado ($309,41s$). Em contrapartida, o \textit{Genetic Algorithm} (GA) executou significativamente menos iterações ($651$) em um intervalo de tempo muito superior ($356,83s$). Esta discrepância evidencia que o tempo de execução é influenciado por outros recursos computacionais além do simples ciclo de avaliação da função custo.
+\paragraph{}
+O comportamento agregado dessa normalização para a frota final de veículos ($K$) e para a distância total percorrida ($D$), considerando todos os cenários combinados, pode ser observado nos diagramas de caixa apresentados na Figura~\ref{fig:boxplot_global_k} e na Figura~\ref{fig:boxplot_global_d}, respectivamente.
 
-\paragraph{} No caso do GA, o esforço adicional advém do gerenciamento de uma população de soluções. Operações como a seleção de indivíduos, o cruzamento (\textit{crossover}) e a mutação exigem manipulação intensiva de memória e estruturas de dados complexas a cada geração, o que encarece o custo computacional de cada iteração isolada. Já o TS, embora realize mais iterações, foca em uma trajetória única de busca local, onde o custo predominante reside na exploração da vizinhança e na manutenção da lista tabu, operações que podem ser mais leves em termos de processamento por iteração do que a evolução de uma população inteira.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{K_boxplot.png}
+    \caption[\small{Distribuição do gap de frota}]{\label{fig:boxplot_global_k} \small{Distribuição do gap normalizado da frota final ($K$) por método para todas as instâncias.}}
+\end{figure}
 
-\paragraph{} O \textit{Simulated Annealing} (SA) apresenta um comportamento intermediário, com $606$ iterações em $310,34s$. Nele, o tempo é consumido principalmente pelo sorteio probabilístico e pelo resfriamento da temperatura, fatores que, somados à complexidade da instância RC201, resultam em uma cadência de iterações distinta dos demais métodos.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{D_boxplot.png}
+    \caption[\small{Distribuição do gap de distância}]{\label{fig:boxplot_global_d} \small{Distribuição do gap normalizado da distância final ($D$) por método para todas as instâncias.}}
+\end{figure}
 
-\paragraph{} Essa falta de correlação direta entre o número de iterações e o tempo total reforça a necessidade de utilizar métricas como o \texttt{time.process\_time()} para isolar o esforço de CPU, garantindo que a análise reflita a complexidade real de cada implementação frente ao problema de rotas.
+\paragraph{}
+A análise macro das distribuições revela uma clara divisão de desempenho entre as abordagens tradicionais e as arquiteturas baseadas em cooperação. Ao avaliar o comportamento puramente agregado do lote completo de testes, os métodos estruturados em agência — \textit{MAS} (Sistema Multiagente) e \textit{MAS-RL} (Sistema Multiagente com Aprendizado por Reforço) — demonstram uma superioridade global evidente em relação às meta-heurísticas isoladas. Essa vantagem se traduz visualmente pelo deslocamento descendente de toda a estrutura dos diagramas de caixa, indicando uma tendência consistente de maior eficiência na minimização dos objetivos quando os solucionadores operam de forma cooperativa.
 
-\section{Implementação de sistema Multi-Agente}
-\label{sec:testes_sma}
+\paragraph{}
+Conforme evidenciado no diagrama de frota (Figura~\ref{fig:boxplot_global_k}), a mediana do \textit{gap} de veículos para os frameworks \textit{MAS} e \textit{MAS-RL} consolida-se em patamares inferiores a 0.7, enquanto abordagens consolidadas como a Busca Tabu (\textit{TS}) e o Algoritmo Genético (\textit{GA}) operam com valores centrais próximos ou superiores a 1.0. Mais do que a redução do erro médio, as arquiteturas multiagente encolheram significativamente o intervalo interquartil da distribuição. Esse achatamento da caixa prova que o ecossistema cooperativo mitiga o risco de o algoritmo ficar aprisionado em mínimos locais medíocres ao usar as forças de cada solucionador, atingindo resultados mais consistentes, menos variáveis.
 
-\paragraph{} A arquitetura do sistema proposto foi desenvolvida utilizando o \textit{framework Mesa}, que permite a modelagem de agentes autônomos em um ambiente controlado. No contexto deste trabalho, o MAS atua como uma camada de coordenação que integra as meta-heurísticas independentes, transformando-as em agentes especialistas que colaboram para a otimização do VRPTW.
+\paragraph{} No que tange à dinâmica de convergência, e não apenas ao resultado final, os métodos de agência também se destacam. A evolução temporal do \textit{gap} de frota revela que os sistemas multiagente não apenas alcançam soluções de melhor qualidade, mas o fazem de maneira mais rápida e consistente ao longo do tempo.
 
-\subsection{Arquitetura e Componentes do Sistema}
+\paragraph{} Devido à natureza estocástica e aos tempos de execução variados entre as diferentes instâncias e rodadas, a construção dos gráficos com componente de tempo agregou os dados por meio de uma reamostragem temporal. Primeiramente, as trajetórias de cada método foram alinhadas em um \textit{grid} uniforme de 200 pontos temporais entre o instante inicial e o tempo máximo de execução, utilizando interpolação de degrau para preservar a natureza discreta das atualizações de frota.
 
-\paragraph{} O modelo é estruturado em três componentes principais, conforme implementado na classe \texttt{VRPOptimizationModel}:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{agregado_K.png}
+    \caption[\small{Evolução temporal do gap de frota}]{\label{fig:convergencia_global_k} \small{Evolução temporal do gap de frota ($K$) para todas as instâncias combinadas.}}
+\end{figure}
+
+\paragraph{} É relevante observar que, desde o instante em que iniciam sua trajetória no gráfico, as abordagens multiagente posicionam-se em patamares de \textit{gap} significativamente inferiores aos métodos tradicionais. Esse comportamento decorre da natureza cooperativa do sistema: enquanto as meta-heurísticas puras são projetadas para uma convergência gradual ao longo de uma execução longa, os agentes do \textit{MAS} buscam resultados ótimos em cada um de seus steps, que são mais curtos. Além disso, eles partem de soluções iniciais enriquecidas promovidas pelo \textit{Path Relinking}. Desta forma, a arquitetura proposta mitiga a tradicional compensação (\textit{trade-off}) onde uma convergência rápida seria acompanhada por um desempenho final inferior, demonstrando que a integração entre agentes e memória compartilhada permite atingir resultados de alta qualidade de forma célere e sustentada.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{agregado_D.png}
+    \caption[\small{Evolução temporal do gap de distância}]{\label{fig:convergencia_global_d} \small{Evolução temporal do gap de distância ($D$) para todas as instâncias combinadas.}}
+\end{figure}
+
+\paragraph{} Note que as linhas referentes a \textit{MAS} e \textit{MAS-RL} começam em um tempo maior, devido à arquitetura de implementação que recolhe as soluções parciais apenas após o término de cada \textit{step}, diferente das meta-heurísticas puras que atualizam a solução a cada iteração.
+
+
+\paragraph{}
+É imperativo destacar, contudo, a existência de um cenário de equivalência estatística primária ao comparar os resultados de qualidade de solução entre o \textit{MAS} puro e o \textit{MAS-RL}. Ambas as distribuições exibem caixas quase sobrepostas nos gráficos \ref{fig:boxplot_global_k} e \ref{fig:boxplot_global_d}, limites de dispersão equivalentes e medianas virtualmente idênticas no que tange ao \textit{gap} de frota e distância. A discussão da causa deste comportamento será detalhada adiante nas subseções subsequentes.
+
+\paragraph{Desempenho por instâncias}
+
+\paragraph{}
+A análise detalhada por instância, consolidada na \autoref{fig:resultado_instancias}, reforça a superioridade das abordagens baseadas em sistemas multiagente em relação às meta-heurísticas isoladas. Observa-se que, independentemente da topologia da instância (tipo $C$, $R$ ou $RC$) ou do nível de restrição (Séries 1 e 2), as estratégias propostas demonstram um desempenho superior ou, no mínimo, equivalente às linhas de base tradicionais (\textit{SA}, \textit{GA}, \textit{TS}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{resultado_instancias.png}
+    \caption[\small{Análise de convergência por instância}]{\label{fig:resultado_instancias} \small{Análise de convergência por instância. As curvas ilustram o comportamento dos métodos em diferentes topologias, evidenciando a superioridade do \textit{MAS} e \textit{MAS-RL} na exploração do espaço de busca.}}
+\end{figure}
+
+
+\section{Análise estatística}
+
+\paragraph{} Um teste de hipóteses foi conduzido com o objetivo de determinar se as diferenças de desempenho observadas entre os métodos propostos possuem significância estatística. Uma vez que os dados de desempenho computacional raramente seguem uma distribuição normal em otimização estocástica, e considerando que as medições foram realizadas de forma pareada nas mesmas instâncias de Solomon, abordagens não-paramétricas foram aplicadas.
+
+\paragraph{} Neste estudo, utilizou-se um nível de significância de $\theta = 0.05$. O procedimento estatístico foi dividido em duas etapas. Inicialmente, aplicou-se o Teste de Friedman para avaliar a existência de diferenças globais no desempenho dos cinco algoritmos testados. As hipóteses formuladas para o Teste de Friedman foram:
 
 \begin{itemize}
-    \item \textbf{Agentes Especialistas (\textit{HeuristicAgent}):} Cada instância representa uma meta-heurística (SA, TS ou GA) que atua de forma independente. Em cada ciclo de execução (\textit{step}), o agente recupera uma solução promissora do \textit{pool} de elite para servir como uma solução inicial (evidentemente, em estado melhor que uma solução inicial puramente aleatória), executa sua lógica de busca e devolve o resultado aprimorado ao sistema.
-    \item \textbf{Memória Compartilhada (\textit{ElitePool}):} Funciona como um quadro negro (\textit{blackboard}) que armazena as melhores soluções encontradas por todos os agentes. O \textit{pool} possui um tamanho fixo, garantindo que apenas as soluções com menor custo (considerando o número de veículos $K$ e distância total $D$) sejam mantidas e compartilhadas.
-    \item \textbf{Mecanismo de Coordenação e Sincronização:} Cada \textit{step} despacha SA, TS e GA em paralelo, sincroniza os retornos e consolida os candidatos viáveis no \textit{ElitePool}.
+    \item Hipótese Nula ($H_0$): Não existe diferença significativa entre as médias dos resultados obtidos pelos métodos avaliados; todos possuem desempenhos estatisticamente equivalentes.
+    \item Hipótese Alternativa ($H_1$): Existe diferença significativa entre pelo menos dois dos algoritmos testados.
 \end{itemize}
 
-\paragraph{Fluxo operacional do MAS simples}
+\paragraph{} O Teste de Friedman reportou uma estatística $\chi^2 = 41.48$ e um p-valor associado de $2.13 \times 10^{-8}$. Como o p-valor $\ll \theta$, a hipótese nula $H_0$ é fortemente rejeitada, confirmando que há discrepância significativa na eficácia dos algoritmos perante as instâncias analisadas. Os resultados agregados que basearam este teste estão sumarizados na Tabela \ref{tab:resultados_agregados}.
 
-\paragraph{} Na configuração final utilizada nos experimentos (\texttt{parallel\_agents=True}), o \textit{step} do MAS simples executa os três agentes em paralelo, atualiza a memória compartilhada e, quando possível, aplica cooperação por \textit{Path Relinking}. O fluxo está sintetizado na \autoref{FigFluxMASSimples}.
-
-\begin{figure}[H]
+\begin{table}[htbp]
     \centering
-    \begin{tikzpicture}[
-        >=Stealth,
-        node distance=0.75cm and 1.2cm,
-        box/.style={
-            draw,
-            rounded corners=2pt,
-            line width=0.5pt,
-            fill=gray!12,
-            align=center,
-            inner xsep=3pt,
-            inner ysep=2pt,
-            minimum height=0.95cm,
-            text width=4.6cm,
-            font=\scriptsize
-        },
-        smallbox/.style={
-            draw,
-            rounded corners=2pt,
-            line width=0.5pt,
-            fill=gray!12,
-            align=center,
-            inner xsep=2pt,
-            inner ysep=2pt,
-            minimum height=0.9cm,
-            text width=2.8cm,
-            font=\scriptsize
-        },
-        flow/.style={-Stealth, line width=0.5pt}
-    ]
-        \node[box] (start) {Início do \textit{step} do MAS};
-        \node[box, below=of start] (seed) {Obter sementes iniciais para os agentes a partir do \textit{ElitePool} (política \texttt{best} ou \texttt{random})};
-        \node[box, below=of seed] (dispatch) {Despachar SA, TS e GA em paralelo (\texttt{ThreadPoolExecutor})};
-
-        \node[smallbox, below left=of dispatch] (sa) {\textit{Thread} 1\\Agente SA};
-        \node[smallbox, below=of dispatch] (ts) {\textit{Thread} 2\\Agente TS};
-        \node[smallbox, below right=of dispatch] (ga) {\textit{Thread} 3\\Agente GA};
-
-        \node[box, below=1.0cm of ts] (merge) {Sincronizar retornos, validar factibilidade e atualizar \textit{ElitePool}};
-        \node[box, below=of merge] (prcheck) {\textit{ElitePool} possui ao menos 2 soluções?};
-
-        \node[box, below left=1.1cm and 1.6cm of prcheck, text width=4.2cm] (skippr) {Não executa \textit{Path Relinking} neste \textit{step}};
-        \node[box, below right=1.1cm and 1.6cm of prcheck, text width=4.2cm] (runpr) {Executar \textit{Path Relinking} bidirecional e inserir melhoria no \textit{pool} (se houver)};
-
-        \node[box, below=2.1cm of prcheck] (end) {Encerrar \textit{step}};
-
-        \draw[flow] (start) -- (seed);
-        \draw[flow] (seed) -- (dispatch);
-
-        \draw[flow] (dispatch) -- (sa);
-        \draw[flow] (dispatch) -- (ts);
-        \draw[flow] (dispatch) -- (ga);
-
-        \draw[flow] (sa.south) |- (merge.west);
-        \draw[flow] (ts.south) -- (merge.north);
-        \draw[flow] (ga.south) |- (merge.east);
-
-        \draw[flow] (merge) -- (prcheck);
-        \draw[flow] (prcheck) -- node[font=\scriptsize, left] {Não} (skippr);
-        \draw[flow] (prcheck) -- node[font=\scriptsize, right] {Sim} (runpr);
-        \draw[flow] (skippr.south) |- (end.west);
-        \draw[flow] (runpr.south) |- (end.east);
-    \end{tikzpicture}
-    \caption[Fluxograma do MAS simples (paralelo)]{\label{FigFluxMASSimples} \small{Fluxo de execução do \texttt{VRPOptimizationModel} na configuração final paralela. O \textit{step} executa SA, TS e GA em paralelo, consolida soluções no \textit{ElitePool} e aplica \textit{Path Relinking} quando há diversidade suficiente.}}
-\end{figure}
-\vspace{-0.5cm}
-
-\subsection{Cooperação e a Estratégia de Path Relinking}
-
-\paragraph{} A verdadeira cooperação no SMA ocorre através do método \texttt{run\_path\_relinking}. Diferente de uma execução paralela simples, este sistema implementa uma busca cooperativa onde duas soluções de elite são combinadas:
-
-\begin{enumerate}
-    \item \textbf{Seleção por Diversidade:} O sistema seleciona a melhor solução atual (\textit{source}) e a compara com outros candidatos no \textit{ElitePool}, escolhendo aquele com maior distância de \textit{Hamming} (maior diversidade) como alvo (\textit{target}).
-    \item \textbf{Exploração Bidirecional:} Adotou-se a estratégia de \textit{Path Relinking} bidirecional, na qual a exploração ocorre simultaneamente em dois sentidos: da solução \textit{source} em direção à \textit{target} e vice-versa. Essa abordagem dobra as trajetórias exploradas entre os dois pontos de elite, permitindo que o algoritmo investigue vizinhanças distintas que poderiam ser negligenciadas em uma busca unidirecional.
-    \item \textbf{Permutação e Reavaliação:} Durante a trajetória, a técnica gera caminhos intermediários permutando clientes e reavaliando a função de custo a cada passo. O uso do critério bidirecional acelera o encontro de soluções que compartilham características de ambos os genitores de elite.
-    \item \textbf{Sintetização de Soluções:} Se uma solução intermediária superar as originais em termos de custo (veículos $K$ ou distância $D$), ela é adicionada ao \textit{pool}, permitindo que o sistema escape de ótimos locais ao fundir características de rotas distintas geradas por agentes diferentes.
-\end{enumerate}
-
-\subsection{Resultados}
-
-\paragraph{} Assim como para as meta-heurísticas individualmente, o MAS também foi executado 10 vezes.
-
-\noindent
-\begin{table}[H]
-	\centering
-	\scriptsize 
-	\caption[Resultados do MAS]{Resultados obtidos pelo MAS na instância RC201.}
-	\vspace{10pt}
-	\label{TabResultadosMAS}
-	\begin{tabular}{|l|c|c|c|c|}\hline
-		\textbf{Configuração} & \textbf{Tempo Médio (s)} & \textbf{Média $K$} & \textbf{Média $D$} & \textbf{Melhor Solução} \\ \hline \vspace{-1.0mm}
-		MAS (10 execuções) & $305,09 \pm 18,08$ & $12,60 \pm 1,07$ & $3365,64 \pm 125,95$ & $K=11, D=3374,26$ \\ \hline
-	\end{tabular}
+    \caption[\small{Matriz de Resultados Agregados}]{\label{tab:resultados_agregados} \small{Matriz de Resultados Agregados (Média de Veículos por Instância)}}
+    \begin{tabularx}{\textwidth}{l *{5}{>{\centering\arraybackslash}X}}
+        \toprule
+        \textbf{Instância} & \textbf{SA} & \textbf{TS} & \textbf{GA} & \textbf{MAS} & \textbf{MAS-RL} \\
+        \midrule
+        \texttt{c101}  & 18.2 & 18.8 & 19.1 & 17.0 & 17.1 \\
+        \texttt{c102}  & 15.2 & 17.0 & 16.5 & 15.0 & 14.8 \\
+        \texttt{c201}  & 11.1 & 12.1 & 11.3 & 10.1 & 10.2 \\
+        \texttt{c202}  & 8.5  & 10.6 & 9.2  & 7.6  & 7.7  \\
+        \texttt{r101}  & 25.2 & 25.5 & 26.7 & 24.0 & 24.0 \\
+        \texttt{r102}  & 21.1 & 21.6 & 22.5 & 20.1 & 20.5 \\
+        \texttt{r201}  & 9.3  & 12.5 & 9.8  & 9.1  & 9.0  \\
+        \texttt{r202}  & 7.8  & 11.1 & 7.8  & 7.2  & 7.4  \\
+        \texttt{rc102} & 19.0 & 20.4 & 21.4 & 18.1 & 18.0 \\
+        \texttt{rc103} & 16.3 & 17.7 & 18.7 & 16.3 & 16.2 \\
+        \texttt{rc201} & 10.5 & 13.2 & 10.5 & 9.5  & 9.4  \\
+        \texttt{rc204} & 5.2  & 5.8  & 5.0  & 4.6  & 4.6  \\
+        \bottomrule
+    \end{tabularx}
 \end{table}
 
-\paragraph{} Para melhor visualização e compreensão, a melhor execução encontrada dentre as 10 testadas é analisada individualmente a seguir.
+\paragraph{} Comprovada a diferença global, procedeu-se à segunda etapa da análise através do Teste de Nemenyi, um teste \textit{post-hoc} utilizado para identificar empiricamente, par a par, quais algoritmos apresentam diferenças significativas entre si. A Tabela \ref{tab:nemenyi_pvalues} sumariza os \textit{ranks} médios atribuídos a cada algoritmo, onde menores valores indicam maior aderência aos melhores resultados de otimização, bem como a matriz de p-valores das comparações pareadas.
 
-\begin{figure}[H]
+\begin{table}[htbp]
     \centering
-    \parbox[htb]{13.0cm}
-    {
-        \centering
-        \includegraphics[scale=0.7]{MAS_hist.png}
-        \caption[\small{Evolução da função custo no MAS-RL}]{\label{MAS_hist} \small{Evolução da função de custo global ao longo das iterações (\textit{steps}) do MAS. Os valores representam o desempenho da melhor solução armazenada na memória compartilhada a cada ciclo}}
-    }
-\end{figure}
-\vspace{-0.5cm}
-
-\paragraph{} Abaixo, o registro de eventos da execução do MAS mostra o comportamento e evolução a cada passo. 
-
-\vspace{1cm}
-\begin{lstlisting}[style=mystats, basicstyle=\scriptsize\ttfamily]
-Mesa MAS Step 1/10
-Agent TS result -> vehicles: 22, distance: 3783.54
-Agent GA result -> vehicles: 21, distance: 4153.16
-Agent SA result -> vehicles: 16, distance: 3692.41
-==> PR start: source (k=16, d=3692.41) -> target (k=21, d=4153.16), diversity=99
-    PR candidates -> forward (k=16, d=3692.41), reverse (k=16, d=3692.41)
-    PR finished: no improvement over source
-
-Mesa MAS Step 2/10
-Agent TS result -> vehicles: 16, distance: 3633.64
-Agent SA result -> vehicles: 15, distance: 3272.03
-Agent GA result -> vehicles: 15, distance: 3272.03
-==> PR start: source (k=15, d=3272.03) -> target (k=21, d=4153.16), diversity=100
-    PR candidates -> forward (k=15, d=3252.67), reverse (k=15, d=3272.03)
-    PR improved elite pool -> (k=15, d=3252.67)
-
-Mesa MAS Step 3/10
-Agent SA result -> vehicles: 15, distance: 3245.89
-Agent GA result -> vehicles: 15, distance: 3252.67
-Agent TS result -> vehicles: 16, distance: 3635.49
-==> PR start: source (k=15, d=3245.89) -> target (k=16, d=3633.64), diversity=91
-    PR candidates -> forward (k=15, d=3184.56), reverse (k=15, d=3245.89)
-    PR improved elite pool -> (k=15, d=3184.56)
-
-...
-
-Mesa MAS Step 9/10
-Agent GA result -> vehicles: 13, distance: 3379.57
-Agent SA result -> vehicles: 11, distance: 3374.26
-Agent TS result -> vehicles: 13, distance: 3389.28
-==> PR start: source (k=11, d=3374.26) -> target (k=14, d=3298.28), diversity=97
-    PR candidates -> forward (k=11, d=3374.26), reverse (k=11, d=3374.26)
-    PR finished: no improvement over source
-
-Mesa MAS Step 10/10
-Agent TS result -> vehicles: 13, distance: 3389.28
-Agent SA result -> vehicles: 12, distance: 3521.73
-Agent GA result -> vehicles: 12, distance: 3521.73
-==> PR start: source (k=11, d=3374.26) -> target (k=12, d=3521.73), diversity=94
-    PR candidates -> forward (k=11, d=3374.26), reverse (k=11, d=3374.26)
-    PR finished: no improvement over source
-
-
-Mesa MAS runtime: 302.4375 seconds
-Mesa MAS best -> vehicles: 11, distance: 3374.26
-\end{lstlisting}
-
-
-\subsection{Análise dos resultados}
-
-\paragraph{} Ao observar o registro de eventos (\textit{logs}), nota-se que o \textit{Path Relinking} nem sempre obtém melhorias imediatas e, quando as encontra, estas consistem em pequenas reduções no objetivo secundário (distância $D$). Esse comportamento sugere que a estratégia de cooperação atual pode ser aprimorada, seja através de uma nova dinâmica de interação entre os agentes ou pela implementação de variações do PR, como o PR evolutivo ou truncado.
-
-\paragraph{} A análise conjunta da \autoref{TabResultadosMAS} e da \autoref{TabResultadosIsolados} indica que o MAS obteve resultados competitivos dentro de um tempo de execução similar ao das meta-heurísticas isoladas. O sistema foi capaz de encontrar uma solução com $K=11$ veículos, igualando-se ao desempenho de pico do SA e do TS, embora com uma distância total ($D$) superior à desses modelos. 
-
-\paragraph{} No entanto, os desvios padrão de $K$ e $D$ ligeiramente maiores no MAS sugerem que a interação entre agentes heterogêneos via \textit{ElitePool} e \textit{Path Relinking} introduz uma variabilidade que o sistema ainda não estabilizou. Aumentar o tempo de execução e o número de ciclos de cooperação poderia ser benéfico para permitir um refinamento mais profundo das soluções compartilhadas.
-
-\paragraph{} Não obstante, a \autoref{MAS_hist} demonstra que o MAS também enfrenta o desafio de \textit{trade-off} observado anteriormente: o aumento da distância $D$ ocorre sempre que há uma reconfiguração drástica das sub-rotas para a redução do número de veículos ($K$). Esse fenômeno reforça a natureza multiobjetivo do \textit{VRPTW} e a dificuldade em otimizar ambos os indicadores simultaneamente em cenários de alta restrição.
-
-\section{Hiper-heurística baseada em Aprendizado por Reforço}
-\label{sec:testes_hip_sma}
-
-\paragraph{} A evolução do sistema multiagente convencional para o modelo proposto reside na implementação da classe \texttt{VRPOptimizationModelRL}. Neste modelo, o mecanismo de coordenação deixa de ser puramente aleatório e passa a utilizar o algoritmo \textit{Q-Learning} para orquestrar a ativação dos agentes especialistas, configurando uma abordagem de hiper-heurística baseada em aprendizado \cite{Burke13}.
-
-\subsection{Modelagem do Q-Learning}
-
-\paragraph{} O agente de RL opera sobre um ciclo de percepção e ação, onde a política de decisão é refinada com base na experiência acumulada no ambiente de busca. Os componentes do modelo são definidos como segue:
-
-\begin{itemize}
-    \item \textbf{Espaço de Estados ($S$):} O estado é definido pela tupla discreta $(K, D_{bin})$. Para evitar a explosão do espaço de estados e garantir a convergência da Tabela-Q, a distância total ($D$) é discretizada em faixas (\textit{bins}) de 100 unidades através do parâmetro \texttt{distance\_bin\_size}.
-    \item \textbf{Espaço de Ações ($A$):} Corresponde à seleção de uma das três meta-heurísticas disponíveis para execução no ciclo atual: \textit{Simulated Annealing} (SA), \textit{Tabu Search} (TS) ou \textit{Genetic Algorithm} (GA).
-    \item \textbf{Função de Recompensa Hierárquica ($R$):} A recompensa é estruturada para refletir a prioridade multiobjetivo do \textit{VRPTW}:
-    \begin{itemize}
-        \item \textbf{Redução de Frota:} Atribui-se uma recompensa massiva ($+200$) caso a ação resulte na diminuição do número de veículos ($K$).
-        \item \textbf{Redução de Distância:} Caso $K$ se mantenha constante, a recompensa é equivalente à magnitude da melhoria em $D$.
-        \item \textbf{Penalidade por Estagnação:} Aplica-se uma pequena penalidade ($-1$) se a ação não gerar melhorias, incentivando a exploração de outros agentes.
-    \end{itemize}
-    \item \textbf{Política de Seleção:} Utiliza-se a estratégia $\epsilon$-\textit{greedy} com $\epsilon = 0,4$, equilibrando a explotação do conhecimento atual com a exploração de novas trajetórias de busca.
-\end{itemize}
-
-
-
-\subsection{Dinâmica de Cooperação e Atualização}
-
-\paragraph{} No método final implementado (classe \texttt{VRPOptimizationModelRL}), cada \textit{step} ocorre em duas fases. Na fase de decisão, o agente de RL seleciona \texttt{runs\_per\_step} ações por política $\epsilon$-\textit{greedy}. Na fase de execução, as ações selecionadas são despachadas em paralelo (\texttt{parallel\_agents=True}) por \texttt{ThreadPoolExecutor}. Após a sincronização das \textit{threads}, cada solução retornada é avaliada, inserida no \textit{ElitePool} (quando viável), e o valor de utilidade $Q(s,a)$ é atualizado conforme a \autoref{EqQLearning}.
-
-\begin{figure}[H]
-    \centering
-    \begin{tikzpicture}[
-        >=Stealth,
-        node distance=0.75cm and 1.2cm,
-        box/.style={
-            draw,
-            rounded corners=2pt,
-            line width=0.5pt,
-            fill=gray!12,
-            align=center,
-            inner xsep=3pt,
-            inner ysep=2pt,
-            minimum height=0.95cm,
-            text width=4.6cm,
-            font=\scriptsize
-        },
-        smallbox/.style={
-            draw,
-            rounded corners=2pt,
-            line width=0.5pt,
-            fill=gray!12,
-            align=center,
-            inner xsep=2pt,
-            inner ysep=2pt,
-            minimum height=0.9cm,
-            text width=2.8cm,
-            font=\scriptsize
-        },
-        flow/.style={-Stealth, line width=0.5pt}
-    ]
-        \node[box] (start) {Início do \textit{step} do MAS-RL};
-        \node[box, below=of start] (select) {Para cada execução ($r=1,\dots,\texttt{runs\_per\_step}$): observar estado $(K,D_{bin})$, selecionar ação via $\epsilon$-\textit{greedy} e registrar (agente, semente)};
-        \node[box, below=of select] (dispatch) {Despachar execuções selecionadas em paralelo (\texttt{ThreadPoolExecutor})};
-
-        \node[smallbox, below left=of dispatch] (sa) {\textit{Thread} 1\\Agente SA};
-        \node[smallbox, below=of dispatch] (ts) {\textit{Thread} 2\\Agente TS};
-        \node[smallbox, below right=of dispatch] (ga) {\textit{Thread} 3\\Agente GA};
-
-        \node[box, below=1.0cm of ts] (merge) {Sincronizar retornos, validar factibilidade e atualizar \textit{ElitePool}};
-        \node[box, below=of merge] (qupdate) {Para cada retorno: calcular recompensa, observar novo estado e atualizar $Q(s,a)$};
-        \node[box, below=of qupdate] (prcheck) {Se houver ao menos 2 soluções no \textit{pool}, executar \textit{Path Relinking} bidirecional};
-        \node[box, below=of prcheck] (end) {Aplicar decaimento de $\epsilon$ e encerrar \textit{step}};
-
-        \draw[flow] (start) -- (select);
-        \draw[flow] (select) -- (dispatch);
-
-        \draw[flow] (dispatch) -- (sa);
-        \draw[flow] (dispatch) -- (ts);
-        \draw[flow] (dispatch) -- (ga);
-
-        \draw[flow] (sa.south) |- (merge.west);
-        \draw[flow] (ts.south) -- (merge.north);
-        \draw[flow] (ga.south) |- (merge.east);
-
-        \draw[flow] (merge) -- (qupdate);
-        \draw[flow] (qupdate) -- (prcheck);
-        \draw[flow] (prcheck) -- (end);
-    \end{tikzpicture}
-    \caption[Fluxograma do método final (MAS-RL paralelo)]{\label{FigFluxFinalMASRL} \small{Fluxo de execução do método final implementado em \texttt{VRPOptimizationModelRL}. A seleção de ações é feita pelo agente de RL, enquanto as execuções das meta-heurísticas são despachadas em paralelo; nesta configuração não há uso de \textit{shuffle\_do}.}}
-\end{figure}
-\vspace{-0.5cm}
-
-\paragraph{} Os hiperparâmetros adotados incluem uma taxa de aprendizado $\alpha = 0,2$ e um fator de desconto $\gamma = 0,8$, priorizando a importância de recompensas a curto e médio prazo no processo de otimização. Paralelamente ao RL, o método \texttt{run\_path\_relinking} continua a promover a síntese de soluções de elite, agora alimentado por um \textit{pool} cujos candidatos são gerados por agentes selecionados de forma adaptativa.
-
-
-\subsection{Resultados}
-
-\noindent
-\begin{table}[H]
-	\centering
-	\scriptsize 
-	\caption[Resultados do MAS-RL]{Resultados obtidos pelo MAS-RL na instância RC201}
-	\vspace{10pt}
-    \label{TabResultadosMASRL}
-	\begin{tabular}{|l|c|c|c|c|}\hline
-		\textbf{Configuração} & \textbf{Tempo Médio (s)} & \textbf{Média $K$} & \textbf{Média $D$} & \textbf{Melhor Solução} \\ \hline \vspace{-1.0mm}
-		MAS-RL (10 execuções) & $313,17 \pm 8,96$& $13,20 \pm 0,92$ & $3342,14 \pm 169,01$ & $K=11, D=3393,62$ \\ \hline
-	\end{tabular}
+    \caption[\small{Matriz de p-valores do Teste Post-Hoc de Nemenyi e ranks médios}]{\label{tab:nemenyi_pvalues} \small{Matriz de p-valores do Teste Post-Hoc de Nemenyi e ranks médios}}
+    \begin{tabular}{lcccccc}
+        \toprule
+        \multirow{2}{*}{\textbf{Método}} & \multirow{2}{*}{\textbf{Rank Médio}} & \multicolumn{5}{c}{\textbf{p-valor vs. Algoritmo}} \\
+        \cmidrule(lr){3-7}
+        & & \textbf{MAS-RL} & \textbf{MAS} & \textbf{SA} & \textbf{GA} & \textbf{TS} \\
+        \midrule
+        \textbf{MAS-RL} & \textbf{1.50} & -      & 1.0000 & 0.0867 & 0.0002 & 0.0000 \\
+        \textbf{MAS}     & \textbf{1.54} & 1.0000 & -      & 0.1016 & 0.0003 & 0.0000 \\
+        \textbf{SA}      & 3.12 & 0.0867 & 0.1016 & -      & 0.4076 & 0.1583 \\
+        \textbf{GA}      & 4.25 & 0.0002 & 0.0003 & 0.4076 & -      & 0.9858 \\
+        \textbf{TS}      & 4.58 & 0.0000 & 0.0000 & 0.1583 & 0.9858 & -      \\
+        \bottomrule
+    \end{tabular}
 \end{table}
 
-\paragraph{} Novamente, a evolução da função de custo e o registro de execução para detalhamento, utilizando uma execução como exemplo. Desta vez, para o MAS-RL.
+\paragraph{} Os testes indicam uma vantagem estatística notória dos sistemas multiagentes. O modelo \textit{MAS-RL} atingiu o menor \textit{rank} médio ($1.50$), intimamente seguido pelo modelo cooperativo puro MAS ($1.54$). Em contraste, as meta-heurísticas isoladas obtiveram ranks substancialmente maiores (SA: $3.12$; GA: $4.25$; TS: $4.58$).
 
-\begin{figure}[H]
+\paragraph{} A matriz de p-valores gerada pelo Teste de Nemenyi (Tabela \ref{tab:nemenyi_pvalues}) comprova que o \textit{MAS-RL} supera significativamente tanto o TS (p-valor = $0.0000$) quanto o GA (p-valor = $0.0002$). Destaca-se também que, para a métrica de veículos, a diferença entre o \textit{MAS-RL} e o SA (p-valor = $0.0867$) encontra-se no limite tendencial, não rejeitando $H_0$ estritamente sob $\theta = 0.05$. Por fim, os resultados do \textit{MAS} e do \textit{MAS-RL} (p-valor = $1.0000$) são considerados estatisticamente equivalentes, ressaltando o ganho de robustez proveniente da arquitetura do Sistema Multiagente em si.
+
+\paragraph{} Para ilustrar estas conclusões de forma visual, a Figura \ref{fig:cd_diagram} apresenta o Diagrama de Diferença Crítica (\textit{Critical Difference Diagram}). Os algoritmos não conectados por barras horizontais possuem diferenças estatísticas significativas de desempenho, atestando a superioridade dos arranjos cooperativos.
+
+\begin{figure}[htbp]
     \centering
-    \parbox[htb]{13.0cm}
-    {
-        \centering
-        \includegraphics[scale=0.7]{MAS-RL_hist.png}
-        \caption[\small{Evolução da função custo no MAS-RL}]{\label{MAS-RL_hist} \small{Evolução da função de custo global ao longo das iterações do MAS-RL}}
-    }
-\end{figure}
-\vspace{-0.5cm}
-
-\vspace{1cm}
-\begin{lstlisting}[style=mystats, basicstyle=\scriptsize\ttfamily]
---- MAS RL SINGLE RUN (seed=42) ---
-
-MAS RL Step 1/10
-==> RL Run 1/3 | State (999, 999) -> Selected Action: SA
-    Agent SA step result -> vehicles: 18, distance: 3475.35
-    Update: Reward=0.00 | Q(SA) of state(999, 999) updated to 0.00
-==> RL Run 2/3 | State (18, 34) -> Selected Action: TS
-    Agent TS step result -> vehicles: 18, distance: 3475.35
-    Update: Reward=-1.00 | Q(TS) of state(18, 34) updated to -0.20
-==> RL Run 3/3 | State (18, 34) -> Selected Action: GA
-    Agent GA step result -> vehicles: 18, distance: 3475.35
-    Update: Reward=-1.00 | Q(GA) of state(18, 34) updated to -0.20
-==> PR start: source (k=18, d=3475.35) -> target (k=18, d=3475.35), diversity=0
-    PR candidates -> forward (k=18, d=3475.35), reverse (k=18, d=3475.35)
-    PR finished: no improvement over source
-
-MAS RL Step 2/10
-==> RL Run 1/3 | State (18, 34) -> Selected Action: SA
-    Agent SA step result -> vehicles: 15, distance: 3534.34
-    Update: Reward=141.01 | Q(SA) of state(18, 34) updated to 28.20
-==> RL Run 2/3 | State (15, 35) -> Selected Action: TS
-    Agent TS step result -> vehicles: 15, distance: 3534.34
-    Update: Reward=-1.00 | Q(TS) of state(15, 35) updated to -0.20
-==> RL Run 3/3 | State (15, 35) -> Selected Action: SA
-    Agent SA step result -> vehicles: 13, distance: 3577.39
-    Update: Reward=156.95 | Q(SA) of state(15, 35) updated to 31.39
-==> PR start: source (k=13, d=3577.39) -> target (k=18, d=3475.35), diversity=98
-    PR candidates -> forward (k=13, d=3577.39), reverse (k=13, d=3577.39)
-    PR finished: no improvement over source
-
-MAS RL Step 3/10
-==> RL Run 1/3 | State (13, 35) -> Selected Action: SA
-    Agent SA step result -> vehicles: 12, distance: 3415.97
-    Update: Reward=361.41 | Q(SA) of state(13, 35) updated to 72.28
-==> RL Run 2/3 | State (12, 34) -> Selected Action: SA
-    Agent SA step result -> vehicles: 17, distance: 3523.85
-    Update: Reward=-1.00 | Q(SA) of state(12, 34) updated to -0.20
-==> RL Run 3/3 | State (12, 34) -> Selected Action: TS
-    Agent TS step result -> vehicles: 17, distance: 3501.73
-    Update: Reward=-1.00 | Q(TS) of state(12, 34) updated to -0.20
-==> PR start: source (k=12, d=3415.97) -> target (k=17, d=3501.73), diversity=100
-    PR candidates -> forward (k=12, d=3415.97), reverse (k=12, d=3407.32)
-    PR improved elite pool -> (k=12, d=3407.32)
-
-...
-
-MAS RL Step 9/10
-==> RL Run 1/3 | State (12, 32) -> Selected Action: SA
-    Agent SA step result -> vehicles: 11, distance: 3393.62
-    Update: Reward=37.25 | Q(SA) of state(12, 32) updated to 7.45
-==> RL Run 2/3 | State (11, 33) -> Selected Action: SA
-    Agent SA step result -> vehicles: 12, distance: 3092.67
-    Update: Reward=-1.00 | Q(SA) of state(11, 33) updated to -0.20
-==> RL Run 3/3 | State (11, 33) -> Selected Action: TS
-    Agent TS step result -> vehicles: 12, distance: 3273.58
-    Update: Reward=-1.00 | Q(TS) of state(11, 33) updated to -0.20
-==> PR start: source (k=11, d=3393.62) -> target (k=12, d=3092.67), diversity=99
-    PR candidates -> forward (k=11, d=3393.62), reverse (k=11, d=3393.62)
-    PR finished: no improvement over source
-
-MAS RL Step 10/10
-==> RL Run 1/3 | State (11, 33) -> Selected Action: GA
-    Agent GA step result -> vehicles: 12, distance: 3230.87
-    Update: Reward=-1.00 | Q(GA) of state(11, 33) updated to -0.20
-==> RL Run 2/3 | State (11, 33) -> Selected Action: TS
-    Agent TS step result -> vehicles: 12, distance: 3092.67
-    Update: Reward=-1.00 | Q(TS) of state(11, 33) updated to -0.39
-==> RL Run 3/3 | State (11, 33) -> Selected Action: SA
-    Agent SA step result -> vehicles: 12, distance: 3273.58
-    Update: Reward=-1.00 | Q(SA) of state(11, 33) updated to -0.39
-==> PR start: source (k=11, d=3393.62) -> target (k=12, d=3092.67), diversity=99
-    PR candidates -> forward (k=11, d=3393.62), reverse (k=11, d=3393.62)
-    PR finished: no improvement over source
-
-
-Run summary | runtime: 305.9531s | K: 11, D: 3393.62 | Q states: 8, Visited states: 8
-\end{lstlisting}
-
-\paragraph{} Neste modelo, podemos também utilizar a tabela-Q como objeto de análise, conjuntamente com a distribuição de execuções de cada agente, que não é mais uniforme.
-
-\begin{figure}[H]
-    \centering
-    \parbox[htb]{13.0cm}
-    {
-        \centering
-        \includegraphics[scale=0.7]{q_table.png}
-        \caption[\small{Q-table}]{\label{q_table} \small{\textit{Q-table} referente a execução do MAS-RL}}
-    }
+    \includegraphics[width=0.85\textwidth]{cd_diagram.png}
+    \caption[\small{Diagrama de Diferença Crítica (Nemenyi) para a minimização de Veículos.}]{\label{fig:cd_diagram} \small{Diagrama de Diferença Crítica (Nemenyi) para a minimização de Veículos.}}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \parbox[htb]{13.0cm}
-    {
-        \centering
-        \includegraphics[scale=0.7]{action_runs.png}
-        \caption[\small{Distribuição de execução dos agentes}]{\label{action_runs} \small{Distribuição do número de execuções das meta-heurísticas por estado}}
-    }
-\end{figure}
-\vspace{-0.5cm}
-
-\subsection{Análise dos Resultados}
-
-\paragraph{} Ao analisar o desempenho do sistema, observa-se que, apesar de apresentar características de estabilidade e convergência similares ao modelo cooperativo base, o MAS-RL obteve resultados levemente inferiores. Este comportamento pode ser atribuído a múltiplos fatores técnicos, com destaque para a necessidade de um tempo de treinamento mais extenso para a convergência da Tabela-Q e a calibração fina dos hiperparâmetros de aprendizado. Diferente do sistema puramente cooperativo, que dedica integralmente seu orçamento computacional à explotação, o modelo com RL despende recursos na fase de exploração através da política $\epsilon$-greedy. Este custo de exploração, embora essencial para o mapeamento do espaço de estados, pode limitar a capacidade de refinamento intensivo das soluções no mesmo intervalo de tempo, uma vez que o agente ocasionalmente seleciona ações subótimas para consolidar seu conhecimento.
-
-\paragraph{} O registro de eventos demonstra que o sistema tratou todos os agentes de forma equivalente nos estágios iniciais, o que é coerente com a natureza do problema, dado que soluções pouco refinadas permitem melhorias significativas independentemente do algoritmo empregado. Observou-se que o sistema transita rapidamente entre diferentes configurações, o que resulta em uma permanência reduzida em estados específicos, dificultando o aprendizado profundo sobre qual meta-heurística seria superior em circunstâncias exatas de transição. Entretanto, à medida que a busca se torna mais complexa e o espaço de soluções viáveis se estreita, a dinâmica de seleção de ações altera-se, conferindo maior foco à Busca Tabu (TS) e, primordialmente, ao \textit{Simulated Annealing} (SA). Este redirecionamento é esperado, visto que estas técnicas demonstram maior eficácia no refinamento local em instâncias de alta restrição temporal como as do VRPTW .
-
-\paragraph{} A eficácia do aprendizado é validada pela consistência entre as escolhas do agente de RL e os desempenhos individuais apresentados na \autoref{TabResultadosIsolados}, onde os algoritmos SA e TS obtiveram resultados superiores ao GA. Este alinhamento, visível tanto na \autoref{action_runs} quanto na \autoref{q_table}, confirma que o sistema foi capaz de identificar e priorizar as ferramentas mais robustas para as etapas críticas da otimização, demonstrando que houve uma evolução real na política de tomada de decisão. Além disso, ressalta-se que o custo computacional exigido para a manutenção e atualização da Tabela-Q é desprezível frente ao esforço de processamento das meta-heurísticas, o que valida a arquitetura sob a perspectiva de eficiência algorítmica e escalabilidade.
-
-
-\paragraph{} No que tange ao \textit{trade-off} entre o número de veículos ($K$) e a distância total ($D$), inerente à natureza multiobjetivo do VRPTW, o sistema com RL demonstrou uma capacidade de suavização superior. Através da calibração do fator de desconto ($\gamma$) e da função de recompensa ($r$), possivelmente o modelo aprendeu que reduções drásticas em $K$ que resultam em uma degradação severa de $D$ geram menores recompensas acumuladas a longo prazo. Esse aprendizado resultou na geração de rotas mais equilibradas, onde a busca pela economia de frota não sacrificou drasticamente a eficiência da distância. Este fenômeno sugere que a inteligência de controle via RL permite uma navegação mais estratégica no espaço de busca, mitigando os saltos de custo observados na abordagem puramente cooperativa e oferecendo soluções com maior viabilidade operacional.
+\paragraph{} Esses resultados acarretam importantes implicações práticas para o modelo desenvolvido. A superioridade estatisticamente provada do \textit{MAS} e do \textit{MAS-RL} confirma que a arquitetura cooperativa mitiga o risco de paralisação em ótimos locais, gerando configurações de frota consideravelmente melhores nas instâncias de Solomon sem que esse ganho seja decorrente do acaso. Em relação ao \textit{SA}, embora a diferença de desempenho seja evidente, a ausência de significância estatística estrita sugere que, para algumas instâncias, o SA pode alcançar resultados próximos aos sistemas multiagente, reforçando a necessidade de análises mais granulares por cenário.

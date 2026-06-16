@@ -1,4 +1,4 @@
-\paragraph{}Este capítulo apresenta a fundamentação teórica essencial para o entendimento das metodologias e soluções computacionais propostas neste trabalho. A \autoref{sec:def_problema} formaliza o conceito do Problema de Roteamento de Veículos e detalha os padrões de avaliação de instâncias da literatura. A \autoref{sec:selecao_meta} apresenta as meta-heurísticas adotadas (Recozimento Simulado, Busca Tabu e Algoritmo Genético) descrevendo sucintamente seus funcionamentos e premissas. Posteriormente, a \autoref{sec:sma} explora os princípios de um Sistema Multi-agente, abordando o \textit{framework} de modelagem distribuída escolhido e a estratégia de cooperação implementada, o \textit{Path Relinking}. Por fim, a compreensão do Aprendizado por Reforço e a lógica da recompensa empregada na estratégia do \textit{Q-Learning}, que norteia a coordenação estratégica proposta, são objetos da \autoref{sec:rl}.
+\paragraph{}Este capítulo apresenta a fundamentação teórica essencial para o entendimento das metodologias e soluções computacionais propostas neste trabalho. A \autoref{sec:def_problema} formaliza o conceito do Problema de Roteamento de Veículos e detalha os padrões de avaliação de instâncias da literatura. A \autoref{sec:selecao_meta} apresenta as meta-heurísticas adotadas (Recozimento Simulado, Busca Tabu e Algoritmo Genético) descrevendo sucintamente seus funcionamentos e premissas. Posteriormente, a \autoref{sec:sma} explora os princípios de um Sistema multiagente, abordando o \textit{framework} de modelagem distribuída escolhido e a estratégia de cooperação implementada, o \textit{Path Relinking}. A compreensão do Aprendizado por Reforço e a lógica da recompensa empregada na estratégia do \textit{Q-Learning}, que norteia a coordenação estratégica proposta, são objetos da \autoref{sec:rl}. Por fim, a \autoref{sec:avaliacao_estatistica} discute a importância de uma avaliação estatística rigorosa para a comparação de algoritmos meta-heurísticos, destacando os testes de hipóteses adequados para validar as conclusões obtidas a partir dos experimentos computacionais realizados.
 
 \section{Definição do problema}
 \label{sec:def_problema}
@@ -18,7 +18,7 @@
 
 \paragraph{}O VRP é classificado na teoria da complexidade computacional como um problema \textit{NP-hard} \cite{Garey79}. Do ponto de vista teórico, isso implica que qualquer problema da classe NP pode ser reduzido ao VRP em tempo polinomial. Na prática, significa que não se conhece nenhum algoritmo capaz de encontrar a solução ótima para o problema em tempo polinomial. É precisamente essa complexidade computacional inerente que fundamenta a aplicação das meta-heurísticas (SA, TS e GA) investigadas neste estudo. Em contraste com os métodos de resolução exatos, as abordagens meta-heurísticas são concebidas para encontrar soluções subótimas de alta qualidade em tempo que viabilize a aplicação prática em cenários de envergadura real.
 
-\subsection{Metodologia de Avaliação e o Benchmark de Solomon}
+\subsection{Metodologia de avaliação e o Benchmark de Solomon}
 \label{sec:benchmark}
 
 \paragraph{}Para assegurar a validade científica deste estudo e permitir a comparabilidade dos resultados obtidos pelas meta-heurísticas propostas, a modelagem será conduzida estritamente sob os parâmetros do Benchmark de Solomon (1987). A utilização de instâncias consagradas na literatura é imperativa, pois fornecem um ``gabarito'' técnico que permite atestar a precisão e a eficiência de cada algoritmo desenvolvido.
@@ -45,14 +45,13 @@
 
 \paragraph{}Esta abordagem padronizada transforma o problema em um estudo de caráter matemático e exploratório, estabelecendo uma base sólida que pode, futuramente, ser adaptada para modelos logísticos de maior complexidade e variáveis dinâmicas.
 
-\paragraph{}Neste trabalho serão utilizadas, fundamentalmente, as instâncias de tipo RC, série 2. Ou seja, a distribuição dos clientes contém algumas aglomerações, mas também pontos aleatórios. Além disso, a capacidade dos veículos é maior e as janelas de tempo mais largas, significando muitos clientes por rota, poucos veículos necessários. Ver \autoref{ApendiceA}.
-
 \section{Meta-heurísticas selecionadas}
 \label{sec:selecao_meta}
 
 \paragraph{}As meta-heurísticas Recozimento Simulado, Busca Tabu e Algoritmo Genético são clássicas no contexto do VRP, portanto adequadas para o presente estudo. A diversidade técnica entre esses métodos permite utilizar diferentes mecanismos de escape de ótimos locais e estratégias de exploração do espaço de busca diante das restrições de roteamento. A seguir, serão apresentados os fundamentos do funcionamento de cada um deles.
 
 \subsection{Recozimento Simulado}
+\label{sec:sa}
 
 \paragraph{} Explora possíveis soluções por meio de um mecanismo probabilístico inspirado no processo de resfriamento de metais \cite{Kirkpatrick83}. Se $\Delta f$ é a diferença de custo entre a nova solução ($s'$) e a atual ($s$):
 
@@ -73,6 +72,7 @@ e^{-\frac{\Delta f}{T}}, & \text{se } \Delta f \geq 0
 $$T_{k+1} = \alpha \cdot T_k$$
 
 \subsection{Busca Tabu}
+\label{sec:ts}
 
 \paragraph{} O método utiliza ``listas tabu'', que impedem o algoritmo de retornar a soluções visitadas recentemente, forçando uma exploração sistemática e agressiva de novas vizinhanças \cite{Glover89}. Mais objetivamente, o algoritmo opera sobre a vizinhança $N(s)$ da solução atual, mas subtrai os movimentos que estão na Lista Tabu ($L$):
 
@@ -83,25 +83,22 @@ $$s_{next} = \text{argmin} \{f(s') \mid s' \in N(s) \setminus L\}$$
 $$\text{Se } f(s') < f(s_{best}), \text{ então } s' \in \textit{Candidatos} \text{ mesmo se } s' \in L$$
 
 \subsection{Algoritmo Genético}
+\label{sec:ga}
 
 \paragraph{} Por meio dos operadores de cruzamento, mutação e seleção, o algoritmo é capaz de recombinar sub-rotas eficientes de diferentes soluções para gerar descendentes potencialmente superiores \cite{Holland75, Goldberg89}. Isso se traduz em converter o problema de minimização de custos em um valor de sobrevivência, representado pela função de aptidão (\textit{fitness}) $F(s)$:
 
-\begin{equation}
-    F(s) = \frac{1}{C(s) + \epsilon}
-\end{equation}
+$$F(s) = \frac{1}{C(s) + \epsilon}$$
 
 \vspace{0.5cm}
 \noindent onde $\epsilon$ é um valor infinitesimal para evitar divisão por zero. Presente, neste caso, apenas por rigor teórico, pois a função de custo que será utilizada é sempre maior que 0. A probabilidade de um indivíduo ser selecionado para o cruzamento é dada por:
 
-\begin{equation}
-    P_i = \frac{F(s_i)}{\sum_{j=1}^{N} F(s_j)}
-\end{equation}
+$$P_i = \frac{F(s_i)}{\sum_{j=1}^{N} F(s_j)}$$
 
 \vspace{0.5cm}
 \noindent onde $N$ é o tamanho da população. Isso garante que rotas mais curtas tenham maior probabilidade biológica de transmitir seus genes (sequências de clientes).
 
 
-\section{Sistema multi-agente}
+\section{Sistema multiagente}
 \label{sec:sma}
 
 \paragraph{}Os \textit{Multi-Agent Systems} (MAS) consistem em um conjunto de elementos computacionais, denominados agentes, que interagem em um ambiente compartilhado para resolver problemas que ultrapassam as capacidades individuais de um único processador ou algoritmo \cite{Wooldridge95}. Tais sistemas têm sido aplicados com sucesso em diversas áreas, incluindo otimização de colônias de formigas, onde a emergência de comportamentos complexos globais decorre das interações locais entre agentes relativamente simples.
@@ -161,13 +158,6 @@ tipos, dependendo de como e em qual direção essa trajetória é explorada:
 foca especificamente nas estratégias \textit{Forward} e \textit{Backward}, 
 permitindo que os agentes explorem essas trajetórias bidirecionalmente para 
 maximizar a extração de características promissoras das rotas.
-
-\begin{figure}[H]
-    \centering
-    % \includegraphics[width=\textwidth]{sua_imagem.png}
-    \caption{Representação do caminho entre $S_i$ e $S_g$.}
-    \label{fig:path_relinking}
-\end{figure}
 
 \begin{figure}[H]
     \centering
@@ -302,5 +292,31 @@ maximizar a extração de características promissoras das rotas.
     \item \textbf{Diferença Temporal:} O termo entre colchetes representa o erro de predição, ou seja, a diferença entre o valor que o agente esperava e o que ele efetivamente percebeu após a transição para o novo estado $s'$.
 \end{itemize}
 
-
 \paragraph{} Para que o algoritmo seja eficaz, o agente deve balancear a busca por novos conhecimentos com o uso do conhecimento já adquirido. A estratégia mais comum é a $\epsilon-greedy$, onde com uma probabilidade $\epsilon$ o agente escolhe uma ação aleatória (exploração) e com probabilidade $1 - \epsilon$ ele seleciona a ação com o maior valor-Q atual para aquele estado (explotação). Ao final do processo de treinamento, a Tabela-Q converge para uma representação da estratégia ótima, permitindo que o sistema, ao se deparar com uma determinada configuração do problema, saiba as melhores ações a serem tomadas.
+
+\section{Avaliação estatística de desempenho algorítmico}
+\label{sec:avaliacao_estatistica}
+
+\paragraph{} A avaliação de desempenho de meta-heurísticas aplicadas a problemas de otimização combinatória, como o VRPTW, impõe desafios metodológicos devido à natureza estocástica inerente a esses algoritmos. A comparação direta de métricas de tendência central, como a média aritmética, é insuficiente para atestar a superioridade de um método sobre outro, uma vez que flutuações amostrais decorrentes de inicializações aleatórias (\textit{seeds}) podem distorcer os resultados. Torna-se imperativo, portanto, o emprego de testes de hipóteses estatísticas.
+
+\paragraph{} Visto que as distribuições de custos de rotas e tempos de processamento computacional raramente atendem aos pressupostos clássicos de normalidade (distribuição Gaussiana) e homogeneidade de variância, a aplicação de testes paramétricos tradicionais, como o teste $t$ de Student ou a clássica ANOVA, torna-se inadequada. Em cenários de \textit{benchmarks} múltiplos avaliados sobre um mesmo conjunto de instâncias correlacionadas (amostras pareadas), a literatura prescreve a utilização de abordagens não-paramétricas baseadas na ordenação de resultados por postos (\textit{ranks}).
+
+\subsection{Teste de Friedman}
+
+\paragraph{} O Teste de Friedman configura-se como a alternativa não-paramétrica à ANOVA para medidas repetidas. Ele é utilizado para detectar diferenças globais significativas entre múltiplos tratamentos aplicados a diversos blocos de teste. No contexto computacional, os tratamentos correspondem aos diferentes algoritmos ou arquiteturas implementadas (tais como SA, TS, GA, MAS e MAS-RL), enquanto os blocos representam as instâncias de teste do \textit{benchmark} (como as instâncias de Solomon).
+
+\paragraph{} O procedimento do teste consiste em ordenar os algoritmos individualmente dentro de cada instância, atribuindo o posto $1$ ao melhor desempenho (ex: menor número de veículos) e o posto $k$ ao pior (sendo $k$ o número total de algoritmos analisados). Em caso de empates numéricos, atribui-se a média dos postos em disputa a cada um dos algoritmos empatados. A hipótese nula ($H_0$) do teste assume que não há diferenças de desempenho entre os métodos avaliados, implicando que as variações dos \textit{ranks} médios são meramente aleatórias. A hipótese alternativa ($H_1$) dita que existe uma diferença estatisticamente significativa no desempenho de pelo menos dois algoritmos do grupo.
+
+\paragraph{} A estatística do teste ($\chi^2_F$) é computada com base na soma dos postos de cada algoritmo, avaliando a disparidade desses valores em relação ao cenário de equivalência estrita. Se o \textit{p-valor} associado gerado pela distribuição do teste for inferior ao nível de significância preestabelecido $\theta$ (tipicamente adotado como $0.05$ ou $0.10$), rejeita-se a hipótese nula.
+
+\subsection{Teste Post-Hoc de Nemenyi}
+
+\paragraph{} A rejeição da hipótese nula no Teste de Friedman estabelece apenas a existência de uma disparidade de desempenho no grupo geral de algoritmos (\textit{omnibus test}), falhando em especificar quais pares exatos de métodos diferem significativamente entre si. Para realizar tais comparações múltiplas par a par, mantendo o controle rigoroso sobre a inflação do Erro do Tipo I (falsos positivos), exige-se a aplicação de um teste \textit{post-hoc}. Neste escopo, o Teste de Nemenyi é a metodologia padrão recomendada para a área de aprendizado de máquina e otimização.
+
+\paragraph{} O Teste de Nemenyi determina que o desempenho de dois algoritmos é considerado significativamente distinto se a diferença absoluta entre os seus \textit{ranks} médios superar um limiar matemático rigoroso denominado Diferença Crítica (CD, do inglês \textit{Critical Difference}). O valor numérico da CD é calculado de acordo com a equação:
+
+$$\text{CD} = q_\alpha \sqrt{\frac{k(k + 1)}{6N}}$$
+
+\paragraph{} Onde $q_\alpha$ representa o valor crítico tabelado baseado na distribuição de amplitude \textit{Studentized Range} para o nível de significância $\alpha$ (ou $\theta$) adotado; $k$ representa o número de algoritmos comparados no experimento; e $N$ consiste no número de instâncias ou blocos independentes avaliados.
+
+\paragraph{} Graficamente, as conclusões deste teste \textit{post-hoc} são comumente sumarizadas e representadas pelo Diagrama de Diferença Crítica (\textit{Critical Difference Diagram}). Nele, os métodos computacionais são dispostos em um eixo horizontal de acordo com o seu respectivo \textit{rank} médio de desempenho. Algoritmos que não apresentam diferenças estatísticas significativas são agrupados por uma linha espessa de conexão, oferecendo uma percepção visual inequívoca acerca do ranqueamento global, das distâncias de performance e das reais equivalências operacionais entre os sistemas propostos.

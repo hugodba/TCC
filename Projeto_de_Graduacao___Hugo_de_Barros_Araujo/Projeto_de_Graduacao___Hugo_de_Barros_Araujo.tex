@@ -5,6 +5,9 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{tabularx}
 \usetikzlibrary{arrows.meta,positioning}
 \usepackage[hidelinks]{hyperref}
 \renewcommand{\figureautorefname}{Figura}
@@ -115,20 +118,25 @@
 % ---------------------------------------------------------------
 % Apêndices 
 % ---------------------------------------------------------------
-   \appendix
-   % ---------------------------------------------------------------
-   % Apêndice A
-   % ---------------------------------------------------------------
-   \chapter{Benchmark de Solomon}
-   \label{ApendiceA}
-    \input{appendices/ApendiceA}
-   % ---------------------------------------------------------------
-   % Apêndice B
-   % ---------------------------------------------------------------
-   \chapter{Estimativa para Busca Exaustiva}
-   \label{ApendiceB}
-    \input{appendices/ApendiceB}
-   % ---------------------------------------------------------------
+    \appendix
+    % ---------------------------------------------------------------
+    % Apêndice A
+    % ---------------------------------------------------------------
+    \chapter{Benchmark de Solomon}
+    \label{ApendiceA}
+        \input{appendices/ApendiceA}
+    % ---------------------------------------------------------------
+    % Apêndice B
+    % ---------------------------------------------------------------
+    \chapter{Estimativa para busca exaustiva}
+    \label{ApendiceB}
+        \input{appendices/ApendiceB}
+    % ---------------------------------------------------------------
+    % Apêndice C
+    % ---------------------------------------------------------------
+    \chapter{Resultados dos experimentos}
+    \label{ApendiceC}
+        \input{appendices/ApendiceC}
 
 \backmatter
 

@@ -1,11 +1,11 @@
-\paragraph{}Este capítulo descreve a materialização metodológica da pesquisa teórica, mapeando as fases de delineamento das implementações executadas nos estudos de caso. A primeira estruturação analítica está descrita na \autoref{sec:etapas_iniciais} com pautas iniciais como pré-processamento de datasets cartesianos, extração dos parâmetros georreferenciados para as estruturas na modelagem computacional e a verificação empírica das rotinas em base conhecida. Em progressão, a \autoref{sec:inc_sma} introduz e apresenta esquematicamente o ambiente multi-agente estabelecido através dos componentes unificados baseados no \textit{framework Mesa}, elucidando o comportamento reativo da seleção cooperativa das soluções e da unificação interativa pelo intermédio da exploração bidirecional por intermédio do \textit{Path Relinking}. A maturação e avanço do paradigma do sistema inteligente colaborativo culmina na \autoref{sec:hiperheuristica} com o controle da centralidade coordenadora repassada para as bases do Q-Learning, estruturada com recompensas dinâmicas, decaimento de aleatoriedade perante convergência nas iterações e gestão estocástica adaptativa.
+\paragraph{}Este capítulo descreve a materialização metodológica da pesquisa, mapeando as fases das implementações executadas. A primeira estruturação analítica está descrita na \autoref{sec:etapas_iniciais} com pautas iniciais como pré-processamento de datasets cartesianos, extração dos parâmetros georreferenciados para as estruturas na modelagem computacional e a verificação das rotinas em base conhecida. Em progressão, a \autoref{sec:inc_sma} introduz e apresenta esquematicamente o ambiente multiagente estabelecido através dos componentes unificados baseados no \textit{framework Mesa}, elucidando o comportamento da seleção cooperativa das soluções e o intermédio do \textit{Path Relinking}. O avanço do paradigma do sistema inteligente colaborativo culmina na \autoref{sec:hiperheuristica} com o controle das execuções repassado para as bases do Q-Learning, estruturado com recompensas dinâmicas, decaimento de aleatoriedade perante convergência nas iterações e gestão estocástica adaptativa.
 
 \section{Etapas iniciais}
 \label{sec:etapas_iniciais}
 
 \paragraph{} As fases preliminares do desenvolvimento focaram na construção da arquitetura base do sistema. Foram implementadas as rotinas de entrada e saída de dados, responsáveis pela leitura dos \textit{datasets} e dos arquivos de solução de referência (\textit{benchmarks}), além de módulos para a visualização gráfica de rotas e monitoramento de desempenho.
 
-\paragraph{} Um componente crítico nesta etapa foi a função custo compartilhada, desenvolvida de forma modular para garantir que a avaliação das rotas fosse consistente entre os diferentes algoritmos testados. Para validar a implementação, utilizou-se como referência a \textbf{instância RC201} de Solomon (resultado e procedimentos seguidos para alcançar tal, respectivamente em \cite{Sintef100, Mester05}, que também foi a base para todos os experimentos deste trabalho. A figura abaixo apresenta a distribuição espacial dos clientes nesta instância.
+\paragraph{} Um componente crítico nesta etapa foi a função custo compartilhada, desenvolvida de forma modular para garantir que a avaliação das rotas fosse consistente entre os diferentes algoritmos testados. Para validar a implementação, utilizou-se como referência a \textbf{instância RC201} de Solomon (resultado e procedimentos seguidos para alcançar tal, respectivamente em \cite{Sintef100, Mester05}). A figura abaixo apresenta a distribuição espacial dos clientes nesta instância.
 
 \begin{figure}[H]
     \centering
@@ -35,22 +35,22 @@
 
 \paragraph{} Um ponto importante a se notar é a escolha de não separar rotas em viável ou inviável ao longo dos algoritmos. Todas as rotas foram consideradas realizáveis, de forma que a inserção de retorno ao depósito nas rotas se dá pela verificação da impossibilidade de seguir para um próximo cliente, seja pela limitação de carga ou temporal.
 
-\section{Implementação de sistema Multi-Agente}
+\section{Implementação de sistema multiagente}
 \label{sec:inc_sma}
 
 \paragraph{} A arquitetura do sistema proposto foi desenvolvida utilizando o \textit{framework Mesa}, que permite a modelagem de agentes autônomos em um ambiente controlado. No contexto deste trabalho, o MAS atua como uma camada de coordenação que integra as meta-heurísticas independentes, transformando-as em agentes especialistas que colaboram para a otimização do VRPTW.
 
-\subsection{Arquitetura e Componentes do Sistema}
+\subsection{Arquitetura e componentes do sistema}
 
 \paragraph{} O modelo é estruturado em três componentes principais, conforme implementado na classe \texttt{VRPOptimizationModel}:
 
 \begin{itemize}
     \item \textbf{Agentes Especialistas (\textit{HeuristicAgent}):} Cada instância representa uma meta-heurística (SA, TS ou GA) que atua de forma independente. Em cada ciclo de execução (\textit{step}), o agente recupera uma solução promissora do \textit{pool} de elite para servir como uma solução inicial (evidentemente, em estado melhor que uma solução inicial puramente aleatória), executa sua lógica de busca e devolve o resultado aprimorado ao sistema.
-    \item \textbf{Memória Compartilhada (\textit{ElitePool}):} Funciona como um quadro negro (\textit{blackboard}) que armazena as melhores soluções encontradas por todos os agentes. O \textit{pool} possui um tamanho fixo, garantindo que apenas as soluções com menor custo (considerando o número de veículos $K$ e distância total $D$) sejam mantidas e compartilhadas.
-    \item \textbf{Mecanismo de Coordenação e Sincronização:} O modelo gerencia a execução dos agentes de forma embaralhada (\textit{shuffle\_do}), garantindo que a ordem de atuação não vicie a busca e que todos tenham acesso equitativo aos recursos de memória.
+    \item \textbf{Memória Compartilhada (\textit{ElitePool}):} Funciona como um quadro negro que armazena as melhores soluções encontradas por todos os agentes. O \textit{pool} possui um tamanho fixo, garantindo que apenas as soluções com menor custo (considerando o número de veículos $K$ e distância total $D$) sejam mantidas e compartilhadas. Para garantir variabilidade entre as soluções, também foi implementado mecanismo que evita a inserção de soluções demasiadamente parecidas com as já presentes na \textit{pool}
+    \item \textbf{Mecanismo de Coordenação e Sincronização:} O modelo executa os agentes em paralelo, inserindo, se aptas, suas soluções no \textit{ElitePool} ao final do ciclo.
 \end{itemize}
 
-\subsection{Cooperação e a Estratégia de Path Relinking}
+\subsection{Cooperação e a estratégia de Path Relinking}
 
 \paragraph{} A verdadeira cooperação no SMA ocorre através do método \texttt{run\_path\_relinking}. Diferente de uma execução paralela simples, este sistema implementa uma busca cooperativa onde duas soluções de elite são combinadas:
 
@@ -61,33 +61,218 @@
     \item \textbf{Sintetização de Soluções:} Se uma solução intermediária superar as originais em termos de custo (veículos $K$ ou distância $D$), ela é adicionada ao \textit{pool}, permitindo que o sistema escape de ótimos locais ao fundir características de rotas distintas geradas por agentes diferentes.
 \end{enumerate}
 
+\paragraph{} O fluxo operacional do MAS está sintetizado na \autoref{FigFluxMASSimples}.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        >=Stealth,
+        node distance=0.75cm and 1.2cm,
+        box/.style={
+            draw,
+            rounded corners=2pt,
+            line width=0.5pt,
+            fill=gray!12,
+            align=center,
+            inner xsep=3pt,
+            inner ysep=2pt,
+            minimum height=0.95cm,
+            text width=4.6cm,
+            font=\scriptsize
+        },
+        smallbox/.style={
+            draw,
+            rounded corners=2pt,
+            line width=0.5pt,
+            fill=gray!12,
+            align=center,
+            inner xsep=2pt,
+            inner ysep=2pt,
+            minimum height=0.9cm,
+            text width=2.8cm,
+            font=\scriptsize
+        },
+        flow/.style={-Stealth, line width=0.5pt}
+    ]
+        % Definição dos nós do fluxo principal
+        \node[box] (start) {Início do \textit{step} do MAS};
+        \node[box, below=of start] (seed) {Obter sementes iniciais para os agentes a partir do \textit{ElitePool}};
+        \node[box, below=of seed] (dispatch) {Despachar SA, TS e GA em paralelo};
+
+        % Nós dos agentes em paralelo
+        \node[smallbox, below left=of dispatch] (sa) {\textit{Processo} 1\\Agente SA};
+        \node[smallbox, below=of dispatch] (ts) {\textit{Processo} 2\\Agente TS};
+        \node[smallbox, below right=of dispatch] (ga) {\textit{Processo} 3\\Agente GA};
+
+        % Fluxo linear pós-sincronização
+        \node[box, below=1.0cm of ts] (merge) {Sincronizar retornos, validar factibilidade e atualizar \textit{ElitePool}};
+        \node[box, below=of merge] (runpr) {Executar \textit{Path Relinking} bidirecional e inserir melhoria no \textit{pool} (se houver)};
+        \node[box, below=of runpr] (end) {Encerrar \textit{step}};
+
+        % Desenho dos fluxos e setas
+        \draw[flow] (start) -- (seed);
+        \draw[flow] (seed) -- (dispatch);
+
+        \draw[flow] (dispatch) -- (sa);
+        \draw[flow] (dispatch) -- (ts);
+        \draw[flow] (dispatch) -- (ga);
+
+        \draw[flow] (sa.south) |- (merge.west);
+        \draw[flow] (ts.south) -- (merge.north);
+        \draw[flow] (ga.south) |- (merge.east);
+
+        \draw[flow] (merge) -- (runpr);
+        \draw[flow] (runpr) -- (end);
+    \end{tikzpicture}
+    \caption[\small{Fluxograma do MAS}]{\label{FigFluxMASSimples} \small{Fluxo de execução do \texttt{VRPOptimizationModel} na configuração final paralela. O \textit{step} executa SA, TS e GA em paralelo, consolida soluções no \textit{ElitePool} e aplica o \textit{Path Relinking} sequencialmente antes do encerramento.}}
+\end{figure}
+\vspace{-0.5cm}
+
+
+
+\paragraph{Uso de processos x threads} 
+
+\paragraph{} Ressalta-se a limitação fundamental no uso de \textit{threads} para a paralelização em Python, que reside na presença do \textit{Global Interpreter Lock} (\textit{GIL}). O \textit{GIL} é um mecanismo de exclusão mútua que assegura que apenas uma \textit{thread} execute \textit{bytecode} Python por vez, independentemente da quantidade de núcleos de processamento disponíveis na arquitetura de hardware utilizada. 
+
+\paragraph{} Em tarefas \textit{CPU-bound}, nas quais o processamento é predominantemente matemático e intensivo, como é o caso das meta-heurísticas aplicadas, a utilização de \textit{threads} não resulta em paralelismo efetivo. Pelo contrário, o \textit{GIL} força a alternância de contexto (\textit{context switching}) entre as \textit{threads}, introduzindo um \textit{overhead} que pode degradar o desempenho global do sistema.
+
+\paragraph{} Para contornar esta restrição, a arquitetura deste trabalho adota o \textit{ProcessPoolExecutor}, que fundamenta-se na utilização de processos independentes. Diferente das \textit{threads}, cada processo possui seu próprio interpretador Python, seu próprio espaço de memória isolado e, crucialmente, seu próprio \textit{GIL}. Desta forma, o Sistema Operacional é capaz de escalar cada processo para um núcleo de CPU distinto, garantindo o paralelismo real e permitindo que os agentes operem de forma simultânea e eficiente durante a busca por soluções.
+
+\paragraph{} Isto exige uma estrutura de comunicação entre processos, sincronização dos retornos e controle mais manual da memória, mas os ganhos em tempo superam significativamente os custos.
+
 \section{Hiper-heurística baseada em Aprendizado por Reforço}
 \label{sec:hiperheuristica}
 
-\paragraph{} A evolução do sistema multiagente convencional para o modelo proposto reside na implementação da classe \texttt{VRPOptimizationModelRL}. Neste modelo, o mecanismo de coordenação deixa de ser puramente aleatório e passa a utilizar o algoritmo \textit{Q-Learning} para orquestrar a ativação dos agentes especialistas, configurando uma abordagem de hiper-heurística baseada em aprendizado \cite{Burke13}.
+\paragraph{} A evolução do sistema multiagente convencional para o modelo proposto reside na implementação da classe \texttt{VRPOptimizationModelRL}. Neste modelo, o mecanismo de coordenação deixa de executar sempre uma busca para cada agente e passa a utilizar o algoritmo \textit{Q-Learning} para orquestrar a ativação dos agentes especialistas, configurando uma abordagem de hiper-heurística baseada em aprendizado \cite{Burke13}.
 
-\subsection{Modelagem do Q-Learning}
+\paragraph{Modelagem do Q-Learning}
 
 \paragraph{} O agente de RL opera sobre um ciclo de percepção e ação, onde a política de decisão é refinada com base na experiência acumulada no ambiente de busca. Os componentes do modelo são definidos como segue:
 
 \begin{itemize}
-    \item \textbf{Espaço de Estados ($S$):} O estado é definido pela tupla discreta $(K, D_{bin})$. Para evitar a explosão do espaço de estados e garantir a convergência da Tabela-Q, a distância total ($D$) é discretizada em faixas (\textit{bins}) de 100 unidades através do parâmetro \texttt{distance\_bin\_size}.
+    \item \textbf{Espaço de Estados ($S$):} O estado é definido pela tupla discreta $(K, D_{bin})$. Para evitar a explosão do espaço de estados e garantir a convergência da Tabela-Q, a distância total ($D$) é discretizada em faixas (\textit{bins}) de unidades através do parâmetro \texttt{distance\_bin\_size}.
     \item \textbf{Espaço de Ações ($A$):} Corresponde à seleção de uma das três meta-heurísticas disponíveis para execução no ciclo atual: \textit{Simulated Annealing} (SA), \textit{Tabu Search} (TS) ou \textit{Genetic Algorithm} (GA).
     \item \textbf{Função de Recompensa Hierárquica ($R$):} A recompensa é estruturada para refletir a prioridade multiobjetivo do \textit{VRPTW}:
     \begin{itemize}
-        \item \textbf{Redução de Frota:} Atribui-se uma recompensa massiva ($+200$) caso a ação resulte na diminuição do número de veículos ($K$).
-        \item \textbf{Redução de Distância:} Caso $K$ se mantenha constante, a recompensa é equivalente à magnitude da melhoria em $D$.
-        \item \textbf{Penalidade por Estagnação:} Aplica-se uma pequena penalidade ($-1$) se a ação não gerar melhorias, incentivando a exploração de outros agentes.
+        \item \textbf{Redução de Frota:} Atribui-se uma recompensa massiva caso a ação resulte na diminuição do número de veículos ($K$).
+        \item \textbf{Redução de Distância:} A recompensa é equivalente à magnitude da melhoria em $D$.
+        \item \textbf{Penalidade por Estagnação:} Aplica-se uma pequena penalidade se a ação não gerar melhorias, incentivando a exploração de outros agentes.
     \end{itemize}
-    \item \textbf{Política de Seleção:} Utiliza-se a estratégia $\epsilon$-\textit{greedy} com $\epsilon = 0,4$, equilibrando a explotação do conhecimento atual com a exploração de novas trajetórias de busca.
+    \item \textbf{Política de Seleção:} Utiliza-se a estratégia $\epsilon$-\textit{greedy}, equilibrando a explotação do conhecimento atual com a exploração de novas trajetórias de busca. Além disso aplica-se um decaimento progressivo de $\epsilon$ ao longo dos ciclos para favorecer a convergência.
 \end{itemize}
 
 
 
-\subsection{Dinâmica de Cooperação e Atualização}
-
-\paragraph{} A cada \textit{step} do modelo, o sistema realiza três iterações de escolha e execução. Após a execução do agente selecionado, o valor de utilidade $Q(s, a)$ é atualizado na Tabela-Q utilizando a \autoref{EqQLearning}:
-
-\paragraph{} Os hiperparâmetros adotados incluem uma taxa de aprendizado $\alpha = 0,2$ e um fator de desconto $\gamma = 0,8$, priorizando a importância de recompensas a curto e médio prazo no processo de otimização. Paralelamente ao RL, o método \texttt{run\_path\_relinking} continua a promover a síntese de soluções de elite, agora alimentado por um \textit{pool} cujos candidatos são gerados por agentes selecionados de forma adaptativa.
+\paragraph{} A cada \textit{step} do modelo, o sistema realiza três iterações de escolha e execução. Após a execução do agente selecionado, o valor de utilidade $Q(s, a)$ é atualizado na Tabela-Q utilizando a \autoref{EqQLearning}. Paralelamente ao RL, o método \texttt{run\_path\_relinking} continua a promover a síntese de soluções de elite, agora alimentado por um \textit{pool} cujos candidatos são gerados por agentes selecionados de forma adaptativa.
 
 
+\paragraph{} No método final implementado (classe \texttt{VRPOptimizationModelRL}), cada \textit{step} ocorre em duas fases. Na fase de decisão, o agente de RL seleciona \texttt{runs\_per\_step} ações por política $\epsilon$-\textit{greedy}. Na fase de execução, as ações selecionadas são despachadas em paralelo. Após a sincronização dos processos, cada solução retornada é avaliada, inserida no \textit{ElitePool} (quando viável), e o valor de utilidade $Q(s,a)$ é atualizado conforme a \autoref{EqQLearning}. Este funcionamento é ilustrado no fluxograma da \autoref{FigFluxFinalMASRL}.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        >=Stealth,
+        node distance=0.75cm and 1.2cm,
+        box/.style={
+            draw,
+            rounded corners=2pt,
+            line width=0.5pt,
+            fill=gray!12,
+            align=center,
+            inner xsep=3pt,
+            inner ysep=2pt,
+            minimum height=0.95cm,
+            text width=4.6cm,
+            font=\scriptsize
+        },
+        smallbox/.style={
+            draw,
+            rounded corners=2pt,
+            line width=0.5pt,
+            fill=gray!12,
+            align=center,
+            inner xsep=2pt,
+            inner ysep=2pt,
+            minimum height=0.9cm,
+            text width=2.8cm,
+            font=\scriptsize
+        },
+        flow/.style={-Stealth, line width=0.5pt}
+    ]
+        \node[box] (start) {Início do \textit{step} do MAS-RL};
+        \node[box, below=of start] (select) {Para cada execução ($r=1,\dots,\texttt{runs\_per\_step}$): observar estado $(K,D_{bin})$, selecionar ação via $\epsilon$-\textit{greedy} e registrar (agente, semente)};
+        \node[box, below=of select] (dispatch) {Despachar execuções selecionadas em paralelo};
+
+        \node[smallbox, below left=of dispatch] (sa) {Processo 1\\Agente selecionado 1};
+        \node[smallbox, below=of dispatch] (ts) {Processo 2\\Agente selecionado 2};
+        \node[smallbox, below right=of dispatch] (ga) {Processo 3\\Agente selecionado 3};
+
+        \node[box, below=1.0cm of ts] (merge) {Sincronizar retornos, validar factibilidade e atualizar \textit{ElitePool}};
+        \node[box, below=of merge] (qupdate) {Para cada retorno: calcular recompensa, observar novo estado e atualizar $Q(s,a)$};
+        \node[box, below=of qupdate] (prcheck) {Executar \textit{Path Relinking} bidirecional e inserir melhoria no \textit{pool} (se houver)};
+        \node[box, below=of prcheck] (end) {Aplicar decaimento de $\epsilon$ e encerrar \textit{step}};
+
+        \draw[flow] (start) -- (select);
+        \draw[flow] (select) -- (dispatch);
+
+        \draw[flow] (dispatch) -- (sa);
+        \draw[flow] (dispatch) -- (ts);
+        \draw[flow] (dispatch) -- (ga);
+
+        \draw[flow] (sa.south) |- (merge.west);
+        \draw[flow] (ts.south) -- (merge.north);
+        \draw[flow] (ga.south) |- (merge.east);
+
+        \draw[flow] (merge) -- (qupdate);
+        \draw[flow] (qupdate) -- (prcheck);
+        \draw[flow] (prcheck) -- (end);
+    \end{tikzpicture}
+    \caption[ \small{Fluxograma do MAS-RL}]{\label{FigFluxFinalMASRL} \small{Fluxo de execução do método final implementado em \texttt{VRPOptimizationModelRL}. A seleção de ações é feita pelo agente de RL, enquanto as execuções das meta-heurísticas são despachadas em paralelo. A atualização da Tabela-Q ocorre após a sincronização dos retornos, seguida pela aplicação do \textit{Path Relinking} e o decaimento de $\epsilon$.}}
+\end{figure}
+\vspace{-0.5cm}
+
+\paragraph{} Abaixo, o um recorte do registro de eventos de uma execução do MAS-RL ilustra o comportamento e evolução a cada passo.
+
+\vspace{1cm}
+\begin{lstlisting}[style=mystats, basicstyle=\scriptsize\ttfamily]
+Running MAS_RL (rerun) on c101.txt
+MAS run=1 RL Step 1
+==> State (999, 999) -> Run 1 selected SA, Run 2 selected TS, Run 3 selected TS
+    |-- Run 1 agent SA result -> vehicles: 21, distance: 2094.51
+    |   Update: Reward=0.00 | Q(SA) of state(999, 999) updated to 0.00
+    |-- Run 2 agent TS result -> vehicles: 27, distance: 2313.44
+    |   Update: Reward=-0.05 | Q(TS) of state(999, 999) updated to -0.01
+    `-- Run 3 agent TS result -> vehicles: 27, distance: 2313.44
+        Update: Reward=-0.05 | Q(TS) of state(999, 999) updated to -0.02
+==> PR start: source (k=21, d=2094.51) -> target (k=27, d=2313.44), diversity=100
+    PR candidates -> forward (k=21, d=2094.51), reverse (k=21, d=2094.51)
+    PR finished: no improvement over source
+
+MAS run=1 RL Step 2
+==> State (21, 20) -> Run 1 selected SA, Run 2 selected TS, Run 3 selected SA
+    |-- Run 1 agent SA result -> vehicles: 20, distance: 1837.20
+    |   Update: Reward=457.32 | Q(SA) of state(21, 20) updated to 91.46
+    |-- Run 2 agent TS result -> vehicles: 25, distance: 1959.95
+    |   Update: Reward=-0.05 | Q(TS) of state(21, 20) updated to -0.01
+    `-- Run 3 agent SA result -> vehicles: 23, distance: 2223.47
+        Update: Reward=-0.05 | Q(SA) of state(21, 20) updated to 73.16
+==> PR start: source (k=20, d=1837.20) -> target (k=21, d=2094.51), diversity=100
+    PR candidates -> forward (k=20, d=1837.20), reverse (k=20, d=1837.20)
+    PR finished: no improvement over source
+
+...
+
+MAS run=1 RL Step 20
+==> State (18, 14) -> Run 1 selected TS, Run 2 selected TS, Run 3 selected GA
+    |-- Run 1 agent TS result -> vehicles: 18, distance: 1496.46
+    |   Update: Reward=-0.05 | Q(TS) of state(18, 14) updated to -0.01
+    |-- Run 2 agent TS result -> vehicles: 18, distance: 1486.70
+    |   Update: Reward=9.69 | Q(TS) of state(18, 14) updated to 1.93
+    `-- Run 3 agent GA result -> vehicles: 18, distance: 1570.27
+        Update: Reward=-0.05 | Q(GA) of state(18, 14) updated to 0.27
+==> PR start: source (k=18, d=1486.70) -> target (k=18, d=1496.39), diversity=19
+    PR candidates -> forward (k=18, d=1486.70), reverse (k=18, d=1478.29)
+    PR improved elite pool -> (k=18, d=1478.29)
+\end{lstlisting}
+
+\paragraph{} Este registro evidencia uma pequena desvantagem da aplicação do paralelismo em um ambiente de aprendizado por reforço. A cada \textit{step}, o agente de RL seleciona múltiplas ações que são executadas em paralelo. No entanto, a atualização da Tabela-Q só ocorre após a sincronização dos retornos, o que significa que o agente de RL não tem a oportunidade de ajustar sua política entre as execuções paralelas dentro do mesmo \textit{step}.

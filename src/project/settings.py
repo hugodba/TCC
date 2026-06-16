@@ -11,22 +11,12 @@ ELITE_POOL_DIVERSITY_TRESHOLD = 10 # TODO: colocar no relatorio
 MAS_SEED_POLICY = "random"  # Options: "best", "random"
 MAS_N_STEPS = 20
 
-# # Isolated metaheuristics params (auto-tuned by src/tune_settings.py)
-# SA_PARAMS = {'initial_temp': 1800, 'cooling_rate': 0.99, 'min_temp': 3, 'iterations_per_temp': 290} # iterations per temp * math.log(min_temp / initial_temp) / math.log(cooling_rate)
-# TS_PARAMS = {'max_iterations': 480, 'tabu_tenure': 20, 'neighbor_samples': 350} # max iters * neighbor samples
-# GA_PARAMS = {'population_size': 70, 'generations': 2300, 'crossover_rate': 0.7, 'mutation_rate': 0.05} # generations * population size
-
-# # Cooperative inner configs (auto-tuned by src/tune_settings.py)
-# MAS_SA_PARAMS = {'initial_temp': 1800, 'cooling_rate': 0.99, 'min_temp': 3, 'iterations_per_temp': 195}
-# MAS_TS_PARAMS = {'max_iterations': 480, 'tabu_tenure': 20, 'neighbor_samples': 175}
-# MAS_GA_PARAMS = {'population_size': 70, 'generations': 1150, 'crossover_rate': 0.7, 'mutation_rate': 0.05}
-
-# Isolated metaheuristics params (auto-tuned by src/tune_settings.py)
+# Isolated metaheuristics params
 SA_PARAMS = {'initial_temp': 1800, 'cooling_rate': 0.99, 'min_temp': 3, 'iterations_per_temp': 275} # iterations per temp * math.log(min_temp / initial_temp) / math.log(cooling_rate)
 TS_PARAMS = {'max_iterations': 480, 'tabu_tenure': 20, 'neighbor_samples': 350} # max iters * neighbor samples
 GA_PARAMS = {'population_size': 70, 'generations': 2300, 'crossover_rate': 0.7, 'mutation_rate': 0.05} # generations * population size
 
-# Cooperative inner configs (auto-tuned by src/tune_settings.py)
+# Cooperative inner configs
 MAS_SA_PARAMS = {'initial_temp': 1800, 'cooling_rate': 0.99, 'min_temp': 3, 'iterations_per_temp': 28}
 MAS_TS_PARAMS = {'max_iterations': 80, 'tabu_tenure': 20, 'neighbor_samples': 180}
 MAS_GA_PARAMS = {'population_size': 70, 'generations': 210, 'crossover_rate': 0.7, 'mutation_rate': 0.05}
@@ -49,6 +39,13 @@ MAS_RL_PARAMS = {
     # Também é usado pelo tuner para estimar orçamento por solver interno
     "runs_per_step": 3,
 }
+
+# Rewards (informative, should be changed in mesa_model_rl.py to reflect the actual reward function used in the code)
+# K_REWARD = 200
+# D_REWARD = distance gain 
+# WORSE_K_PENALTY = -20
+# WORSE_D_PENALTY = -0.05
+
 
 # Comparison controls
 K_GAPS = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0] #1.0 means +100%, 3.0 means +300%.
