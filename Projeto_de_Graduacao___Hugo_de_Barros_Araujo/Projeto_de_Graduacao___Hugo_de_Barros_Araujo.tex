@@ -10,6 +10,12 @@
 \usepackage{tabularx}
 \usetikzlibrary{arrows.meta,positioning}
 \usepackage[hidelinks]{hyperref}
+
+% --- PACOTES PARA CORRIGIR LIGADURAS, ACENTOS E CTRL+F ---
+\usepackage{cmap}            % Mapeia caracteres especiais no PDF (Arruma o Ctrl+F e o Copiar/Colar)
+\usepackage{lmodern}         % Usa a fonte Latin Modern (Vetorial). Resolve o sumiço do "fi" e "fl"
+% ---------------------------------------------------------
+
 \renewcommand{\figureautorefname}{Figura}
 \renewcommand{\tableautorefname}{Tabela}
 \renewcommand{\equationautorefname}{Equação}
@@ -18,6 +24,7 @@
 \renewcommand{\sectionautorefname}{Seção}
 \renewcommand{\subsectionautorefname}{Subseção}
 \renewcommand{\subsubsectionautorefname}{Subseção}
+
 
 % Setup for Python Code
 \lstdefinestyle{pythonstyle}{

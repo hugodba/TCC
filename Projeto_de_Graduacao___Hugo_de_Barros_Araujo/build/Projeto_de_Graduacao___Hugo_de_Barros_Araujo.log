@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.3.28)  15 JUN 2026 14:37
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.3.28)  7 JUL 2026 20:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -431,6 +431,46 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 284.
 )
 \Hy@SectionHShift=\skip55
+) (C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex/latex/cmap\cmap.sty
+Package: cmap 2021/02/06 v1.0j CMap support: searchable PDF
+
+
+Package cmap Warning: fontenc already loaded - some fonts may be unprocessed.
+
+) (C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex/latex/lm\lmodern.sty
+Package: lmodern 2015/05/01 v1.6.1 Latin Modern Fonts
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/lmr/m/n on input line 22.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/lmm/m/it on input line 23.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/lmsy/m/n on input line 24.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 25.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 26.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/lmm/b/it on input line 27.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/lmsy/b/n on input line 28.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 29.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 31.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> OT1/lmss/m/n on input line 32.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/lmr/m/it on input line 33.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> OT1/lmss/bx/n on input line 36.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/lmr/bx/it on input line 37.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 38.
 ) (styles/TesePack.tex (C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex/latex/tools\layout.sty
 Package: layout 2023-08-20 v1.2e Show layout parameters
 \oneinch=\count332
@@ -745,7 +785,11 @@ Package: longtable 2025-10-13 v4.24 Multi-page Table package (DPC)
 \c@LT@tables=\count416
 \c@LT@chunks=\count417
 \LT@p@ftn=\toks49
-) (C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
+)
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 51.
+ (C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmr.fd
+File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)<<t1.cmap>> (C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count418
 ) (c:\Users\hugob\Documents\TCC\Projeto_de_Graduacao___Hugo_de_Barros_Araujo\build\Projeto_de_Graduacao___Hugo_de_Barros_Araujo.aux
@@ -754,24 +798,24 @@ Package babel Info: 'brazilian' activates 'portuges' shorthands.
 )
 \openout1 = `Projeto_de_Graduacao___Hugo_de_Barros_Araujo.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
 \c@lstlisting=\count419
  (C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -792,7 +836,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-Package hyperref Info: Link coloring OFF on input line 44.
+Package hyperref Info: Link coloring OFF on input line 51.
  (c:\Users\hugob\Documents\TCC\Projeto_de_Graduacao___Hugo_de_Barros_Araujo\build\Projeto_de_Graduacao___Hugo_de_Barros_Araujo.out) (c:\Users\hugob\Documents\TCC\Projeto_de_Graduacao___Hugo_de_Barros_Araujo\build\Projeto_de_Graduacao___Hugo_de_Barros_Araujo.out)
 \@outlinefile=\write4
 \openout4 = `Projeto_de_Graduacao___Hugo_de_Barros_Araujo.out'.
@@ -807,7 +851,7 @@ Package epstopdf Info: Source file: <./figuras/poli_novo.eps>
 (epstopdf)             Command: <miktex-epstopdf --outfile=./figuras/poli_novo-eps-converted-to.pdf ./figuras/poli_novo.eps>
 (epstopdf)             \includegraphics on input line 1.
 Package epstopdf Info: Output file is already uptodate.
-<./figuras/poli_novo-eps-converted-to.pdf, id=170, 104.39pt x 45.16875pt>
+<./figuras/poli_novo-eps-converted-to.pdf, id=179, 104.39pt x 45.16875pt>
 File: ./figuras/poli_novo-eps-converted-to.pdf Graphic file (type pdf)
 <use ./figuras/poli_novo-eps-converted-to.pdf>
 Package pdftex.def Info: ./figuras/poli_novo-eps-converted-to.pdf  used on input line 1.
@@ -817,15 +861,38 @@ Underfull \hbox (badness 10000) in paragraph at lines 10--10
 
  []
 
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 10.
+(C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex/latex/lm\ot1lmr.fd
+File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)<<ot1.cmap>>
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 10.
+ (C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex/latex/lm\omllmm.fd
+File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)<<oml.cmap>>
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 10.
+ (C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex/latex/lm\omslmsy.fd
+File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)<<oms.cmap>>
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 10.
+ (C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex/latex/lm\omxlmex.fd
+File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <12> on input line 10.
+<<omx.cmap>>
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8> on input line 10.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6> on input line 10.
 LaTeX Font Info:    Trying to load font information for U+msa on input line 10.
-(C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
+ (C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
 LaTeX Font Info:    Trying to load font information for U+msb on input line 10.
  (C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Overfull \hbox (2.61047pt too wide) in paragraph at lines 9--14
+Overfull \hbox (2.61105pt too wide) in paragraph at lines 9--14
    $[]$
  []
 
@@ -852,14 +919,14 @@ Non-PDF special ignored!
 Non-PDF special ignored!
 <special> ps:0.8 setlinewidth 0 setgray
 
-{C:/Users/hugob/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map} <./figuras/poli_novo-eps-converted-to.pdf>]
-Overfull \hbox (0.99094pt too wide) in paragraph at lines 32--33
-\T1/cmr/m/n/12 PROJETO DE GRA-DU-A-ÇÃO SUB-ME-TIDO AO CORPO DO-CENTE DO CURSO
+{C:/Users/hugob/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc} <./figuras/poli_novo-eps-converted-to.pdf>]
+Overfull \hbox (1.09462pt too wide) in paragraph at lines 32--33
+\T1/lmr/m/n/12 PROJETO DE GRA-DU-A-ÇÃO SUB-ME-TIDO AO CORPO DO-CENTE DO CURSO
  []
 
 ) [2] (frontmatter/Preambulo.tex
-Overfull \hbox (16.85007pt too wide) in paragraph at lines 8--16
-\T1/cmr/m/it/12 GENTE E APREN-DI-ZADO POR RE-FORÇO APLI-CA-DOS A META-HEURÍSTICAS
+Overfull \hbox (16.95444pt too wide) in paragraph at lines 8--16
+\T1/lmr/m/it/12 GENTE E APREN-DI-ZADO POR RE-FORÇO APLI-CA-DOS A META-HEURÍSTICAS
  []
 
 
@@ -868,8 +935,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 8--16
  []
 
 [3] [4] [5]
-Overfull \hbox (7.83427pt too wide) in paragraph at lines 76--77
-[]\T1/cmr/m/n/12 Otimização Com-bi-na-tó-ria, VRPTW, Sis-te-mas Mul-ti-a-gen-tes, Meta-
+Overfull \hbox (7.93945pt too wide) in paragraph at lines 76--77
+[]\T1/lmr/m/n/12 Otimização Com-bi-na-tó-ria, VRPTW, Sis-te-mas Mul-ti-a-gen-tes, Meta-
  []
 
 [6] [7] [8]) (c:\Users\hugob\Documents\TCC\Projeto_de_Graduacao___Hugo_de_Barros_Araujo\build\Projeto_de_Graduacao___Hugo_de_Barros_Araujo.toc [9
@@ -896,160 +963,182 @@ Cap\'{\i }tulo 1.
 
 
 
-] [2] [3] [4]) [5]
+] [2] [3]
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 47.
+ (C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex/latex/lm\ts1lmr.fd
+File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+) [4{C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}]) [5]
 Cap\'{\i }tulo 2.
 (chapters/cap2.tex [6
 
-] [7] [8] [9] [10] [11] [12]
-<./figuras/path_relinking.png, id=496, 723.70375pt x 321.2pt>
+] [7{C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}] [8{C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathex.enc}{C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}] [9] [10]
+Overfull \hbox (3.6354pt too wide) in paragraph at lines 99--100
+ [][] \T1/lmr/m/n/12 O fa-tor de-ter-mi-nante para o de-sem-pe-nho de meta-heurísticas apli-ca-das ao VRPTW
+ []
+
+[11] [12] [13] [14] [15] [16] [17]
+<./figuras/path_relinking.png, id=574, 723.70375pt x 321.2pt>
 File: ./figuras/path_relinking.png Graphic file (type png)
 <use ./figuras/path_relinking.png>
-Package pdftex.def Info: ./figuras/path_relinking.png  used on input line 169.
+Package pdftex.def Info: ./figuras/path_relinking.png  used on input line 213.
 (pdftex.def)             Requested size: 361.85098pt x 160.59961pt.
- [13] [14 <./figuras/path_relinking.png>] [15] [16] [17]
-Overfull \hbox (0.91928pt too wide) in paragraph at lines 297--297
-[]\T1/cmr/bx/n/17.28 Avaliação es-ta-tís-tica de de-sem-pe-nho al-go-rít-mico 
- []
-
-[18] [19]) [20]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10.95> on input line 213.
+ [18 <./figuras/path_relinking.png>] [19] [20] [21] [22] [23]) [24]
 Cap\'{\i }tulo 3.
-(chapters/cap3.tex [21
+(chapters/cap3.tex [25
 
 ]
-<./figuras/solomon_rc201.png, id=575, 630.10406pt x 473.51906pt>
+<./figuras/solomon_rc201.png, id=648, 630.10406pt x 473.51906pt>
 File: ./figuras/solomon_rc201.png Graphic file (type png)
 <use ./figuras/solomon_rc201.png>
-Package pdftex.def Info: ./figuras/solomon_rc201.png  used on input line 17.
+Package pdftex.def Info: ./figuras/solomon_rc201.png  used on input line 19.
 (pdftex.def)             Requested size: 315.05125pt x 236.75894pt.
-<./figuras/solucao_otima_rc201.png, id=576, 607.7907pt x 450.9648pt>
+<./figuras/solucao_otima_rc201.png, id=649, 607.7907pt x 450.9648pt>
 File: ./figuras/solucao_otima_rc201.png Graphic file (type png)
 <use ./figuras/solucao_otima_rc201.png>
-Package pdftex.def Info: ./figuras/solucao_otima_rc201.png  used on input line 30.
+Package pdftex.def Info: ./figuras/solucao_otima_rc201.png  used on input line 32.
 (pdftex.def)             Requested size: 303.8946pt x 225.48184pt.
- [22 <./figuras/solomon_rc201.png>] [23 <./figuras/solucao_otima_rc201.png>]
-Overfull \hbox (5.85287pt too wide) in paragraph at lines 58--59
-[]\T1/cmr/bx/n/12 Seleção por Di-ver-si-dade: \T1/cmr/m/n/12 O sis-tema se-le-ci-ona a me-lhor so-lu-ção atual (\T1/cmr/m/it/12 source\T1/cmr/m/n/12 )
+ [26 <./figuras/solomon_rc201.png>] [27 <./figuras/solucao_otima_rc201.png>]
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 47.
+ (C:\Users\hugob\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+Overfull \hbox (5.47218pt too wide) in paragraph at lines 60--61
+[]\T1/lmr/bx/n/12 Seleção por Di-ver-si-dade: \T1/lmr/m/n/12 O sis-tema se-le-ci-ona a me-lhor so-lu-ção atual (\T1/lmr/m/it/12 source\T1/lmr/m/n/12 )
  []
 
-[24] [25] [26]
-Overfull \hbox (5.6981pt too wide) in paragraph at lines 154--155
-[]\T1/cmr/bx/n/12 Espaço de Ações ($\OML/cmm/m/it/12 A$\T1/cmr/bx/n/12 ): \T1/cmr/m/n/12 Cor-res-ponde à se-le-ção de uma das três meta-heurísticas
- []
-
-[27]
-Overfull \hbox (6.03908pt too wide) in paragraph at lines 169--170
- [][] \T1/cmr/m/n/12 No mé-todo fi-nal im-ple-men-tado (classe \T1/cmtt/m/n/12 VRPOptimizationModelRL\T1/cmr/m/n/12 ), cada \T1/cmr/m/it/12 step \T1/cmr/m/n/12 ocorre
+[28] [29] [30]
+Overfull \hbox (0.9855pt too wide) in paragraph at lines 145--145
+[]\T1/lmr/bx/n/17.28 Hiper-heurística ba-se-ada em Apren-di-zado por
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 230--230
-[]\T1/cmr/m/n/12 Figura 3.4: [][] \T1/cmr/m/n/10.95 Fluxo de exe-cu-ção do mé-todo fi-nal im-ple-men-tado em
+Overfull \hbox (5.79288pt too wide) in paragraph at lines 156--157
+[]\T1/lmr/bx/n/12 Espaço de Ações ($\OML/lmm/m/it/12 A$\T1/lmr/bx/n/12 ): \T1/lmr/m/n/12 Cor-res-ponde à se-le-ção de uma das três meta-heurísticas
  []
 
-[28] [29]) [30]
+[31]
+Overfull \hbox (5.73076pt too wide) in paragraph at lines 171--172
+ [][] \T1/lmr/m/n/12 No mé-todo fi-nal im-ple-men-tado (classe \T1/lmtt/m/n/12 VRPOptimizationModelRL\T1/lmr/m/n/12 ), cada \T1/lmr/m/it/12 step \T1/lmr/m/n/12 ocorre
+ []
+
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 205.
+
+Underfull \hbox (badness 10000) in paragraph at lines 232--232
+[]\T1/lmr/m/n/12 Figura 3.4: [][] \T1/lmr/m/n/10.95 Fluxo de exe-cu-ção do mé-todo fi-nal im-ple-men-tado em
+ []
+
+[32] [33]) [34]
 Cap\'{\i }tulo 4.
-(chapters/cap4.tex [31
+(chapters/cap4.tex [35
 
-] [32] [33]
-<./figuras/K_boxplot.png, id=738, 643.203pt x 354.123pt>
+] [36]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 46.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 46.
+ [37]
+<./figuras/K_boxplot.png, id=810, 643.203pt x 354.123pt>
 File: ./figuras/K_boxplot.png Graphic file (type png)
 <use ./figuras/K_boxplot.png>
 Package pdftex.def Info: ./figuras/K_boxplot.png  used on input line 101.
 (pdftex.def)             Requested size: 426.79134pt x 234.9755pt.
- [34]
-<./figuras/D_boxplot.png, id=748, 643.203pt x 354.123pt>
+ [38]
+<./figuras/D_boxplot.png, id=820, 643.203pt x 354.123pt>
 File: ./figuras/D_boxplot.png Graphic file (type png)
 <use ./figuras/D_boxplot.png>
 Package pdftex.def Info: ./figuras/D_boxplot.png  used on input line 107.
 (pdftex.def)             Requested size: 426.79134pt x 234.9755pt.
- [35 <./figuras/K_boxplot.png> <./figuras/D_boxplot.png>]
-<./figuras/agregado_K.png, id=757, 642.4803pt x 354.123pt>
+ [39 <./figuras/K_boxplot.png> <./figuras/D_boxplot.png>]
+<./figuras/agregado_K.png, id=829, 642.4803pt x 354.123pt>
 File: ./figuras/agregado_K.png Graphic file (type png)
 <use ./figuras/agregado_K.png>
 Package pdftex.def Info: ./figuras/agregado_K.png  used on input line 123.
 (pdftex.def)             Requested size: 426.79134pt x 235.24026pt.
- [36]
-<./figuras/agregado_D.png, id=765, 642.4803pt x 354.123pt>
+ [40]
+<./figuras/agregado_D.png, id=837, 642.4803pt x 354.123pt>
 File: ./figuras/agregado_D.png Graphic file (type png)
 <use ./figuras/agregado_D.png>
 Package pdftex.def Info: ./figuras/agregado_D.png  used on input line 131.
 (pdftex.def)             Requested size: 426.79134pt x 235.24026pt.
- [37 <./figuras/agregado_K.png>]
-<./figuras/resultado_instancias.png, id=776, 1149.093pt x 1727.253pt>
+ [41 <./figuras/agregado_K.png>]
+<./figuras/resultado_instancias.png, id=847, 1149.093pt x 1727.253pt>
 File: ./figuras/resultado_instancias.png Graphic file (type png)
 <use ./figuras/resultado_instancias.png>
 Package pdftex.def Info: ./figuras/resultado_instancias.png  used on input line 148.
 (pdftex.def)             Requested size: 384.10959pt x 577.37486pt.
- [38 <./figuras/agregado_D.png>] [39 <./figuras/resultado_instancias.png>] [40] [41]
-<./figuras/cd_diagram.png, id=807, 630.9171pt x 277.5168pt>
+ [42 <./figuras/agregado_D.png>] [43 <./figuras/resultado_instancias.png>] [44] [45]
+<./figuras/cd_diagram.png, id=879, 630.9171pt x 277.5168pt>
 File: ./figuras/cd_diagram.png Graphic file (type png)
 <use ./figuras/cd_diagram.png>
 Package pdftex.def Info: ./figuras/cd_diagram.png  used on input line 217.
 (pdftex.def)             Requested size: 362.77524pt x 159.5709pt.
-) [42 <./figuras/cd_diagram.png>] [43]
+) [46] [47 <./figuras/cd_diagram.png>]
 Cap\'{\i }tulo 5.
-(chapters/cap5.tex [44
+(chapters/cap5.tex [48
 
-] [45]
-<./figuras/waiting_time.png, id=837, 637.63219pt x 416.30531pt>
+] [49]
+<./figuras/waiting_time.png, id=912, 637.63219pt x 416.30531pt>
 File: ./figuras/waiting_time.png Graphic file (type png)
 <use ./figuras/waiting_time.png>
-Package pdftex.def Info: ./figuras/waiting_time.png  used on input line 27.
+Package pdftex.def Info: ./figuras/waiting_time.png  used on input line 29.
 (pdftex.def)             Requested size: 318.8153pt x 208.15215pt.
-) [46 <./figuras/waiting_time.png>] (c:\Users\hugob\Documents\TCC\Projeto_de_Graduacao___Hugo_de_Barros_Araujo\build\Projeto_de_Graduacao___Hugo_de_Barros_Araujo.bbl [47
+) [50 <./figuras/waiting_time.png>] [51] (c:\Users\hugob\Documents\TCC\Projeto_de_Graduacao___Hugo_de_Barros_Araujo\build\Projeto_de_Graduacao___Hugo_de_Barros_Araujo.bbl [52
 
 
-]) [48]
+]) [53]
 Ap\^endice A.
 (appendices/ApendiceA.tex
-<./figuras/C101_map.png, id=857, 552.56438pt x 401.24907pt>
+<./figuras/C101_map.png, id=937, 552.56438pt x 401.24907pt>
 File: ./figuras/C101_map.png Graphic file (type png)
 <use ./figuras/C101_map.png>
 Package pdftex.def Info: ./figuras/C101_map.png  used on input line 12.
 (pdftex.def)             Requested size: 276.28151pt x 200.62404pt.
-<./figuras/R101_map.png, id=858, 561.59813pt x 402.00188pt>
+<./figuras/R101_map.png, id=938, 561.59813pt x 402.00188pt>
 File: ./figuras/R101_map.png Graphic file (type png)
 <use ./figuras/R101_map.png>
 Package pdftex.def Info: ./figuras/R101_map.png  used on input line 24.
 (pdftex.def)             Requested size: 280.79837pt x 201.00044pt.
- [49
+ [54
 
  <./figuras/C101_map.png>]
-<./figuras/RC101_map.png, id=866, 563.10374pt x 407.27156pt>
+<./figuras/RC101_map.png, id=945, 563.10374pt x 407.27156pt>
 File: ./figuras/RC101_map.png Graphic file (type png)
 <use ./figuras/RC101_map.png>
 Package pdftex.def Info: ./figuras/RC101_map.png  used on input line 36.
 (pdftex.def)             Requested size: 281.55118pt x 203.63527pt.
- [50 <./figuras/R101_map.png> <./figuras/RC101_map.png>]) [51]
+ [55 <./figuras/R101_map.png> <./figuras/RC101_map.png>]) [56]
 Ap\^endice B.
-(appendices/ApendiceB.tex) [52
+(appendices/ApendiceB.tex) [57
 
-] [53]
+] [58]
 Ap\^endice C.
 (appendices/ApendiceC.tex
-ignored: Infinite glue shrinkage found in box being split [54
+ignored: Infinite glue shrinkage found in box being split [59
 
 ]
-ignored: Infinite glue shrinkage found in box being split [55]) [56] (c:\Users\hugob\Documents\TCC\Projeto_de_Graduacao___Hugo_de_Barros_Araujo\build\Projeto_de_Graduacao___Hugo_de_Barros_Araujo.aux)
+ignored: Infinite glue shrinkage found in box being split [60]) [61] (c:\Users\hugob\Documents\TCC\Projeto_de_Graduacao___Hugo_de_Barros_Araujo\build\Projeto_de_Graduacao___Hugo_de_Barros_Araujo.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 Package rerunfilecheck Info: File `Projeto_de_Graduacao___Hugo_de_Barros_Araujo.out' has not changed.
-(rerunfilecheck)             Checksum: B96539E3DC36B2AD45C307E985A29C43;7375.
+(rerunfilecheck)             Checksum: 6A10EC02E08F2C1AABC1F62E1892F6E4;7909.
  ) 
 Here is how much of TeX's memory you used:
- 28092 strings out of 467867
- 509926 string characters out of 5418334
- 1387705 words of memory out of 5000000
- 56046 multiletter control sequences out of 15000+600000
- 653126 words of font info for 99 fonts, out of 8000000 for 9000
+ 28474 strings out of 467867
+ 517718 string characters out of 5418334
+ 1403757 words of memory out of 5000000
+ 56301 multiletter control sequences out of 15000+600000
+ 730880 words of font info for 105 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 102i,10n,107p,1406b,2051s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1000.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1000.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt0800.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1095.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1095.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti0800.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1200.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0800.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbi1440.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbi1200.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1095.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1200.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1200.pk> <C:\Users\hugob\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on c:\Users\hugob\Documents\TCC\Projeto_de_Graduacao___Hugo_de_Barros_Araujo\build\Projeto_de_Graduacao___Hugo_de_Barros_Araujo.pdf (68 pages, 1491332 bytes).
+ 102i,12n,107p,1435b,2051s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbxi10.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmex10.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi10.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi6.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi7.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi8.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr6.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri10.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri12.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri8.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy6.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy7.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy8.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb><C:/Users/hugob/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt8.pfb>
+Output written on c:\Users\hugob\Documents\TCC\Projeto_de_Graduacao___Hugo_de_Barros_Araujo\build\Projeto_de_Graduacao___Hugo_de_Barros_Araujo.pdf (73 pages, 1451001 bytes).
 PDF statistics:
- 1960 PDF objects out of 2073 (max. 8388607)
- 369 named destinations out of 1000 (max. 500000)
- 411 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1157 PDF objects out of 1200 (max. 8388607)
+ 404 named destinations out of 1000 (max. 500000)
+ 447 words of extra memory for PDF output out of 10000 (max. 10000000)
 

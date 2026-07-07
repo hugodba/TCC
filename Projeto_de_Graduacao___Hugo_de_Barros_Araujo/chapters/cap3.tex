@@ -5,7 +5,9 @@
 
 \paragraph{} As fases preliminares do desenvolvimento focaram na construção da arquitetura base do sistema. Foram implementadas as rotinas de entrada e saída de dados, responsáveis pela leitura dos \textit{datasets} e dos arquivos de solução de referência (\textit{benchmarks}), além de módulos para a visualização gráfica de rotas e monitoramento de desempenho.
 
-\paragraph{} Um componente crítico nesta etapa foi a função custo compartilhada, desenvolvida de forma modular para garantir que a avaliação das rotas fosse consistente entre os diferentes algoritmos testados. Para validar a implementação, utilizou-se como referência a \textbf{instância RC201} de Solomon (resultado e procedimentos seguidos para alcançar tal, respectivamente em \cite{Sintef100, Mester05}). A figura abaixo apresenta a distribuição espacial dos clientes nesta instância.
+\paragraph{} Um componente crítico nesta etapa foi a função custo compartilhada, desenvolvida de forma modular para garantir que a avaliação das rotas fosse consistente entre os diferentes algoritmos testados. Ela é definida de forma que a qualidade de uma solução $s$ seja avaliada por ordem lexicográfica do par $(K(s), D(s))$, onde $K(s)$ é o número de veículos e $D(s)$ a distância total. Uma solução $s_1$ é preferível a $s_2$ se $K(s_1) < K(s_2)$, ou se $K(s_1) = K(s_2)$ e $D(s_1) < D(s_2)$, reproduzindo a hierarquia de objetivos de Solomon. 
+
+\paragraph{} Para validar a implementação, utilizou-se como referência a instância RC201 de Solomon (resultado e procedimentos seguidos para alcançar tal, respectivamente em \cite{Sintef100, Mester05}). A figura abaixo apresenta a distribuição espacial dos clientes nesta instância.
 
 \begin{figure}[H]
     \centering
@@ -33,7 +35,7 @@
 
 \paragraph{} Por fim, foram estruturadas as classes base para os algoritmos meta-heurísticos. Essa arquitetura orientada a objetos permitiu a execução dos testes preliminares e a coleta dos primeiros dados para análise comparativa.
 
-\paragraph{} Um ponto importante a se notar é a escolha de não separar rotas em viável ou inviável ao longo dos algoritmos. Todas as rotas foram consideradas realizáveis, de forma que a inserção de retorno ao depósito nas rotas se dá pela verificação da impossibilidade de seguir para um próximo cliente, seja pela limitação de carga ou temporal.
+\paragraph{} Um aspecto metodológico relevante na modelagem dos algoritmos é a adoção da representação de solução por meio de uma codificação de \textit{giant tour} com divisão gulosa (\textit{greedy split}). Nessa abordagem, o espaço de busca não segrega soluções entre viáveis e inviáveis a priori; a inserção de retornos ao depósito central é acionada dinamicamente pela impossibilidade operacional de atender ao próximo cliente da sequência, seja por violação da restrição de capacidade de carga ou pelo fechamento da janela temporal. Embora essa estratégia reduza significativamente a complexidade computacional da exploração de vizinhanças, assume-se como limitação inerente a tendência de superestimar o número total de veículos ($K$), operando com frotas conservadoras em prol da velocidade de convergência e simplificação estrutural das rotas.
 
 \section{Implementação de sistema multiagente}
 \label{sec:inc_sma}

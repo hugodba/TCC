@@ -37,9 +37,7 @@ pandas                  2.3.2
 
 \paragraph{} Dado que a meta-heurísticas podem continuar executando por tempo indefinido, os seus hiperparâmetros foram escolhidos balizados pela performance e estagnação. Ou seja, ao longo de testes preliminares, buscou-se um resultado ótimo e o encerramento da execução o mais rápido possível após atingi-lo. Os hiperparâmetros globais de controle do MAS e do RL também buscaram resultados ótimos, porém sem a preocupação de limitar o tempo de execução quando estagnado.
 
-\paragraph{} Para reprodutibilidade, com o intuito de mitigar a aleatoriedade inerente às meta-heurísticas, foi implementado o uso de \textit{seeds} fixas nos geradores de números aleatórios. Tal procedimento assegura que os experimentos sejam determinísticos, permitindo a comparação direta entre diferentes rodadas e configurações. Além disso, para obtenção de maior validade estatística, dada a exstência inerente de elementos estocásticos nos métodos propostos, cada algoritmo foi executado 10 vezes para cada instância e foram levados em consideração suas médias de resultado nas análises e comparações.
-
-\paragraph{} Quanto à instrumentação dos testes, adotou-se, para mensuração do tempo, a função \texttt{time.process\_time()}, que contabiliza exclusivamente o tempo de CPU dedicado ao processo, ignorando períodos de ociosidade (\textit{sleep}) e operações de entrada/saída (I/O). Essa escolha garante que a métrica de desempenho reflita mais fielmente o esforço computacional do algoritmo.
+\paragraph{} Para fins de controle experimental e reprodutibilidade, implementou-se o uso de \textit{seeds} fixas nos geradores de números aleatórios. Cumpre ressalvar, contudo, que tal procedimento assegura o determinismo estrito apenas nas meta-heurísticas monoprocesso isoladas. No âmbito do Sistema Multiagente, em virtude do paralelismo via \texttt{ProcessPoolExecutor} e da coleta assíncrona de soluções, a ordem exata de inserção dos indivíduos no \textit{ElitePool} torna-se dependente do escalonador de processos do sistema operacional. Consequentemente, para mitigar essa variabilidade assíncrona e garantir a validade estatística perante a natureza estocástica do ambiente cooperativo, cada algoritmo foi executado 10 vezes independentes para cada instância, adotando-se as médias e desvios padrão dessas rodadas como base comparativa nas análises computacionais.
 
 \begin{table}[h]
 \centering
@@ -92,6 +90,8 @@ $$\text{Gap } D = \frac{D_{\text{médio}} - D_{\text{ref}}}{D_{\text{ref}}}$$
 
 \paragraph{}
 Onde $K_{\text{médio}}$ e $D_{\text{médio}}$ representam as médias obtidas pelo algoritmo ao longo das 10 rodadas experimentais, enquanto $K_{\text{ref}}$ e $D_{\text{ref}}$ correspondem aos valores de referência de Solomon. Sob essa ótica, um \textit{gap} igual a zero indica o alcance exato da melhor solução da literatura. Essa metodologia viabiliza o agrupamento macro de todas as 120 execuções do lote de testes em distribuições estatísticas unificadas.
+
+\paragraph{} Cabe registrar que, em termos absolutos, as soluções permanecem distantes das melhores soluções conhecidas. A comparação aqui conduzida é relativa entre os métodos implementados, e não frente ao estado da arte de solvers de VRPTW.
 
 \paragraph{}
 O comportamento agregado dessa normalização para a frota final de veículos ($K$) e para a distância total percorrida ($D$), considerando todos os cenários combinados, pode ser observado nos diagramas de caixa apresentados na Figura~\ref{fig:boxplot_global_k} e na Figura~\ref{fig:boxplot_global_d}, respectivamente.
@@ -157,8 +157,8 @@ A análise detalhada por instância, consolidada na \autoref{fig:resultado_insta
 \paragraph{} Neste estudo, utilizou-se um nível de significância de $\theta = 0.05$. O procedimento estatístico foi dividido em duas etapas. Inicialmente, aplicou-se o Teste de Friedman para avaliar a existência de diferenças globais no desempenho dos cinco algoritmos testados. As hipóteses formuladas para o Teste de Friedman foram:
 
 \begin{itemize}
-    \item Hipótese Nula ($H_0$): Não existe diferença significativa entre as médias dos resultados obtidos pelos métodos avaliados; todos possuem desempenhos estatisticamente equivalentes.
-    \item Hipótese Alternativa ($H_1$): Existe diferença significativa entre pelo menos dois dos algoritmos testados.
+    \item \textbf{Hipótese Nula ($H_0$):} As distribuições dos postos (\textit{ranks}) de todos os métodos avaliados são estatisticamente equivalentes, assumindo que as amostras provêm da mesma população contínua e não possuem diferenças de desempenho.
+    \item \textbf{Hipótese Alternativa ($H_1$):} Existe uma diferença estatisticamente significativa na distribuição dos postos de, pelo menos, um dos algoritmos testados em relação aos demais.
 \end{itemize}
 
 \paragraph{} O Teste de Friedman reportou uma estatística $\chi^2 = 41.48$ e um p-valor associado de $2.13 \times 10^{-8}$. Como o p-valor $\ll \theta$, a hipótese nula $H_0$ é fortemente rejeitada, confirmando que há discrepância significativa na eficácia dos algoritmos perante as instâncias analisadas. Os resultados agregados que basearam este teste estão sumarizados na Tabela \ref{tab:resultados_agregados}.
@@ -210,12 +210,12 @@ A análise detalhada por instância, consolidada na \autoref{fig:resultado_insta
 
 \paragraph{} A matriz de p-valores gerada pelo Teste de Nemenyi (Tabela \ref{tab:nemenyi_pvalues}) comprova que o \textit{MAS-RL} supera significativamente tanto o TS (p-valor = $0.0000$) quanto o GA (p-valor = $0.0002$). Destaca-se também que, para a métrica de veículos, a diferença entre o \textit{MAS-RL} e o SA (p-valor = $0.0867$) encontra-se no limite tendencial, não rejeitando $H_0$ estritamente sob $\theta = 0.05$. Por fim, os resultados do \textit{MAS} e do \textit{MAS-RL} (p-valor = $1.0000$) são considerados estatisticamente equivalentes, ressaltando o ganho de robustez proveniente da arquitetura do Sistema Multiagente em si.
 
-\paragraph{} Para ilustrar estas conclusões de forma visual, a Figura \ref{fig:cd_diagram} apresenta o Diagrama de Diferença Crítica (\textit{Critical Difference Diagram}). Os algoritmos não conectados por barras horizontais possuem diferenças estatísticas significativas de desempenho, atestando a superioridade dos arranjos cooperativos.
+\paragraph{} Para ilustrar estas conclusões de forma visual, a Figura \ref{fig:cd_diagram} apresenta o Diagrama de Diferença Crítica (\textit{Critical Difference Diagram}). Para garantir que a interpretação geométrica do gráfico seja autocontida, registra-se que a tolerância da Diferença Crítica ($CD$) foi dimensionada considerando $k = 5$ algoritmos avaliados em $N = 12$ instâncias independentes. Adotando-se o limite crítico da distribuição de Nemenyi para um nível de significância de $\alpha = 0.05$ ($q_{\alpha} = 2.728$), a métrica de corte estabelecida foi de $CD = 1.76$. De acordo com o procedimento do teste, algoritmos que não se encontram conectados por barras horizontais espessas possuem uma distância entre seus \textit{ranks} médios estritamente superior a $1.76$, atestando de maneira conclusiva e matemática a superioridade dos arranjos cooperativos.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.85\textwidth]{cd_diagram.png}
-    \caption[\small{Diagrama de Diferença Crítica (Nemenyi) para a minimização de Veículos.}]{\label{fig:cd_diagram} \small{Diagrama de Diferença Crítica (Nemenyi) para a minimização de Veículos.}}
+    \caption[\small{Diagrama de Diferença Crítica (Nemenyi) para a minimização de Veículos.}]{\label{fig:cd_diagram} \small{Diagrama de Diferença Crítica (Nemenyi) para a minimização de Veículos ($CD = 1.76$).}}
 \end{figure}
 
 \paragraph{} Esses resultados acarretam importantes implicações práticas para o modelo desenvolvido. A superioridade estatisticamente provada do \textit{MAS} e do \textit{MAS-RL} confirma que a arquitetura cooperativa mitiga o risco de paralisação em ótimos locais, gerando configurações de frota consideravelmente melhores nas instâncias de Solomon sem que esse ganho seja decorrente do acaso. Em relação ao \textit{SA}, embora a diferença de desempenho seja evidente, a ausência de significância estatística estrita sugere que, para algumas instâncias, o SA pode alcançar resultados próximos aos sistemas multiagente, reforçando a necessidade de análises mais granulares por cenário.

@@ -1,4 +1,4 @@
-\paragraph{}Este capítulo apresenta a fundamentação teórica essencial para o entendimento das metodologias e soluções computacionais propostas neste trabalho. A \autoref{sec:def_problema} formaliza o conceito do Problema de Roteamento de Veículos e detalha os padrões de avaliação de instâncias da literatura. A \autoref{sec:selecao_meta} apresenta as meta-heurísticas adotadas (Recozimento Simulado, Busca Tabu e Algoritmo Genético) descrevendo sucintamente seus funcionamentos e premissas. Posteriormente, a \autoref{sec:sma} explora os princípios de um Sistema multiagente, abordando o \textit{framework} de modelagem distribuída escolhido e a estratégia de cooperação implementada, o \textit{Path Relinking}. A compreensão do Aprendizado por Reforço e a lógica da recompensa empregada na estratégia do \textit{Q-Learning}, que norteia a coordenação estratégica proposta, são objetos da \autoref{sec:rl}. Por fim, a \autoref{sec:avaliacao_estatistica} discute a importância de uma avaliação estatística rigorosa para a comparação de algoritmos meta-heurísticos, destacando os testes de hipóteses adequados para validar as conclusões obtidas a partir dos experimentos computacionais realizados.
+\paragraph{}Este capítulo apresenta a fundamentação teórica essencial para o entendimento das metodologias e soluções computacionais propostas neste trabalho. A \autoref{sec:def_problema} apresenta o conceito do Problema de Roteamento de Veículos, detalha os padrões de avaliação de instâncias da literatura e formaliza-o matematicamente. A \autoref{sec:selecao_meta} apresenta as meta-heurísticas adotadas (Recozimento Simulado, Busca Tabu e Algoritmo Genético) descrevendo sucintamente seus funcionamentos e premissas. Posteriormente, a \autoref{sec:sma} explora os princípios de um Sistema multiagente, abordando o \textit{framework} de modelagem distribuída escolhido e a estratégia de cooperação implementada, o \textit{Path Relinking}. A compreensão do Aprendizado por Reforço e a lógica da recompensa empregada na estratégia do \textit{Q-Learning}, que norteia a coordenação estratégica proposta, são objetos da \autoref{sec:rl}. Por fim, a \autoref{sec:avaliacao_estatistica} discute a importância de uma avaliação estatística rigorosa para a comparação de algoritmos meta-heurísticos, destacando os testes de hipóteses adequados para validar as conclusões obtidas a partir dos experimentos computacionais realizados.
 
 \section{Definição do problema}
 \label{sec:def_problema}
@@ -8,7 +8,7 @@
 \subsection{O Problema de Roteamento de Veículos}
 \label{sec:vrp}
 
-\paragraph{}O Problema de Roteamento de Veículos (VRP) é um desafio de otimização combinatória e programação linear inteira que busca determinar o conjunto ideal de rotas para uma frota de veículos entregarem mercadorias a um conjunto específico de clientes \cite{Dantzig59, Vidal20}. De forma genérica, o objetivo fundamental do VRP é minimizar o custo total da operação (geralmente expresso em distância total ou tempo) garantindo que:
+\paragraph{} O Problema de Roteamento de Veículos (VRP) é um desafio de otimização combinatória e programação linear inteira que busca determinar o conjunto ideal de rotas para uma frota de veículos entregarem mercadorias a um conjunto específico de clientes \cite{Dantzig59, Vidal20}. De forma genérica, o objetivo fundamental do VRP é minimizar o custo total da operação (geralmente expresso em distância total ou tempo) garantindo que:
 
 \begin{itemize}
     \item Cada cliente deve ser visitado exatamente uma vez;
@@ -16,7 +16,7 @@
     \item As restrições operacionais (como capacidade de carga ou janelas de tempo) devem ser estritamente respeitadas.
 \end{itemize}
 
-\paragraph{}O VRP é classificado na teoria da complexidade computacional como um problema \textit{NP-hard} \cite{Garey79}. Do ponto de vista teórico, isso implica que qualquer problema da classe NP pode ser reduzido ao VRP em tempo polinomial. Na prática, significa que não se conhece nenhum algoritmo capaz de encontrar a solução ótima para o problema em tempo polinomial. É precisamente essa complexidade computacional inerente que fundamenta a aplicação das meta-heurísticas (SA, TS e GA) investigadas neste estudo. Em contraste com os métodos de resolução exatos, as abordagens meta-heurísticas são concebidas para encontrar soluções subótimas de alta qualidade em tempo que viabilize a aplicação prática em cenários de envergadura real.
+\paragraph{} O VRP é classificado na teoria da complexidade computacional como um problema \textit{NP-hard} (\textit{Non-deterministic Polynomial-time hard}) \cite{Garey79}. Do ponto de vista teórico, isso implica que qualquer problema pertencente à classe de complexidade \textit{NP} (\textit{Non-deterministic Polynomial}) pode ser reduzido ao VRP por meio de uma transformação em tempo polinomial. Na prática, isso significa que, a menos que $P = NP$, não se conhece nenhum algoritmo determinístico capaz de encontrar a solução ótima para o problema em tempo polinomial. É precisamente essa complexidade computacional inerente que fundamenta a aplicação das meta-heurísticas (SA, TS e GA) investigadas neste estudo. Em contraste com os métodos de resolução exatos, as abordagens meta-heurísticas são concebidas para encontrar soluções subótimas de alta qualidade em um tempo de processamento que viabilize a aplicação prática em cenários de envergadura real.
 
 \subsection{Metodologia de avaliação e o Benchmark de Solomon}
 \label{sec:benchmark}
@@ -44,6 +44,65 @@
 \end{enumerate}
 
 \paragraph{}Esta abordagem padronizada transforma o problema em um estudo de caráter matemático e exploratório, estabelecendo uma base sólida que pode, futuramente, ser adaptada para modelos logísticos de maior complexidade e variáveis dinâmicas.
+
+\subsection{Formulação Matemática}
+\label{sec:modelo_milp}
+
+\paragraph{} Para formalizar o VRPTW e estabelecer o modelo de referência deste trabalho, apresenta-se a seguir uma formulação de Programação Linear Inteira Mista (MILP -- \textit{Mixed-Integer Linear Programming}).
+
+\paragraph{} Considere um grafo direcionado $G = (V, A)$, onde $V = \{0, 1, \dots, n, n+1\}$ é o conjunto de vértices e $A$ representa o conjunto de arcos válidos, livre de laços conexos ao próprio nó (\textit{self-loops}). Os vértices $0$ e $n+1$ delimitam geometricamente o depósito central em suas instâncias de partida e chegada, respectivamente, enquanto o subconjunto $C = \{1, \dots, n\}$ define os nós de demanda associados aos clientes. Para cada cliente $i \in C$, estipula-se uma demanda de carga $q_i$, um tempo de serviço fixo $s_i$ e uma janela temporal de atendimento restrita ao intervalo $[e_i, l_i]$. Cada arco $(i, j) \in A$ carrega um custo de percurso $c_{ij}$ e um tempo de deslocamento $t_{ij}$. 
+
+\paragraph{} Para garantir que o tamanho da frota disponível $|K|$ atue estritamente como uma cota superior e não como uma imposição de despacho mandatória, o conjunto de arcos $A$ inclui explicitamente o arco direcionado virtual $(0, n+1)$, cujos parâmetros são zerados ($c_{0, n+1} = 0$ e $t_{0, n+1} = 0$). Desse modo, qualquer veículo homogêneo $k \in K$ que permaneça ocioso cumpre os requisitos de partida e chegada realizando a trajetória direta entre os depósitos virtuais sem penalizar a função objetivo. 
+
+\paragraph{} O modelo adota duas classes de variáveis de decisão: a variável binária $x_{ijk}$, que assume valor 1 se o veículo $k \in K$ percorre diretamente o arco $(i, j) \in A$, e 0 caso contrário; e a variável contínua $w_i \ge 0$, que estipula o instante de início do serviço no vértice $i \in V$. A formulação matemática exata é estruturada conforme segue:
+
+\begin{align}
+\text{Minimizar} \quad & Z = \sum_{k \in K} \sum_{(i,j) \in A} c_{ij}\, x_{ijk}
+  \label{eq:obj}\\[4pt]
+\text{Sujeito a:} \quad
+& \sum_{k \in K} \sum_{j:(i,j)\in A} x_{ijk} = 1,
+  && \forall i \in C \label{eq:grau}\\[2pt]
+& \sum_{j:(0,j)\in A} x_{0jk} = 1,
+  && \forall k \in K \label{eq:saida}\\[2pt]
+& \sum_{i:(i,h)\in A} x_{ihk} - \sum_{j:(h,j)\in A} x_{hjk} = 0,
+  && \forall h \in C,\ \forall k \in K \label{eq:fluxo}\\[2pt]
+& \sum_{i:(i,n+1)\in A} x_{i,n+1,k} = 1,
+  && \forall k \in K \label{eq:chegada}\\[2pt]
+& \sum_{i \in C} q_i \sum_{j:(i,j)\in A} x_{ijk} \le Q,
+  && \forall k \in K \label{eq:cap}\\[2pt]
+& w_i + s_i + t_{ij} - M_{ij}\bigl(1 - \textstyle\sum_{k\in K} x_{ijk}\bigr) \le w_j,
+  && \forall (i,j) \in A \label{eq:tempo}\\[2pt]
+& e_i \le w_i \le l_i,
+  && \forall i \in V \label{eq:janela}\\[2pt]
+& x_{ijk} \in \{0,1\},
+  && \forall (i,j) \in A,\ \forall k \in K \label{eq:dominio}
+\end{align}
+
+\paragraph{} A função objetivo \eqref{eq:obj} visa minimizar o custo total de deslocamento da frota. A restrição de grau \eqref{eq:grau} impõe que cada nó de cliente seja visitado exatamente uma vez por um único veículo. As restrições \eqref{eq:saida}, \eqref{eq:fluxo} e \eqref{eq:chegada} gerenciam as leis de conservação de fluxo, obrigando que todo veículo ativado saia do depósito inicial $0$, preserve a continuidade física ao transitar por nós intermediários de clientes e finalize seu percurso no depósito de encerramento $n+1$. 
+
+\paragraph{} Os limites físicos de carregamento de cada veículo são controlados pela inequação \eqref{eq:cap}. A coordenação cronológica e a eliminação de subrotas disjuntas (\textit{subtour elimination}) são coordenadas pelas expressões \eqref{eq:tempo} e \eqref{eq:janela}. A fim de prover um relaxamento linear computacionalmente mais restritivo e robusto se comparado ao uso de uma constante global arbitrária, a Equação \eqref{eq:tempo} adota um coeficiente penalizador Big-$M$ indexado localmente, parametrizado por $M_{ij} = \max\{0, l_i + s_i + t_{ij} - e_j\}$. Por fim, a restrição \eqref{eq:janela} delimita as fronteiras operacionais das janelas de tempo de cada vértice.
+
+\paragraph{Relação com a Abordagem Heurística}
+
+\paragraph{} Determinar a solução ótima do modelo MILP por meio de métodos exatos é uma tarefa intratável para problemas de grande porte devido à classificação do VRPTW como um problema \textit{NP-Hard}. Frente a essa limitação, este trabalho recorre a abordagens meta-heurísticas para guiar a busca por soluções de alta qualidade.
+
+\paragraph{} Sob a perspectiva algorítmica, o espaço de busca e a validação das restrições matemáticas sofrem uma reconfiguração metodológica, dividindo-se em dois pilares:
+\begin{enumerate}
+    \item \textbf{Atendidas por construção via representação:} Ao contrário dos solucionadores exatos, que avaliam tensores de adjacência infactíveis durante o processo de ramificação, os algoritmos heurísticos propostos eliminam a necessidade de lidar com inviabilidades de rota. As restrições de conservação de fluxo \eqref{eq:saida}-\eqref{eq:chegada}, capacidade \eqref{eq:cap}, sincronismo temporal \eqref{eq:tempo} e janelas de atendimento \eqref{eq:janela} são asseguradas de forma intrínseca pela estrutura de codificação adotada, impossibilitando o software de gerar um plano de transporte operacionalmente inválido.
+    \item \textbf{Aproximadas empiricamente:} A otimização estrita da função objetivo \eqref{eq:obj} deixa de ser avaliada sob uma perspectiva global fechada. O custo total e o dimensionamento da frota passam a ser minimizados de forma empírica por meio da dinâmica cooperativa e competitiva dos operadores estocásticos, os quais sacrificam a prova matemática de otimalidade em prol da viabilidade de tempo de execução computacional.
+\end{enumerate}
+
+
+\subsection{Representação de soluções: O paradigma de \textit{giant tour}}
+\label{subsec:giant_tour}
+
+\paragraph{} O fator determinante para o desempenho de meta-heurísticas aplicadas ao VRPTW reside na escolha da estrutura de dados empregada para codificar uma solução. A manipulação direta da álgebra linear exata apresentada na \autoref{sec:modelo_milp} por operadores estocásticos impõe barreiras geométricas intransponíveis à convergência dos algoritmos. Para contornar essa restrição estrutural, a literatura de Pesquisa Operacional frequentemente adota o paradigma de representação baseado em rotas gigantes, ou \textit{giant tours}.
+
+\paragraph{} Proposto por \cite{prins2004simple}, o conceito de \textit{giant tour} consiste em transpor uma solução complexa multirrota do VRP para uma única sequência linear e contínua contendo a totalidade dos $n$ clientes mapeados, omitindo as inserções intermediárias do depósito central. Essa abstração permite que o problema de roteamento seja operado temporariamente sob as propriedades de uma permutação pura do Problema do Caixeiro Viajante. Consequentemente, as meta-heurísticas concentram seus mecanismos de busca exclusivamente na identificação da sequência de atendimento global ideal, explorando um espaço amostral significativamente mais denso e homogêneo.
+
+\paragraph{} A restauração da viabilidade logística e a conversão do arranjo unidimensional em um plano de expedição multifrota ocorrem por meio de um decodificador de partição, denominado fatiamento ou \textit{split}. Neste projeto, codificou-se uma variante estabelecida sob o princípio da divisão gulosa (\textit{greedy split}), cuja execução ocorre de forma sequencial adjacente ao \textit{giant tour}. O algoritmo realiza a varredura progressiva da lista, acumulando as demandas de carga e os tempos de chegada nos nós. No instante exato em que a transição para o cliente subsequente acusa a iminência de violação dos limites de capacidade do veículo \eqref{eq:cap} ou estouramento do limite superior da janela temporal \eqref{eq:janela}, o decodificador força dinamicamente o retorno do veículo atual ao depósito central e despacha uma nova unidade para dar continuidade ao atendimento.
+
+\paragraph{} Posto que o retorno ao depósito é desencadeado de forma reativa e automática diante de uma saturação operacional, evidencia-se que a totalidade das rotas fatiadas é viável por construção, eliminando por completo a ocorrência de soluções logísticas inválidas ao longo dos passos do algoritmo. No entanto, essa simplificação estrutural introduz um compromisso metodológico (\textit{trade-off}) que deve ser formalizado como uma limitação assumida do modelo. Devido ao caráter míope inerente à partição gulosa, que efetua os cortes de rota de maneira imediata sem mensurar o impacto combinatório dessa quebra nas demandas remanescentes, o procedimento tende a superestimar o número total de veículos ($K$) necessários para consolidar a frota final. Trata-se de uma fragilidade conhecida, tolerada institucionalmente em favor da robustez estrutural e da velocidade de convergência computacional das meta-heurísticas em problemas de larga escala.
 
 \section{Meta-heurísticas selecionadas}
 \label{sec:selecao_meta}
@@ -129,29 +188,14 @@ No âmbito da otimização combinatória, o Mesa destaca-se por permitir que met
 
 \paragraph{} O conceito fundamental do PR reside na exploração sistemática de trajetórias que conectam duas soluções de alta qualidade, denominadas solução inicial ($S_i$) e solução guia ($S_g$). A premissa teórica do método é que, ao navegar pelo caminho que transforma a solução inicial na solução guia, o algoritmo pode descobrir soluções intermediárias que compartilham características de ambas e que, em muitos casos, superam as referências originais em termos de qualidade.
 
-\paragraph{} Esse processo é realizado por meio de uma sequência de movimentos de vizinhança 
-que reduzem progressivamente a distância, comumente medida pela distância de 
-Hamming ou por diferenças estruturais em rotas, entre as duas soluções. Embora 
-o conceito fundamental descreva uma trajetória entre dois pontos, a literatura 
-clássica \cite{Glover00} categoriza o \textit{Path Relinking} em diferentes 
-tipos, dependendo de como e em qual direção essa trajetória é explorada:
+\paragraph{} Esse processo é realizado por meio de uma sequência de movimentos de vizinhança que reduzem progressivamente a distância entre as duas soluções. No escopo deste trabalho, a distância de Hamming é calculada diretamente sobre a representação do vetor de permutação linear dos clientes (a estrutura do \textit{giant tour}). Registra-se, contudo, como limitação metodológica assumida, que essa métrica afere estritamente a divergência posicional dos elementos nos índices do arranjo numérico; logo, ela não é capaz de capturar a estrutura de arcos logísticos conetivos ou o compartilhamento de arestas reais entre as rotas físicas do grafo. Embora o conceito fundamental descreva uma trajetória estrutural entre dois pontos, a literatura clássica \cite{Glover00} categoriza o \textit{Path Relinking} em diferentes tipos, dependendo de como e em qual direção essa trajetória é explorada:
 
 \begin{itemize}
-    \item \textbf{\textit{Forward Path Relinking} (Direto):} A busca parte da 
-    pior solução (Solução Inicial - $S_i$) em direção à melhor solução (Solução Guia 
-    - $S_g$). A premissa é incorporar progressivamente as boas características da 
-    solução guia na solução inicial.
+    \item \textbf{\textit{Forward Path Relinking} (Direto):} A busca parte da pior solução (Solução Inicial - $S_i$) em direção à melhor solução (Solução Guia - $S_g$). A premissa é incorporar progressivamente as boas características da solução guia na solução inicial.
     
-    \item \textbf{\textit{Backward Path Relinking} (Reverso):} A trajetória é 
-    percorrida no sentido inverso, partindo da melhor solução ($S_g$) em direção à 
-    pior ($S_i$). Esta variante costuma apresentar resultados superiores na 
-    prática, pois o algoritmo explora a vizinhança imediata da solução de mais 
-    alta qualidade logo nos primeiros passos da trajetória.
+    \item \textbf{\textit{Backward Path Relinking} (Reverso):} A trajetória é percorrida no sentido inverso, partindo da melhor solução ($S_g$) em direção à pior ($S_i$). Esta variante costuma apresentar resultados superiores na prática, pois o algoritmo explora a vizinhança imediata da solução de mais alta qualidade logo nos primeiros passos da trajetória.
     
-    \item \textbf{\textit{Mixed Path Relinking} (Misto):} A exploração ocorre de 
-    forma alternada, avançando simultaneamente a partir de ambas as extremidades 
-    ($S_i$ e $S_g$) até que os caminhos se encontrem no centro da trajetória, 
-    garantindo uma amostragem equilibrada de ambas as vizinhanças.
+    \item \textbf{\textit{Mixed Path Relinking} (Misto):} A exploração ocorre de forma alternada, avançando simultaneamente a partir de ambas as extremidades ($S_i$ e $S_g$) até que os caminhos se encontrem no centro da trajetória, garantindo uma amostragem equilibrada de ambas as vizinhanças.
 \end{itemize}
 
 \paragraph{} Para o escopo do modelo de cooperação proposto neste trabalho, a implementação 
@@ -305,7 +349,7 @@ maximizar a extração de características promissoras das rotas.
 
 \paragraph{} O Teste de Friedman configura-se como a alternativa não-paramétrica à ANOVA para medidas repetidas. Ele é utilizado para detectar diferenças globais significativas entre múltiplos tratamentos aplicados a diversos blocos de teste. No contexto computacional, os tratamentos correspondem aos diferentes algoritmos ou arquiteturas implementadas (tais como SA, TS, GA, MAS e MAS-RL), enquanto os blocos representam as instâncias de teste do \textit{benchmark} (como as instâncias de Solomon).
 
-\paragraph{} O procedimento do teste consiste em ordenar os algoritmos individualmente dentro de cada instância, atribuindo o posto $1$ ao melhor desempenho (ex: menor número de veículos) e o posto $k$ ao pior (sendo $k$ o número total de algoritmos analisados). Em caso de empates numéricos, atribui-se a média dos postos em disputa a cada um dos algoritmos empatados. A hipótese nula ($H_0$) do teste assume que não há diferenças de desempenho entre os métodos avaliados, implicando que as variações dos \textit{ranks} médios são meramente aleatórias. A hipótese alternativa ($H_1$) dita que existe uma diferença estatisticamente significativa no desempenho de pelo menos dois algoritmos do grupo.
+\paragraph{} O procedimento do teste consiste em ordenar os algoritmos individualmente dentro de cada instância, atribuindo o posto $1$ ao melhor desempenho (ex: menor número de veículos) e o posto $k$ ao pior (sendo $k$ o número total de algoritmos analisados). Em caso de empates numéricos, atribui-se a média dos postos em disputa a cada um dos algoritmos empatados. A hipótese nula ($H_0$) do teste estabelece que as amostras provêm da mesma população contínua, ou seja, assume que as distribuições dos postos de todos os métodos avaliados são estatisticamente equivalentes. Por sua vez, a hipótese alternativa ($H_1$) dita que existe uma diferença estatisticamente significativa na distribuição dos postos de, pelo menos, um dos algoritmos no grupo avaliado em relação aos demais.
 
 \paragraph{} A estatística do teste ($\chi^2_F$) é computada com base na soma dos postos de cada algoritmo, avaliando a disparidade desses valores em relação ao cenário de equivalência estrita. Se o \textit{p-valor} associado gerado pela distribuição do teste for inferior ao nível de significância preestabelecido $\theta$ (tipicamente adotado como $0.05$ ou $0.10$), rejeita-se a hipótese nula.
 

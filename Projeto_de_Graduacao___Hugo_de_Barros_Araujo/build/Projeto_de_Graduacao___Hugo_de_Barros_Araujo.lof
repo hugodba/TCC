@@ -1,26 +1,26 @@
 \babel@toc {brazilian}{}\relax 
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces \small {Diagrama de Path Relinking}}}{14}{figure.2.1}%
-\contentsline {figure}{\numberline {2.2}{\ignorespaces \small {Visão geral do Q-Learning}}}{16}{figure.2.2}%
-\contentsline {figure}{\numberline {2.3}{\ignorespaces \small {Algoritmo básico de Q-Learning}}}{17}{figure.2.3}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces \small {Diagrama de Path Relinking}}}{18}{figure.2.1}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces \small {Visão geral do Q-Learning}}}{20}{figure.2.2}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces \small {Algoritmo básico de Q-Learning}}}{21}{figure.2.3}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces \small {Distribuição da instância RC201}}}{22}{figure.3.1}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces \small {Rotas ótimas da instância RC201}}}{23}{figure.3.2}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces \small {Fluxograma do MAS}}}{25}{figure.3.3}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces \small {Fluxograma do MAS-RL}}}{29}{figure.3.4}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces \small {Distribuição da instância RC201}}}{26}{figure.3.1}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces \small {Rotas ótimas da instância RC201}}}{27}{figure.3.2}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces \small {Fluxograma do MAS}}}{30}{figure.3.3}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces \small {Fluxograma do MAS-RL}}}{33}{figure.3.4}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces \small {Distribuição do gap de frota}}}{35}{figure.4.1}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces \small {Distribuição do gap de distância}}}{35}{figure.4.2}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces \small {Evolução temporal do gap de frota}}}{37}{figure.4.3}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces \small {Evolução temporal do gap de distância}}}{38}{figure.4.4}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces \small {Análise de convergência por instância}}}{39}{figure.4.5}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces \small {Diagrama de Diferença Crítica (Nemenyi) para a minimização de Veículos.}}}{42}{figure.4.6}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces \small {Distribuição do gap de frota}}}{39}{figure.4.1}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces \small {Distribuição do gap de distância}}}{39}{figure.4.2}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces \small {Evolução temporal do gap de frota}}}{41}{figure.4.3}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces \small {Evolução temporal do gap de distância}}}{42}{figure.4.4}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces \small {Análise de convergência por instância}}}{43}{figure.4.5}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces \small {Diagrama de Diferença Crítica (Nemenyi) para a minimização de Veículos.}}}{47}{figure.4.6}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces \small {Tempo de viagem, espera e serviço}}}{46}{figure.5.1}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces \small {Tempo de viagem, espera e serviço}}}{50}{figure.5.1}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {A.1}{\ignorespaces \small {Mapa da instância C101}}}{49}{figure.A.1}%
-\contentsline {figure}{\numberline {A.2}{\ignorespaces \small {Mapa da instância R101}}}{50}{figure.A.2}%
-\contentsline {figure}{\numberline {A.3}{\ignorespaces \small {Mapa da instância RC101}}}{50}{figure.A.3}%
+\contentsline {figure}{\numberline {A.1}{\ignorespaces \small {Mapa da instância C101}}}{54}{figure.A.1}%
+\contentsline {figure}{\numberline {A.2}{\ignorespaces \small {Mapa da instância R101}}}{55}{figure.A.2}%
+\contentsline {figure}{\numberline {A.3}{\ignorespaces \small {Mapa da instância RC101}}}{55}{figure.A.3}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
