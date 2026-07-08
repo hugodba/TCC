@@ -35,7 +35,7 @@ pandas                  2.3.2
 \section{Detalhes de implementação e parametrização}
 \label{sec:implementacao}
 
-\paragraph{} Dado que a meta-heurísticas podem continuar executando por tempo indefinido, os seus hiperparâmetros foram escolhidos balizados pela performance e estagnação. Ou seja, ao longo de testes preliminares, buscou-se um resultado ótimo e o encerramento da execução o mais rápido possível após atingi-lo. Os hiperparâmetros globais de controle do MAS e do RL também buscaram resultados ótimos, porém sem a preocupação de limitar o tempo de execução quando estagnado.
+\paragraph{} Dado que as meta-heurísticas podem continuar executando por tempo indefinido, os seus hiperparâmetros foram escolhidos balizados pela performance e estagnação. Ou seja, ao longo de testes preliminares, buscou-se um resultado ótimo e o encerramento da execução o mais rápido possível após atingi-lo. Os hiperparâmetros globais de controle do MAS e do RL também buscaram resultados ótimos, porém sem a preocupação de limitar o tempo de execução quando estagnado.
 
 \paragraph{} Para fins de controle experimental e reprodutibilidade, implementou-se o uso de \textit{seeds} fixas nos geradores de números aleatórios. Cumpre ressalvar, contudo, que tal procedimento assegura o determinismo estrito apenas nas meta-heurísticas monoprocesso isoladas. No âmbito do Sistema Multiagente, em virtude do paralelismo via \texttt{ProcessPoolExecutor} e da coleta assíncrona de soluções, a ordem exata de inserção dos indivíduos no \textit{ElitePool} torna-se dependente do escalonador de processos do sistema operacional. Consequentemente, para mitigar essa variabilidade assíncrona e garantir a validade estatística perante a natureza estocástica do ambiente cooperativo, cada algoritmo foi executado 10 vezes independentes para cada instância, adotando-se as médias e desvios padrão dessas rodadas como base comparativa nas análises computacionais.
 
@@ -76,7 +76,7 @@ pandas                  2.3.2
 \section{Resultados dos experimentos}
 \label{sec:resultados}
 
-\paragraph{} Nesta seção, serão apresentados e analisados os resultados obtidos a partir dos experimentos conduzidos, com foco na comparação entre as meta-heurísticas puras e o sistema multiagente proposto. A análise será estruturada em torno de métricas de desempenho relevantes, como o número de veículos utilizados ($K$) e o tempo de execução, além de considerar a evolução das soluções ao longo do tempo e a estabilidade dos resultados. Como objetivo secundário, a distância total percorrida ($D$) também será avaliada, porém com menor ênfase. Os dados brutos de retorno dos experiments pode ser encontrado no \autoref{ApendiceC}.
+\paragraph{} Nesta seção, serão apresentados e analisados os resultados obtidos a partir dos experimentos conduzidos, com foco na comparação entre as meta-heurísticas puras e o sistema multiagente proposto. A análise será estruturada em torno de métricas de desempenho relevantes, como o número de veículos utilizados ($K$) e o tempo de execução, além de considerar a evolução das soluções ao longo do tempo e a estabilidade dos resultados. Como objetivo secundário, a distância total percorrida ($D$) também será avaliada, porém com menor ênfase. Os dados brutos de retorno dos experimentos pode ser encontrado no \autoref{ApendiceC}.
 
 
 \paragraph{Desempenho global}
@@ -112,7 +112,7 @@ O comportamento agregado dessa normalização para a frota final de veículos ($
 A análise macro das distribuições revela uma clara divisão de desempenho entre as abordagens tradicionais e as arquiteturas baseadas em cooperação. Ao avaliar o comportamento puramente agregado do lote completo de testes, os métodos estruturados em agência — \textit{MAS} (Sistema Multiagente) e \textit{MAS-RL} (Sistema Multiagente com Aprendizado por Reforço) — demonstram uma superioridade global evidente em relação às meta-heurísticas isoladas. Essa vantagem se traduz visualmente pelo deslocamento descendente de toda a estrutura dos diagramas de caixa, indicando uma tendência consistente de maior eficiência na minimização dos objetivos quando os solucionadores operam de forma cooperativa.
 
 \paragraph{}
-Conforme evidenciado no diagrama de frota (Figura~\ref{fig:boxplot_global_k}), a mediana do \textit{gap} de veículos para os frameworks \textit{MAS} e \textit{MAS-RL} consolida-se em patamares inferiores a 0.7, enquanto abordagens consolidadas como a Busca Tabu (\textit{TS}) e o Algoritmo Genético (\textit{GA}) operam com valores centrais próximos ou superiores a 1.0. Mais do que a redução do erro médio, as arquiteturas multiagente encolheram significativamente o intervalo interquartil da distribuição. Esse achatamento da caixa prova que o ecossistema cooperativo mitiga o risco de o algoritmo ficar aprisionado em mínimos locais medíocres ao usar as forças de cada solucionador, atingindo resultados mais consistentes, menos variáveis.
+Conforme evidenciado no diagrama de frota (Figura~\ref{fig:boxplot_global_k}), a mediana do \textit{gap} de veículos para os frameworks \textit{MAS} e \textit{MAS-RL} consolida-se em patamares inferiores a 0.7, enquanto abordagens consolidadas como a Busca Tabu (\textit{TS}) e o Algoritmo Genético (\textit{GA}) operam com valores centrais próximos ou superiores a 1.0. Mais do que a redução do erro médio, as arquiteturas multiagente encolheram significativamente o intervalo interquartil da distribuição. Esse achatamento da caixa prova que o ecossistema cooperativo mitiga o risco de o algoritmo ficar aprisionado em mínimos locais medíocres ao usar as forças de cada solucionador, atingindo resultados mais consistentes e com menor variabilidade.
 
 \paragraph{} No que tange à dinâmica de convergência, e não apenas ao resultado final, os métodos de agência também se destacam. A evolução temporal do \textit{gap} de frota revela que os sistemas multiagente não apenas alcançam soluções de melhor qualidade, mas o fazem de maneira mais rápida e consistente ao longo do tempo.
 
@@ -132,7 +132,7 @@ Conforme evidenciado no diagrama de frota (Figura~\ref{fig:boxplot_global_k}), a
     \caption[\small{Evolução temporal do gap de distância}]{\label{fig:convergencia_global_d} \small{Evolução temporal do gap de distância ($D$) para todas as instâncias combinadas.}}
 \end{figure}
 
-\paragraph{} Note que as linhas referentes a \textit{MAS} e \textit{MAS-RL} começam em um tempo maior, devido à arquitetura de implementação que recolhe as soluções parciais apenas após o término de cada \textit{step}, diferente das meta-heurísticas puras que atualizam a solução a cada iteração.
+\paragraph{} Note que as linhas referentes a \textit{MAS} e \textit{MAS-RL} começam em um tempo maior, devido à arquitetura de implementação que recolhe as soluções parciais apenas após o término de cada \textit{step}, diferentemente das meta-heurísticas puras que atualizam a solução a cada iteração.
 
 
 \paragraph{}
