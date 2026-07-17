@@ -65,146 +65,149 @@
 \contentsline {paragraph}{}{9}{section*.55}%
 \contentsline {paragraph}{}{10}{section*.56}%
 \contentsline {paragraph}{}{10}{section*.57}%
-\contentsline {paragraph}{}{10}{section*.58}%
-\contentsline {paragraph}{Relação com a Abordagem Heurística}{11}{section*.59}%
-\contentsline {paragraph}{}{11}{section*.60}%
+\contentsline {paragraph}{}{11}{section*.58}%
+\contentsline {paragraph}{}{11}{section*.59}%
+\contentsline {paragraph}{Relação com a Abordagem Heurística}{11}{section*.60}%
 \contentsline {paragraph}{}{11}{section*.61}%
-\contentsline {subsection}{\numberline {2.1.4}Representação de soluções: O paradigma de \textit {giant tour}}{12}{subsection.2.1.4}%
 \contentsline {paragraph}{}{12}{section*.62}%
+\contentsline {subsection}{\numberline {2.1.4}Representação de soluções: O paradigma de \textit {giant tour}}{12}{subsection.2.1.4}%
 \contentsline {paragraph}{}{12}{section*.63}%
 \contentsline {paragraph}{}{12}{section*.64}%
 \contentsline {paragraph}{}{13}{section*.65}%
-\contentsline {section}{\numberline {2.2}Meta-heurísticas selecionadas}{13}{section.2.2}%
 \contentsline {paragraph}{}{13}{section*.66}%
-\contentsline {subsection}{\numberline {2.2.1}Recozimento Simulado}{13}{subsection.2.2.1}%
-\contentsline {paragraph}{}{13}{section*.67}%
-\contentsline {subsection}{\numberline {2.2.2}Busca Tabu}{14}{subsection.2.2.2}%
+\contentsline {section}{\numberline {2.2}Meta-heurísticas selecionadas}{14}{section.2.2}%
+\contentsline {paragraph}{}{14}{section*.67}%
+\contentsline {subsection}{\numberline {2.2.1}Recozimento Simulado}{14}{subsection.2.2.1}%
 \contentsline {paragraph}{}{14}{section*.68}%
+\contentsline {subsection}{\numberline {2.2.2}Busca Tabu}{14}{subsection.2.2.2}%
 \contentsline {paragraph}{}{14}{section*.69}%
-\contentsline {subsection}{\numberline {2.2.3}Algoritmo Genético}{14}{subsection.2.2.3}%
-\contentsline {paragraph}{}{14}{section*.70}%
-\contentsline {section}{\numberline {2.3}Sistema multiagente}{15}{section.2.3}%
+\contentsline {paragraph}{}{15}{section*.70}%
+\contentsline {subsection}{\numberline {2.2.3}Algoritmo Genético}{15}{subsection.2.2.3}%
 \contentsline {paragraph}{}{15}{section*.71}%
+\contentsline {section}{\numberline {2.3}Sistema multiagente}{15}{section.2.3}%
 \contentsline {paragraph}{}{15}{section*.72}%
-\contentsline {paragraph}{}{15}{section*.73}%
-\contentsline {subsection}{\numberline {2.3.1}Framework Mesa}{16}{subsection.2.3.1}%
+\contentsline {paragraph}{}{16}{section*.73}%
 \contentsline {paragraph}{}{16}{section*.74}%
+\contentsline {subsection}{\numberline {2.3.1}Framework Mesa}{16}{subsection.2.3.1}%
 \contentsline {paragraph}{}{16}{section*.75}%
-\contentsline {subsection}{\numberline {2.3.2}Estratégia de cooperação: \textit {Path Relinking}}{16}{subsection.2.3.2}%
 \contentsline {paragraph}{}{16}{section*.76}%
+\contentsline {subsection}{\numberline {2.3.2}Estratégia de cooperação: \textit {Path Relinking}}{17}{subsection.2.3.2}%
 \contentsline {paragraph}{}{17}{section*.77}%
 \contentsline {paragraph}{}{17}{section*.78}%
-\contentsline {paragraph}{}{18}{section*.79}%
+\contentsline {paragraph}{}{17}{section*.79}%
 \contentsline {paragraph}{}{18}{section*.80}%
-\contentsline {paragraph}{}{18}{section*.81}%
-\contentsline {paragraph}{}{18}{section*.82}%
-\contentsline {section}{\numberline {2.4}Aprendizado por Reforço}{19}{section.2.4}%
+\contentsline {paragraph}{}{19}{section*.81}%
+\contentsline {paragraph}{}{19}{section*.82}%
 \contentsline {paragraph}{}{19}{section*.83}%
-\contentsline {paragraph}{}{19}{section*.84}%
-\contentsline {paragraph}{}{19}{section*.85}%
+\contentsline {section}{\numberline {2.4}Aprendizado por Reforço}{20}{section.2.4}%
+\contentsline {paragraph}{}{20}{section*.84}%
+\contentsline {paragraph}{}{20}{section*.85}%
 \contentsline {paragraph}{}{20}{section*.86}%
-\contentsline {paragraph}{}{20}{section*.87}%
+\contentsline {paragraph}{}{21}{section*.87}%
 \contentsline {paragraph}{}{21}{section*.88}%
-\contentsline {paragraph}{}{21}{section*.89}%
+\contentsline {paragraph}{}{22}{section*.89}%
 \contentsline {paragraph}{}{22}{section*.90}%
-\contentsline {section}{\numberline {2.5}Avaliação estatística de desempenho algorítmico}{22}{section.2.5}%
-\contentsline {paragraph}{}{22}{section*.91}%
-\contentsline {paragraph}{}{22}{section*.92}%
-\contentsline {subsection}{\numberline {2.5.1}Teste de Friedman}{22}{subsection.2.5.1}%
-\contentsline {paragraph}{}{22}{section*.93}%
+\contentsline {paragraph}{}{23}{section*.91}%
+\contentsline {section}{\numberline {2.5}Avaliação estatística de desempenho algorítmico}{23}{section.2.5}%
+\contentsline {paragraph}{}{23}{section*.92}%
+\contentsline {paragraph}{}{23}{section*.93}%
+\contentsline {subsection}{\numberline {2.5.1}Teste de Friedman}{23}{subsection.2.5.1}%
 \contentsline {paragraph}{}{23}{section*.94}%
-\contentsline {paragraph}{}{23}{section*.95}%
-\contentsline {subsection}{\numberline {2.5.2}Teste Post-Hoc de Nemenyi}{23}{subsection.2.5.2}%
-\contentsline {paragraph}{}{23}{section*.96}%
-\contentsline {paragraph}{}{23}{section*.97}%
+\contentsline {paragraph}{}{24}{section*.95}%
+\contentsline {paragraph}{}{24}{section*.96}%
+\contentsline {subsection}{\numberline {2.5.2}Teste Post-Hoc de Nemenyi}{24}{subsection.2.5.2}%
+\contentsline {paragraph}{}{24}{section*.97}%
 \contentsline {paragraph}{}{24}{section*.98}%
-\contentsline {paragraph}{}{24}{section*.99}%
-\contentsline {chapter}{\numberline {3}Método Proposto}{25}{chapter.3}%
+\contentsline {paragraph}{}{25}{section*.99}%
 \contentsline {paragraph}{}{25}{section*.100}%
-\contentsline {section}{\numberline {3.1}Etapas iniciais}{25}{section.3.1}%
-\contentsline {paragraph}{}{25}{section*.101}%
+\contentsline {chapter}{\numberline {3}Método Proposto}{26}{chapter.3}%
+\contentsline {paragraph}{}{26}{section*.101}%
+\contentsline {section}{\numberline {3.1}Etapas iniciais}{26}{section.3.1}%
 \contentsline {paragraph}{}{26}{section*.102}%
-\contentsline {paragraph}{}{26}{section*.103}%
-\contentsline {paragraph}{}{26}{section*.104}%
+\contentsline {paragraph}{}{27}{section*.103}%
+\contentsline {paragraph}{}{27}{section*.104}%
 \contentsline {paragraph}{}{27}{section*.105}%
-\contentsline {paragraph}{}{27}{section*.106}%
-\contentsline {section}{\numberline {3.2}Implementação de sistema multiagente}{28}{section.3.2}%
+\contentsline {paragraph}{}{28}{section*.106}%
 \contentsline {paragraph}{}{28}{section*.107}%
-\contentsline {subsection}{\numberline {3.2.1}Arquitetura e componentes do sistema}{28}{subsection.3.2.1}%
-\contentsline {paragraph}{}{28}{section*.108}%
-\contentsline {subsection}{\numberline {3.2.2}Cooperação e a estratégia de Path Relinking}{28}{subsection.3.2.2}%
-\contentsline {paragraph}{}{28}{section*.109}%
+\contentsline {section}{\numberline {3.2}Implementação de sistema multiagente}{29}{section.3.2}%
+\contentsline {paragraph}{}{29}{section*.108}%
+\contentsline {subsection}{\numberline {3.2.1}Arquitetura e componentes do sistema}{29}{subsection.3.2.1}%
+\contentsline {paragraph}{}{29}{section*.109}%
+\contentsline {subsection}{\numberline {3.2.2}Cooperação e a estratégia de Path Relinking}{29}{subsection.3.2.2}%
 \contentsline {paragraph}{}{29}{section*.110}%
-\contentsline {paragraph}{Uso de processos x threads}{30}{section*.111}%
-\contentsline {paragraph}{}{30}{section*.112}%
-\contentsline {paragraph}{}{30}{section*.113}%
+\contentsline {paragraph}{}{30}{section*.111}%
+\contentsline {paragraph}{Uso de processos x threads}{31}{section*.112}%
+\contentsline {paragraph}{}{31}{section*.113}%
 \contentsline {paragraph}{}{31}{section*.114}%
-\contentsline {paragraph}{}{31}{section*.115}%
-\contentsline {section}{\numberline {3.3}Hiper-heurística baseada em Aprendizado por Reforço}{31}{section.3.3}%
-\contentsline {paragraph}{}{31}{section*.116}%
-\contentsline {paragraph}{Modelagem do Q-Learning}{31}{section*.117}%
-\contentsline {paragraph}{}{31}{section*.118}%
+\contentsline {paragraph}{}{32}{section*.115}%
+\contentsline {paragraph}{}{32}{section*.116}%
+\contentsline {section}{\numberline {3.3}Hiper-heurística baseada em Aprendizado por Reforço}{32}{section.3.3}%
+\contentsline {paragraph}{}{32}{section*.117}%
+\contentsline {paragraph}{Modelagem do Q-Learning}{32}{section*.118}%
 \contentsline {paragraph}{}{32}{section*.119}%
-\contentsline {paragraph}{}{32}{section*.120}%
+\contentsline {paragraph}{}{33}{section*.120}%
 \contentsline {paragraph}{}{33}{section*.121}%
 \contentsline {paragraph}{}{34}{section*.122}%
-\contentsline {chapter}{\numberline {4}Experimentos Computacionais}{35}{chapter.4}%
 \contentsline {paragraph}{}{35}{section*.123}%
-\contentsline {section}{\numberline {4.1}Software e hardware}{35}{section.4.1}%
-\contentsline {paragraph}{}{35}{section*.124}%
+\contentsline {chapter}{\numberline {4}Experimentos Computacionais}{36}{chapter.4}%
+\contentsline {paragraph}{}{36}{section*.124}%
+\contentsline {section}{\numberline {4.1}Software e hardware}{36}{section.4.1}%
 \contentsline {paragraph}{}{36}{section*.125}%
-\contentsline {paragraph}{}{36}{section*.126}%
-\contentsline {section}{\numberline {4.2}Instâncias de teste}{36}{section.4.2}%
-\contentsline {paragraph}{}{36}{section*.127}%
-\contentsline {section}{\numberline {4.3}Detalhes de implementação e parametrização}{36}{section.4.3}%
-\contentsline {paragraph}{}{36}{section*.128}%
-\contentsline {paragraph}{}{36}{section*.129}%
-\contentsline {section}{\numberline {4.4}Resultados dos experimentos}{37}{section.4.4}%
+\contentsline {paragraph}{}{37}{section*.126}%
+\contentsline {paragraph}{}{37}{section*.127}%
+\contentsline {section}{\numberline {4.2}Instâncias de teste}{37}{section.4.2}%
+\contentsline {paragraph}{}{37}{section*.128}%
+\contentsline {section}{\numberline {4.3}Detalhes de implementação e parametrização}{37}{section.4.3}%
+\contentsline {paragraph}{}{37}{section*.129}%
 \contentsline {paragraph}{}{37}{section*.130}%
-\contentsline {paragraph}{Desempenho global}{38}{section*.131}%
-\contentsline {paragraph}{}{38}{section*.132}%
-\contentsline {paragraph}{}{38}{section*.133}%
-\contentsline {paragraph}{}{38}{section*.134}%
-\contentsline {paragraph}{}{38}{section*.135}%
-\contentsline {paragraph}{}{39}{section*.136}%
-\contentsline {paragraph}{}{40}{section*.137}%
-\contentsline {paragraph}{}{40}{section*.138}%
-\contentsline {paragraph}{}{40}{section*.139}%
-\contentsline {paragraph}{}{41}{section*.140}%
+\contentsline {section}{\numberline {4.4}Resultados dos experimentos}{38}{section.4.4}%
+\contentsline {paragraph}{}{38}{section*.131}%
+\contentsline {paragraph}{Desempenho global}{39}{section*.132}%
+\contentsline {paragraph}{}{39}{section*.133}%
+\contentsline {paragraph}{}{39}{section*.134}%
+\contentsline {paragraph}{}{39}{section*.135}%
+\contentsline {paragraph}{}{40}{section*.136}%
+\contentsline {paragraph}{}{41}{section*.137}%
+\contentsline {paragraph}{}{41}{section*.138}%
+\contentsline {paragraph}{}{42}{section*.139}%
+\contentsline {paragraph}{}{42}{section*.140}%
 \contentsline {paragraph}{}{42}{section*.141}%
-\contentsline {paragraph}{}{42}{section*.142}%
-\contentsline {paragraph}{Desempenho por instâncias}{42}{section*.143}%
-\contentsline {paragraph}{}{42}{section*.144}%
-\contentsline {section}{\numberline {4.5}Análise estatística}{44}{section.4.5}%
+\contentsline {paragraph}{}{43}{section*.142}%
+\contentsline {paragraph}{}{43}{section*.143}%
+\contentsline {paragraph}{Desempenho por instâncias}{43}{section*.144}%
 \contentsline {paragraph}{}{44}{section*.145}%
-\contentsline {paragraph}{}{44}{section*.146}%
-\contentsline {paragraph}{}{44}{section*.147}%
-\contentsline {paragraph}{}{44}{section*.148}%
-\contentsline {paragraph}{}{46}{section*.149}%
-\contentsline {paragraph}{}{46}{section*.150}%
-\contentsline {paragraph}{}{46}{section*.151}%
-\contentsline {paragraph}{}{46}{section*.152}%
-\contentsline {chapter}{\numberline {5}Conclusão}{48}{chapter.5}%
+\contentsline {section}{\numberline {4.5}Análise estatística}{46}{section.4.5}%
+\contentsline {paragraph}{}{46}{section*.146}%
+\contentsline {paragraph}{}{46}{section*.147}%
+\contentsline {paragraph}{}{46}{section*.148}%
+\contentsline {paragraph}{}{47}{section*.149}%
+\contentsline {paragraph}{}{48}{section*.150}%
+\contentsline {paragraph}{}{48}{section*.151}%
+\contentsline {paragraph}{}{48}{section*.152}%
 \contentsline {paragraph}{}{48}{section*.153}%
-\contentsline {section}{\numberline {5.1}Resumo dos resultados finais}{48}{section.5.1}%
-\contentsline {paragraph}{}{48}{section*.154}%
-\contentsline {paragraph}{}{48}{section*.155}%
-\contentsline {paragraph}{}{49}{section*.156}%
-\contentsline {section}{\numberline {5.2}Oportunidades de melhoria}{49}{section.5.2}%
-\contentsline {paragraph}{}{49}{section*.157}%
-\contentsline {paragraph}{}{49}{section*.158}%
-\contentsline {paragraph}{}{50}{section*.159}%
-\contentsline {paragraph}{}{50}{section*.160}%
-\contentsline {paragraph}{}{50}{section*.161}%
-\contentsline {chapter}{Bibliografia}{52}{section*.161}%
-\contentsline {chapter}{\numberline {A}Benchmark de Solomon}{54}{appendix.A}%
-\contentsline {paragraph}{}{54}{section*.163}%
-\contentsline {paragraph}{}{56}{section*.164}%
-\contentsline {chapter}{\numberline {B}Estimativa para busca exaustiva}{57}{appendix.B}%
-\contentsline {paragraph}{}{57}{section*.165}%
-\contentsline {paragraph}{}{57}{section*.166}%
-\contentsline {paragraph}{}{57}{section*.167}%
-\contentsline {paragraph}{}{57}{section*.168}%
-\contentsline {paragraph}{}{57}{section*.169}%
-\contentsline {chapter}{\numberline {C}Resultados dos experimentos}{59}{appendix.C}%
+\contentsline {chapter}{\numberline {5}Conclusão}{50}{chapter.5}%
+\contentsline {paragraph}{}{50}{section*.154}%
+\contentsline {section}{\numberline {5.1}Resumo dos resultados finais}{50}{section.5.1}%
+\contentsline {paragraph}{}{50}{section*.155}%
+\contentsline {paragraph}{}{50}{section*.156}%
+\contentsline {paragraph}{}{51}{section*.157}%
+\contentsline {paragraph}{}{51}{section*.158}%
+\contentsline {paragraph}{}{51}{section*.159}%
+\contentsline {section}{\numberline {5.2}Oportunidades de melhoria}{51}{section.5.2}%
+\contentsline {paragraph}{}{51}{section*.160}%
+\contentsline {paragraph}{}{52}{section*.161}%
+\contentsline {paragraph}{}{52}{section*.162}%
+\contentsline {paragraph}{}{52}{section*.163}%
+\contentsline {paragraph}{}{53}{section*.164}%
+\contentsline {chapter}{Bibliografia}{54}{section*.164}%
+\contentsline {chapter}{\numberline {A}Benchmark de Solomon}{56}{appendix.A}%
+\contentsline {paragraph}{}{56}{section*.166}%
+\contentsline {paragraph}{}{58}{section*.167}%
+\contentsline {chapter}{\numberline {B}Estimativa para busca exaustiva}{59}{appendix.B}%
+\contentsline {paragraph}{}{59}{section*.168}%
+\contentsline {paragraph}{}{59}{section*.169}%
 \contentsline {paragraph}{}{59}{section*.170}%
+\contentsline {paragraph}{}{59}{section*.171}%
+\contentsline {paragraph}{}{59}{section*.172}%
+\contentsline {chapter}{\numberline {C}Resultados dos experimentos}{61}{appendix.C}%
+\contentsline {paragraph}{}{61}{section*.173}%

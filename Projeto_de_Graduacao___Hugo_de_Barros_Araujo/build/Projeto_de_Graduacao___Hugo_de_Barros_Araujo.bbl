@@ -47,8 +47,9 @@ WOOLDRIDGE, M., JENNINGS, N.~R., \enquote{Intelligent agents: theory and
   pp.~115--152, 1995.
 
 \bibitem{TerHoeven25}
-{Ter Hoeven}, E., OTHERS, \enquote{Mesa 3: agent-based modeling with Python in
-  2025}, \emph{Journal of Open Source Software}, v.~10, n. 107, pp.~7668, 2025.
+HOEVEN, E., KWAKKEL, J., HESS, V., \emph{et~al.}, \enquote{Mesa 3: Agent-based
+  modeling with Python in 2025}, \emph{Journal of Open Source Software}, v.~10,
+  pp.~7668, 03 2025.
 
 \bibitem{Glover00}
 GLOVER, F., LAGUNA, M., MART{\'I}, R., \enquote{Fundamentals of scatter search
@@ -69,17 +70,17 @@ WATKINS, C. J. C.~H., DAYAN, P., \enquote{Q-learning}, \emph{Machine Learning},
   06 de março de 2026).
 
 \bibitem{Mester05}
-MESTER, D., BR{\"A}YSY, O., DULLAERT, W., \emph{A Multi-parametric Evolution
-  Strategies Algorithm for Vehicle Routing Problems}, Working paper, Institute
+MESTER, D., BR{\"A}YSY, O., DULLAERT, W., \emph{A multi-parametric evolution
+  strategies algorithm for vehicle routing problems}, Working paper, Institute
   of Evolution, University of Haifa, Israel, 2005.
 
 \bibitem{Burke13}
-BURKE, E.~K., OTHERS, \enquote{Hyper-heuristics: a survey of the state of the
-  art}, \emph{Journal of the Operational Research Society}, v.~64, n.~12,
-  pp.~1695--1724, 2013.
+BURKE, E., GENDREAU, M., HYDE, M., \emph{et~al.}, \enquote{Hyper-heuristics: A
+  survey of the state of the art}, \emph{Journal of the Operational Research
+  Society}, v.~64, pp.~1695--1724, 07 2013.
 
 \bibitem{NVlabsOlist}
-{NVlabs}, \enquote{olist-vrp-benchmark: Problem instances for the Vehicle
+{NVlabs}, \enquote{olist-vrp-benchmark: problem instances for the Vehicle
   Routing Problem}, \url{https://github.com/NVlabs/olist-vrp-benchmark},
   (Acesso em 06 de março de 2026).
 
